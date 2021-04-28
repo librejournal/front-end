@@ -5,7 +5,7 @@ const Theme = createMuiTheme({
     body1: {
       fontFamily: "inherit",
       fontWeight: 400,
-      fontSize: 24,
+      fontSize: '1.25rem',
       color: "white",
     },
   },

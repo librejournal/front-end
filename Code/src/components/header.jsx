@@ -3,9 +3,10 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import { ReactComponent as Logo } from "../../assets/logo/default-monochrome-white.svg";
+import { ReactComponent as Logo } from "../assets/logo/default-monochrome-white.svg";
+import { Link } from 'react-router-dom'
 
-import { headerText } from "../../constants";
+import { headerText } from "../constants";
 
 const useStyles = () => ({
   headerGrid: {
@@ -34,9 +35,11 @@ const Header = ({ classes }) => {
       </Grid>
       <Grid item xs={6} className={classes.headerMenuTexts}>
         {headerText.menuItems.map((el) => (
+          <Link to={el.path} style={{textDecoration: 'none'}}> 
           <Typography className={classes.headerMenuTextElements}>
-            {el}
+            {el.text}
           </Typography>
+          </Link>
         ))}
       </Grid>
     </Grid>
