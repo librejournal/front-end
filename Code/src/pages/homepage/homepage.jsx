@@ -1,10 +1,21 @@
 import React from 'react'
 
-import {TrendingItem} from '../../components'
+import {TrendingContainer, StoryItem} from '../../components'
+import {Grid} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
 
-const Homepage = () => 
-<div>
-    <TrendingItem title="asd"/>
-</div>
+const useStyles = ({
+    firstAdv:{
+        border: "1px solid black",
+        height: "250px",
+    }
+})
 
-export default Homepage
+const Homepage = ({classes}) => 
+<Grid container justify='center'>
+    <TrendingContainer />
+    <Grid item xs={10} alignContent='center' className={classes.firstAdv}/>
+    <StoryItem />
+</Grid>
+
+export default withStyles(useStyles)(Homepage)

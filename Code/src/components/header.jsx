@@ -25,12 +25,19 @@ const useStyles = () => ({
   headerMenuTextElements: {
     cursor: "pointer",
   },
+  headerLogo: {
+    width: "max(15vw,150px)",
+    padding:"1vh 0",
+    "& svg": {
+      maxHeight:"85px"
+    }
+  }
 });
 
 const Header = ({ classes }) => {
   return (
     <Grid containter className={classes.headerGrid}>
-      <Grid item xs={2}>
+      <Grid item xs={2} className={classes.headerLogo}>
         <Logo />
       </Grid>
       <Grid item xs={6} className={classes.headerMenuTexts}>
