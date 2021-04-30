@@ -1,104 +1,139 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import UpArrow from "../assets/logo/UpArrow.svg";
-import DownArrow from "../assets/logo/DownArrow.svg";
-import CommentButton from "../assets/logo/CommentButton.svg";
+import UpArrow from "../../assets/logo/UpArrow.svg";
+import DownArrow from "../../assets/logo/DownArrow.svg";
+import CommentButton from "../../assets/logo/CommentButton.svg";
 
 const useStyles = {
     storyItemContainer: {
         width: "max(46vw,500px)",
         border: "black 2px solid",
         padding: "1vh 1vw",
+        alignSelf: "center",
     },
     storyItemHeader: {
-        border: "black 2px solid",
         margin: "1vh 0",
     },
     storyItemVote: {
-        paddingTop:"3vh",
-        border: "black 2px solid",
         margin: "1vh 0",
-        display: 'flex',
-        flexDirection:'column',
-        "& img":{
-            width:"max(30%,35px)"
-        }
-
+        display: "flex",
+        flexDirection: "column",
+        "& img": {
+            width: "max(30%,35px)",
+            cursor: "pointer",
+        },
     },
     storyItemImage: {
         border: "black 2px solid",
         margin: "1vh 0",
         height: "40vh",
+        background: (props) =>
+            "url('https://cdn.windowsreport.com/wp-content/uploads/2020/10/IMG-file-886x590.jpg') no-repeat center center",
         backgroundColor: "#1687a7",
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
         padding: "1vh 2vw",
         "-webkit-box-shadow": "inset 0px -10vh 28px 1px rgba(0,0,0,0.8)",
         "-moz-box-shadow": "inset 0px -10vh 28px 1px rgba(0,0,0,0.8)",
         "box-shadow": "inset 0px -10vh 28px 1px rgba(0,0,0,0.8)",
+        "& h3": {
+            paddingBot: "2vh 0",
+            borderTop: "solid white 2px",
+            width: "100%",
+        },
     },
     storyItemIcons: {
         margin: "1vh 1vw",
         display: "flex",
     },
     storyItemIconsComment: {
-        cursor:'pointer',
         display: "flex",
-        "& p": {
-            color: "#1687a7",
-            
+        "& h6": {
+            cursor: "pointer",
         },
-        "& img":{
-            height:"50%",
-        }
+        "& img": {
+            height: "50%",
+            cursor: "pointer",
+        },
     },
     storyItemIconsLike: {
-        cursor:'pointer',
         display: "flex",
-        "& p": {
-            color: "#1687a7",
-            
+        "& h6": {
+            cursor: "pointer",
         },
-        "& img":{
-            height:"50%",
-        }
+        "& img": {
+            height: "50%",
+            cursor: "pointer",
+        },
     },
     storyItemIconsDislike: {
-        cursor:'pointer',
         display: "flex",
-        "& p": {
-            color: "#1687a7",
-            
+        "& h6": {
+            cursor: "pointer",
         },
-        "& img":{
-            height:"50%",
-        }
+        "& img": {
+            height: "50%",
+            cursor: "pointer",
+        },
     },
     storyItemIconsClickMore: {
         display: "flex",
-        cursor:'pointer',
         padding: "0.5vh 0.1vw",
-        "& p": {
-            color: "#1687a7",
-            
+        "& h6": {
+            cursor: "pointer",
         },
     },
 };
 
-const StoryItem = ({ classes }) => {
+const StoryItem = ({ classes, title, imageUrl, like }) => {
+    useEffect(() => {
+        const loadData = async (url) => {
+            const data = await import(`../../assets/images/${url}`);
+            console.log(data);
+
+            document.getElementById(
+                `storyImage-${imageUrl}`
+            ).style.backgroundImage = `url("${data.default}")`;
+            console.log(
+                document.getElementById(`storyImage-${imageUrl}`).style
+                    .backgroundImage
+            );
+        };
+        loadData(imageUrl);
+    }, [imageUrl]);
+
     return (
         <Grid container className={classes.storyItemContainer}>
-            <Grid item xs={12} className={classes.storyItemHeader}>
+            <Grid item xs={1} />
+            <Grid item xs={11} className={classes.storyItemHeader}>
                 header
             </Grid>
-            <Grid item xs={1} className={classes.storyItemVote} alignItems="center">
-            <img src={UpArrow} alt="UpArrow"/>
-            <Typography color="primary" variant="h6">123</Typography>
-            <img src={DownArrow} alt="DownArrow"/>
+            <Grid
+                item
+                xs={1}
+                className={classes.storyItemVote}
+                alignItems="center"
+            >
+                <img src={UpArrow} alt="UpArrow" />
+                <Typography color="primary" variant="h6">
+                    {like}
+                </Typography>
+                <img src={DownArrow} alt="DownArrow" />
             </Grid>
-            <Grid item xs={10} className={classes.storyItemImage}></Grid>
-            <Grid item xs={12} className={classes.storyItemIcons}>
+            <Grid
+                item
+                xs={10}
+                className={classes.storyItemImage}
+                id={`storyImage-${imageUrl}`}
+            >
+                <Typography variant="h3">{title}</Typography>
+            </Grid>
+            <Grid item xs={11} className={classes.storyItemIcons}>
                 <Grid
                     item
                     xs={3}
@@ -116,7 +151,7 @@ const StoryItem = ({ classes }) => {
                     className={classes.storyItemIconsLike}
                     alignItems="center"
                 >
-                    <img src={UpArrow} alt="UpArrow"/>
+                    <img src={UpArrow} alt="UpArrow" />
                     <Typography variant="subtitle1" color="primary">
                         Like
                     </Typography>
@@ -127,7 +162,7 @@ const StoryItem = ({ classes }) => {
                     className={classes.storyItemIconsDislike}
                     alignItems="center"
                 >
-                    <img src={DownArrow} alt="DownArrow"/>
+                    <img src={DownArrow} alt="DownArrow" />
                     <Typography variant="subtitle1" color="primary">
                         Dislike
                     </Typography>
