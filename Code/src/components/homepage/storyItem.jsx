@@ -9,10 +9,12 @@ import CommentButton from "../../assets/logo/CommentButton.svg";
 
 const useStyles = {
   storyItemContainer: {
-    width: "max(46vw,500px)",
+    width: "900px",
+    height: "600px",
     border: "black 2px solid",
     padding: "1vh 1vw",
     alignSelf: "center",
+    margin: "2vh 0",
   },
   storyItemHeader: {
     margin: "1vh 0",
@@ -29,7 +31,7 @@ const useStyles = {
   storyItemImage: {
     border: "black 2px solid",
     margin: "1vh 0",
-    height: "40vh",
+    height: "75%",
     background: (props) =>
       "url('https://cdn.windowsreport.com/wp-content/uploads/2020/10/IMG-file-886x590.jpg') no-repeat center center",
     backgroundColor: "#1687a7",
