@@ -1,5 +1,5 @@
-import Header from "./footer";
-import Footer from "./header";
+import Header from "./header";
+import Footer from "./footer";
 import TrendingContainer from "./homepage/trendingContainer";
 import StoryContainer from "./homepage/storyContainer";
 import StarboardContainer from "./homepage/starboardContainer";
