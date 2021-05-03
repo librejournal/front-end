@@ -5,6 +5,7 @@ import StoryContainer from "./homepage/storyContainer";
 import StarboardContainer from "./homepage/starboardContainer";
 import LoginForm from "./login/loginform";
 import SigninForm from "./login/signinform";
+import Account from "./account/account";
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   LoginForm,
   SigninForm,
   Footer,
+  Account,
 };

@@ -1,34 +1,27 @@
 import actionTypes from "./actionTypes";
+import { applyLoginUser, applyUserState, applyLogoutUser } from "./actions";
 
-const userState = {
-  user: "",
+export const initialState = {
+  token: "",
+  username: "",
   email: "",
   first_name: "",
   last_name: "",
-  password: "",
-  token: "",
+  is_active: "",
+  is_staff: "",
+  uuid: "",
 };
 
-const applyRegisterUser = (state, action) => {
-  const todo = Object.assign({}, action.todo, { completed: false });
-
-  return state.concat(todo);
-};
-
-const applyLoginUser = (state, action) => {};
-
-const applyUserState = (state, action) => {};
-
-const userReducer = (state = userState, action) => {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.REGISTER_USER: {
-      return applyRegisterUser(state, action);
-    }
     case actionTypes.LOGIN_USER: {
       return applyLoginUser(state, action);
     }
     case actionTypes.USER_STATE: {
       return applyUserState(state, action);
+    }
+    case actionTypes.LOGOUT_USER: {
+      return applyLogoutUser(state, action);
     }
     default:
       return state;

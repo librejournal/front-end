@@ -1,15 +1,20 @@
 import actionTypes from "./actionTypes";
 
-const doAddTodo = (id, name) => {
+const doLoginUser = (token) => {
   return {
-    type: actionTypes.TODO_ADD,
-    todo: { id, name },
+    type: actionTypes.LOGIN_USER,
+    payload: token,
   };
 };
-const doToggleTodo = (id) => {
+const doCheckUserState = (info) => {
   return {
-    type: actionTypes.TODO_TOGGLE,
-    todo: { id },
+    type: actionTypes.USER_STATE,
+    payload: { ...info },
   };
 };
-export { doAddTodo, doToggleTodo };
+const doLogoutUser = () => {
+  return {
+    type: actionTypes.LOGOUT_USER,
+  };
+};
+export { doLoginUser, doCheckUserState, doLogoutUser };

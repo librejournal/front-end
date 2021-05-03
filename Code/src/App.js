@@ -1,23 +1,63 @@
 import { Header, Footer } from "./components/";
 import { ThemeProvider } from "@material-ui/styles";
 import Theme from "./theme/theme.jsx";
-import { Homepage, LoginPage, ErrorPage } from "./pages";
-
+import { Homepage, LoginPage, ErrorPage, AccountPage } from "./pages";
+import { compose } from "recompose";
+import { useEffect } from "react";
 import { withWindowProvider } from "./contexts/window/provider";
+import axios from "axios";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
-const App = () => {
+import { mapStateToApp, mapDispatchToApp } from "./redux/mapFunctions";
+import { connect } from "react-redux";
+
+const App = ({ loggedUser, onStateUser }) => {
+  const checkLogin = async () => {
+    await axios
+      .get("http://localhost:9001/api/auth/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        const info = response.data;
+        onStateUser(info);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
   return (
     <Router>
       <ThemeProvider theme={Theme}>
         <Header />
+        {loggedUser.token === "" ? (
+          <Redirect from="/account" to="/login" />
+        ) : (
+          <Redirect from="/login" to="/account" />
+        )}
         <Switch>
           <Route path="/" exact>
             <Homepage />
           </Route>
           <Route path="/login" exact>
             <LoginPage />
+          </Route>
+          <Route path="/account" exact>
+            <AccountPage />
           </Route>
           <Route>
             <ErrorPage />
@@ -29,4 +69,7 @@ const App = () => {
   );
 };
 
-export default withWindowProvider(App);
+export default compose(
+  connect(mapStateToApp, mapDispatchToApp),
+  withWindowProvider
+)(App);

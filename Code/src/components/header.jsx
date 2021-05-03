@@ -5,8 +5,10 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { ReactComponent as Logo } from "../assets/logo/default-monochrome-white.svg";
 import { Link } from "react-router-dom";
+import { compose } from "recompose";
 
-import { headerText } from "../constants";
+import { connect } from "react-redux";
+import { mapStateToPropsHeader } from "../redux/mapFunctions";
 
 const useStyles = () => ({
   headerGrid: {
@@ -34,23 +36,42 @@ const useStyles = () => ({
   },
 });
 
-const Header = ({ classes }) => {
+const Header = ({ classes, loggedUser }) => {
   return (
     <Grid containter className={classes.headerGrid}>
       <Grid item xs={2} className={classes.headerLogo}>
         <Logo />
       </Grid>
       <Grid item xs={6} className={classes.headerMenuTexts}>
-        {headerText.menuItems.map((el) => (
-          <Link to={el.path} style={{ textDecoration: "none" }}>
-            <Typography className={classes.headerMenuTextElements}>
-              {el.text}
-            </Typography>
-          </Link>
-        ))}
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Typography className={classes.headerMenuTextElements}>
+            Home
+          </Typography>
+        </Link>
+        <Link to="/menu2" style={{ textDecoration: "none" }}>
+          <Typography className={classes.headerMenuTextElements}>
+            Menu#2
+          </Typography>
+        </Link>
+        <Link to="/menu3" style={{ textDecoration: "none" }}>
+          <Typography className={classes.headerMenuTextElements}>
+            Menu#3
+          </Typography>
+        </Link>
+        <Link
+          to={loggedUser.token === "" ? "/login" : "/account"}
+          style={{ textDecoration: "none" }}
+        >
+          <Typography className={classes.headerMenuTextElements}>
+            {loggedUser.token === "" ? "Login/Register" : "Account"}
+          </Typography>
+        </Link>
       </Grid>
     </Grid>
   );
 };
 
-export default withStyles(useStyles)(Header);
+export default compose(
+  connect(mapStateToPropsHeader),
+  withStyles(useStyles)
+)(Header);

@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 import { Grid, TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+
+import { compose } from "recompose";
+
+import { connect } from "react-redux";
+
+import {
+  mapStateToPropsLogin,
+  mapDispatchToPropsLogin,
+} from "../../redux/mapFunctions";
 
 const useStyles = () => ({
   loginContainer: {
@@ -17,7 +26,7 @@ const useStyles = () => ({
   },
 });
 
-const LoginForm = ({ classes }) => {
+const LoginForm = ({ classes, loggedUser, onLoginUser, onStateUser }) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -31,14 +40,16 @@ const LoginForm = ({ classes }) => {
       .post("http://localhost:9001/api/auth/login", info, {
         headers: {
           "Content-Type": "application/json",
+
           //"Access-Control-Allow-Origin": "*",
           //"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
         },
       })
-      .then(function (response) {
-        console.log(response);
+      .then((response) => {
+        const token = response.data.token;
+        onLoginUser(token);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -80,4 +91,7 @@ const LoginForm = ({ classes }) => {
   );
 };
 
-export default withStyles(useStyles)(LoginForm);
+export default compose(
+  connect(mapStateToPropsLogin, mapDispatchToPropsLogin),
+  withStyles(useStyles)
+)(LoginForm);

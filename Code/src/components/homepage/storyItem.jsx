@@ -110,14 +110,10 @@ const StoryItem = ({ classes, title, imageUrl, like }) => {
   useEffect(() => {
     const loadData = async (url) => {
       const data = await import(`../../assets/images/${url}`);
-      console.log(data);
 
       document.getElementById(
         `storyImage-${imageUrl}`
       ).style.backgroundImage = `url("${data.default}")`;
-      console.log(
-        document.getElementById(`storyImage-${imageUrl}`).style.backgroundImage
-      );
     };
     loadData(imageUrl);
   }, [imageUrl]);
