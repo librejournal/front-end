@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 import axios from "axios";
 import { Grid, TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from "recompose";
+import { Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 
@@ -32,16 +34,10 @@ const LoginForm = ({ classes, loggedUser, onLoginUser, onStateUser }) => {
         password: "",
     });
 
-    useEffect(() => {
-        if (loggedUser.token !== "") {
-            window.location.href = "/account";
-        }
-    }, [loggedUser.token]);
-
     const addInfo = (infoType) => (event) =>
         setUser({ ...user, [infoType]: event.target.value });
 
-    const registerRequest = async (info) => {
+    const loginRequest = async (info) => {
         await axios
             .post("http://localhost:9001/api/auth/login", info, {
                 headers: {
@@ -53,7 +49,15 @@ const LoginForm = ({ classes, loggedUser, onLoginUser, onStateUser }) => {
             })
             .then((response) => {
                 const token = response.data.token;
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You have logged on successfully",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
                 onLoginUser(token);
+                <Redirect to="/account" />;
             })
             .catch((error) => {
                 console.log(error);
@@ -89,7 +93,7 @@ const LoginForm = ({ classes, loggedUser, onLoginUser, onStateUser }) => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => registerRequest(user)}
+                onClick={() => loginRequest(user)}
             >
                 LOG IN
             </Button>

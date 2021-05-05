@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+import Swal from "sweetalert2";
 
 import { Grid, Typography, Button } from "@material-ui/core";
 
@@ -27,26 +29,30 @@ const useStyles = () => ({
 });
 
 const Account = ({ classes, loggedUser, onLogoutUser }) => {
-    useEffect(() => {
-        if (loggedUser.token === "") {
-            window.location.href = "/login";
-        }
-    }, [loggedUser.token]);
-
     const logoutRequest = async () => {
         await axios
-            .post("http://localhost:9001/api/auth/logout", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${loggedUser.token}`,
+            .post(
+                "http://localhost:9001/api/auth/logout",
+                {},
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Token ${loggedUser.token}`,
 
-                    //"Access-Control-Allow-Origin": "*",
-                    //"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-                },
-            })
+                        //"Access-Control-Allow-Origin": "*",
+                        //"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                    },
+                }
+            )
             .then((response) => {
-                console.log("asd");
-                //onLogoutUser();
+                onLogoutUser();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You have logged out successfully",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -91,7 +97,7 @@ const Account = ({ classes, loggedUser, onLogoutUser }) => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => onLogoutUser()}
+                onClick={() => logoutRequest()}
             >
                 LOGOUT
             </Button>

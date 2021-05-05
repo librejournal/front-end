@@ -49,10 +49,18 @@ const App = ({ loggedUser, onStateUser }) => {
                         <Homepage />
                     </Route>
                     <Route path="/login" exact>
-                        <LoginPage />
+                        {loggedUser.token === "" ? (
+                            <LoginPage />
+                        ) : (
+                            <Redirect to="/account" />
+                        )}
                     </Route>
                     <Route path="/account" exact>
-                        <AccountPage />
+                        {loggedUser.token !== "" ? (
+                            <AccountPage />
+                        ) : (
+                            <Redirect to="/login" />
+                        )}
                     </Route>
                     <Route>
                         <ErrorPage />
