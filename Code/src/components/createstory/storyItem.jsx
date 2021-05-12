@@ -10,6 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Slider,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
@@ -63,6 +64,10 @@ const useStyles = {
   menuItem: {
     color: "#1687a7",
   },
+  sliderContainer: {
+    width: "50%",
+    padding: "2vh 2vw",
+  },
 };
 
 const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
@@ -70,6 +75,7 @@ const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
   const [uuid, setUuid] = useState(uuidv4());
   const [text, setText] = useState("");
   const [textSize, setTextSize] = useState("h6");
+  const [imageSize, setImageSize] = useState("20");
 
   const handleChange = (event) => {
     setTextSize(event.target.value);
@@ -85,6 +91,12 @@ const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
     setState(31);
   };
 
+  console.log(imageSize);
+  const valuetext = (value) => {
+    setImageSize(value);
+    return `${value}`;
+  };
+
   const addText = (text, size, id) => {
     const info = {
       type: "text",
@@ -96,12 +108,24 @@ const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
     setState(41);
   };
 
+  const addImage = (url, id) => {
+    const info = {
+      type: "image",
+      url,
+      id,
+      size: imageSize,
+    };
+    addStoryInfo(info, id);
+    setState(511);
+  };
+
   const deleteItem = (id) => {
     deleteStoryInfo(id);
     setState(1);
     setText("");
   };
 
+  console.log(text);
   return (
     <Grid item xs={12} className={classes.storyItemGrid}>
       {state === 1 ? (
@@ -257,6 +281,94 @@ const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
               variant="contained"
               color="primary"
               onClick={() => setState(4)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => deleteItem(uuid)}
+            >
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
+      {state === 5 ? (
+        <Grid item xs={12} className={classes.titleAdd}>
+          <Grid item xs={12} className={classes.titleAddButtonSection}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setState(51)}
+            >
+              Enter URL
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setState(52)}
+            >
+              Upload a photo
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
+      {state === 51 ? (
+        <Grid item xs={12} className={classes.titleAdd}>
+          <Input
+            color="primary"
+            placeholder="Enter URL"
+            fullWidth
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            InputLabelProps={{
+              style: { color: "#1687a7" },
+            }}
+          />
+          <Grid item xs={12} className={classes.sliderContainer}>
+            <Typography color="primary" variant="subtitle1">
+              Change size of the image
+            </Typography>
+            <Slider
+              defaultValue={imageSize}
+              getAriaValueText={valuetext}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="on"
+              step={5}
+              marks
+              min={5}
+              max={50}
+            />
+          </Grid>
+          <Grid item xs={12} className={classes.titleAddButtonSection}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => addImage(text, uuid)}
+            >
+              Add Image
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setState(2)}
+            >
+              Back
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
+      {state === 511 ? (
+        <Grid item xs={12} className={classes.titleAdd}>
+          <Typography color="primary" variant="h6">
+            Image
+          </Typography>
+          <Grid item xs={12} className={classes.titleAddButtonSection}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setState(51)}
             >
               Edit
             </Button>

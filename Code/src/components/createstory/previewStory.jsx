@@ -15,8 +15,14 @@ const useStyles = {
     alignItems: "center",
     margin: "2vh 0",
   },
-  titleText: {
+  textItem: {
     padding: "1vh 1vw",
+  },
+  imageItem: {
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "contain",
+    backgroundPosition: "center",
+    margin: "3vh 0",
   },
 };
 
@@ -32,11 +38,21 @@ const PreviewStory = ({ classes, storyInfo }) => {
             </Typography>
           </Grid>
         ) : el.type === "text" ? (
-          <Grid item xs={12} className={classes.titleText}>
+          <Grid item xs={12} className={classes.textItem}>
             <Typography variant={el.size} key={el.id}>
               {el.content}
             </Typography>
           </Grid>
+        ) : el.type === "image" ? (
+          <Grid
+            item
+            xs={12}
+            className={classes.imageItem}
+            style={{
+              backgroundImage: `url(${el.url})`,
+              height: `${el.size}vh`,
+            }}
+          />
         ) : null
       )}
     </Grid>
