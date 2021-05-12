@@ -6,6 +6,8 @@ import StarboardContainer from "./homepage/starboardContainer";
 import LoginForm from "./login/loginform";
 import SigninForm from "./login/signinform";
 import Account from "./account/account";
+import CreateStory from "./createstory/createStory";
+import PreviewStory from "./createstory/previewStory";
 
 export {
   Header,
@@ -16,4 +18,6 @@ export {
   SigninForm,
   Footer,
   Account,
+  CreateStory,
+  PreviewStory,
 };
