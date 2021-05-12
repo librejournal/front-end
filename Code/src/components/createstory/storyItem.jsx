@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   Typography,
@@ -6,6 +6,10 @@ import {
   Breadcrumbs,
   Input,
   Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
@@ -15,12 +19,13 @@ import PlusLogo from "../../assets/logo/plusLogo.svg";
 
 const useStyles = {
   storyItemGrid: {
-    margin: "5vh 5vw",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     border: "2px solid #1687a7",
     borderRadius: "15px",
+    maxWidth: "1500px",
+    margin: "3vh auto",
     minHeight: "10vh",
     "& img": {
       cursor: "pointer",
@@ -48,27 +53,55 @@ const useStyles = {
     alignItems: "center",
     marginTop: "3vh",
   },
+  formControl: {
+    minWidth: "120px",
+    margin: "1vh 2vw",
+  },
+  inputLabelTitle: {
+    color: "#1687a7",
+  },
+  menuItem: {
+    color: "#1687a7",
+  },
 };
 
 const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
   const [state, setState] = useState(1);
   const [uuid, setUuid] = useState(uuidv4());
   const [text, setText] = useState("");
+  const [textSize, setTextSize] = useState("h6");
 
-  const addTitle = (title, id) => {
+  const handleChange = (event) => {
+    setTextSize(event.target.value);
+  };
+
+  const addTitle = (text, id) => {
     const info = {
       type: "title",
       id,
-      content: title,
+      content: text,
     };
     addStoryInfo(info, id);
     setState(31);
   };
 
-  const deleteTitle = (id) => {
+  const addText = (text, size, id) => {
+    const info = {
+      type: "text",
+      size,
+      id,
+      content: text,
+    };
+    addStoryInfo(info, id);
+    setState(41);
+  };
+
+  const deleteItem = (id) => {
     deleteStoryInfo(id);
     setState(1);
+    setText("");
   };
+
   return (
     <Grid item xs={12} className={classes.storyItemGrid}>
       {state === 1 ? (
@@ -145,7 +178,92 @@ const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => deleteTitle(uuid)}
+              onClick={() => deleteItem(uuid)}
+            >
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
+      {state === 4 ? (
+        <Grid item xs={12} className={classes.titleAdd}>
+          <Input
+            color="primary"
+            placeholder="Enter your text"
+            fullWidth
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            InputLabelProps={{
+              style: { color: "#1687a7" },
+            }}
+          />
+          <Grid item xs={12}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="textSize" className={classes.inputLabelTitle}>
+                Text Size
+              </InputLabel>
+              <Select
+                labelId="textSize"
+                displayEmpty
+                value={textSize}
+                onChange={handleChange}
+              >
+                <MenuItem value={"h3"} className={classes.menuItem}>
+                  h3
+                </MenuItem>
+                <MenuItem value={"h4"} className={classes.menuItem}>
+                  h4
+                </MenuItem>
+                <MenuItem value={"h5"} className={classes.menuItem}>
+                  h5
+                </MenuItem>
+                <MenuItem value={"h6"} className={classes.menuItem}>
+                  h6
+                </MenuItem>
+                <MenuItem value={"subtitle1"} className={classes.menuItem}>
+                  subtitle1
+                </MenuItem>
+                <MenuItem value={"subtitle2"} className={classes.menuItem}>
+                  subtitle2
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} className={classes.titleAddButtonSection}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => addText(text, textSize, uuid)}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setState(2)}
+            >
+              Back
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
+      {state === 41 ? (
+        <Grid item xs={12} className={classes.titleAdd}>
+          <Typography color="primary" variant="h6">
+            Text: {text}
+          </Typography>
+          <Grid item xs={12} className={classes.titleAddButtonSection}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setState(4)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => deleteItem(uuid)}
             >
               Delete
             </Button>

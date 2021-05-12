@@ -5,15 +5,24 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import StoryItem from "../createstory/storyItem";
 
-const useStyles = {};
+const useStyles = {
+  createStoryGrid: {
+    borderTop: "2px solid gray",
+    padding: "3vh 2vw",
+  },
+};
 
-const CreateStory = ({ classes, addStoryInfo, deleteStoryInfo }) => {
+const CreateStory = ({ classes, addStoryInfo, deleteStoryInfo, storyInfo }) => {
+  const length = storyInfo.length + 1;
   return (
-    <Grid contaniner>
-      <StoryItem
-        addStoryInfo={addStoryInfo}
-        deleteStoryInfo={deleteStoryInfo}
-      />
+    <Grid contaniner className={classes.createStoryGrid}>
+      {[...Array(length)].map((x, i) => (
+        <StoryItem
+          addStoryInfo={addStoryInfo}
+          deleteStoryInfo={deleteStoryInfo}
+          key={i}
+        />
+      ))}
     </Grid>
   );
 };
