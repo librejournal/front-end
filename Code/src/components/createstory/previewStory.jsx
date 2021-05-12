@@ -27,7 +27,6 @@ const useStyles = {
 };
 
 const PreviewStory = ({ classes, storyInfo }) => {
-  console.log(storyInfo);
   return (
     <Grid container className={classes.previewContainer}>
       {storyInfo.map((el) =>

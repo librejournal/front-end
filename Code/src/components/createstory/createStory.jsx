@@ -7,7 +7,6 @@ import StoryItem from "../createstory/storyItem";
 
 const useStyles = {
   createStoryGrid: {
-    borderTop: "2px solid gray",
     padding: "3vh 2vw",
   },
 };

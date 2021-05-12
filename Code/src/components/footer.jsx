@@ -7,6 +7,10 @@ const useStyles = () => ({
   footerGrid: {
     height: "8vh",
     backgroundColor: "#1687a7",
+    position: "static",
+    left: 0,
+    bottom: 0,
+    width: "100%",
   },
 });
 
