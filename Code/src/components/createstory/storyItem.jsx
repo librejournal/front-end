@@ -91,7 +91,6 @@ const StoryItem = ({ classes, addStoryInfo, deleteStoryInfo }) => {
     setState(31);
   };
 
-  console.log(imageSize);
   const valuetext = (value) => {
     setImageSize(value);
     return `${value}`;
