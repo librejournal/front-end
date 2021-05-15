@@ -8,6 +8,8 @@ import SigninForm from "./login/signinform";
 import Account from "./account/account";
 import CreateStory from "./createstory/createStory";
 import PreviewStory from "./createstory/previewStory";
+import TagsArea from "./createstory/tagsArea";
+import LocationArea from "./createstory/locationArea";
 
 export {
   Header,
@@ -20,4 +22,6 @@ export {
   Account,
   CreateStory,
   PreviewStory,
+  TagsArea,
+  LocationArea,
 };
