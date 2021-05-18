@@ -90,7 +90,7 @@ const StoryItem = ({
   };
 
   const updateStoryInfo = async () => {
-    axios
+    await axios
       .get("http://localhost:9001/api/stories/drafts", {
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,8 @@ const StoryItem = ({
   };
 
   useEffect(() => {
-    storyInfo.forEach((el) => {
+    setState(1);
+    storyInfo.map((el) => {
       if (el.order_id === id) {
         switch (el.type) {
           case "TITLE":
@@ -126,6 +127,7 @@ const StoryItem = ({
             setTextSize(el.type_setting);
             break;
           default:
+            setState(1);
             break;
         }
       }
@@ -193,7 +195,6 @@ const StoryItem = ({
       .catch((error) => {
         console.log(error);
       });
-    //addStoryInfo(info, id);
     setState(41);
   };
 
@@ -228,7 +229,7 @@ const StoryItem = ({
     setState(511);
   };
 
-  const deleteItem = (id) => {
+  const deleteItem = async (id) => {
     let deletedItemId = null;
     storyInfo.forEach((el) => {
       if (el.order_id === id) {
@@ -236,7 +237,7 @@ const StoryItem = ({
       }
     });
 
-    axios
+    await axios
       .delete(
         `http://localhost:9001/api/stories/${storyId}/components/${deletedItemId}`,
         {
@@ -255,12 +256,11 @@ const StoryItem = ({
           showConfirmButton: false,
           timer: 2000,
         });
+        setState(1);
       })
       .catch((error) => {
         console.log(error);
       });
-    setState(1);
-    setText("");
   };
 
   const editItem = (id, type, value, type_setting) => {

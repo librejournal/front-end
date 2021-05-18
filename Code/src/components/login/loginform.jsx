@@ -42,9 +42,6 @@ const LoginForm = ({ classes, loggedUser, onLoginUser, onStateUser }) => {
       .post("http://localhost:9001/api/auth/login", info, {
         headers: {
           "Content-Type": "application/json",
-
-          //"Access-Control-Allow-Origin": "*",
-          //"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
         },
       })
       .then((response) => {
