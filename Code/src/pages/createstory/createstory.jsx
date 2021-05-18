@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+
+import { compose } from "recompose";
+import { connect } from "react-redux";
+
+import { mapStateToCreateStoryPage } from "../../redux/mapFunctions";
+
+import axios from "axios";
 
 import {
   PreviewStory,
@@ -45,39 +52,50 @@ const useStyles = {
   },
 };
 
-const CreateStoryPage = ({ classes }) => {
+const CreateStoryPage = ({ classes, loggedUser }) => {
+  const getStoryInfo = async () => {
+    axios
+      .get("http://localhost:9001/api/stories/drafts", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        if (response.data.length > 0) {
+          const data = response.data[0];
+          setStoryInfo(data.components);
+          setStoryId(data.id);
+          //setTagInfo(data.tags);
+          //setLocationInfo(data.locations);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
   const [storyInfo, setStoryInfo] = useState([]);
   const [tagInfo, setTagInfo] = useState({ tags: [] });
   const [locationInfo, setLocationInfo] = useState({ locations: [] });
+  const [storyId, setStoryId] = useState(null);
 
-  const addStoryInfo = (info, id) => {
-    if (storyInfo.filter((el) => el.id === id).length !== 0) {
-      const newStoryInfo = storyInfo.map((el) =>
-        el.id === id ? (el = info) : el
-      );
-      setStoryInfo(newStoryInfo);
-    } else {
-      setStoryInfo([...storyInfo, { ...info }]);
-    }
-  };
-
-  const deleteStoryInfo = (id) => {
-    const newStoryInfo = storyInfo.filter((el) => el.id !== id);
-    setStoryInfo(newStoryInfo);
-  };
+  useEffect(() => {
+    getStoryInfo();
+  }, []);
 
   return (
     <Grid container className={classes.createStoryPageContainer}>
       <Grid item xs={12} className={classes.createStoryTitle}>
-        <Typography color="primary" variant="h2">
+        <Typography color="primary" variant="h3">
           Create a new story
         </Typography>
       </Grid>
       <Grid item xs={6} className={classes.createStoryLeftContainer}>
         <CreateStory
           storyInfo={storyInfo}
-          addStoryInfo={addStoryInfo}
-          deleteStoryInfo={deleteStoryInfo}
+          setStoryInfo={setStoryInfo}
+          id={storyInfo.length}
+          storyId={storyId}
+          token={loggedUser.token}
         />
       </Grid>
       <Grid item xs={6} className={classes.createStoryRightContainer}>
@@ -117,4 +135,7 @@ const CreateStoryPage = ({ classes }) => {
   );
 };
 
-export default withStyles(useStyles)(CreateStoryPage);
+export default compose(
+  connect(mapStateToCreateStoryPage),
+  withStyles(useStyles)
+)(CreateStoryPage);

@@ -53,9 +53,12 @@ const Header = ({ classes, loggedUser }) => {
             Menu#2
           </Typography>
         </Link>
-        <Link to="/menu3" style={{ textDecoration: "none" }}>
+        <Link
+          to={loggedUser.token === "" ? "/menu3" : "/createstory"}
+          style={{ textDecoration: "none" }}
+        >
           <Typography className={classes.headerMenuTextElements}>
-            Menu#3
+            {loggedUser.token === "" ? "Menu#3" : "Create a story"}
           </Typography>
         </Link>
         <Link

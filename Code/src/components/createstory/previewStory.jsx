@@ -30,23 +30,24 @@ const PreviewStory = ({ classes, storyInfo }) => {
   return (
     <Grid container className={classes.previewContainer}>
       {storyInfo.map((el) =>
-        el.type === "title" ? (
-          <Grid item xs={12} className={classes.titleItem}>
+        el.type === "TITLE" ? (
+          <Grid item xs={12} className={classes.titleItem} key={el.id}>
             <Typography variant="h3" key={el.id} color="primary">
-              {el.content}
+              {el.text}
             </Typography>
           </Grid>
-        ) : el.type === "text" ? (
-          <Grid item xs={12} className={classes.textItem}>
-            <Typography variant={el.size} key={el.id}>
-              {el.content}
+        ) : el.type === "TEXT" ? (
+          <Grid item xs={12} className={classes.textItem} key={el.text}>
+            <Typography variant={el.type_setting} key={el.id}>
+              {el.text}
             </Typography>
           </Grid>
-        ) : el.type === "image" ? (
+        ) : el.type === "IMAGE" ? (
           <Grid
             item
             xs={12}
             className={classes.imageItem}
+            key={el.id}
             style={{
               backgroundImage: `url(${el.url})`,
               height: `${el.size}vh`,
