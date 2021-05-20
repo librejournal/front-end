@@ -14,6 +14,12 @@ export const mapStateToPropsHeader = (state) => {
   };
 };
 
+export const mapStateToStoriesPage = (state) => {
+  return {
+    loggedUser: getUserInfo(state),
+  };
+};
+
 export const mapStateToPropsLogin = (state) => {
   return {
     loggedUser: getUserInfo(state),

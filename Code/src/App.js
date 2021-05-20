@@ -7,6 +7,7 @@ import {
   ErrorPage,
   AccountPage,
   CreateStoryPage,
+  StoriesPage,
 } from "./pages";
 import { compose } from "recompose";
 import { useEffect } from "react";
@@ -69,7 +70,10 @@ const App = ({ loggedUser, onStateUser }) => {
             )}
           </Route>
           <Route path="/createstory" exact>
-            <CreateStoryPage />
+            <CreateStoryPage token={loggedUser.token} />
+          </Route>
+          <Route path="/stories" exact>
+            <StoriesPage />
           </Route>
           <Route>
             <ErrorPage />

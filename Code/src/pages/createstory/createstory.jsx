@@ -9,6 +9,8 @@ import { mapStateToCreateStoryPage } from "../../redux/mapFunctions";
 
 import axios from "axios";
 
+import Swal from "sweetalert2";
+
 import {
   PreviewStory,
   CreateStory,
@@ -73,6 +75,36 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
       .catch((error) => console.log(error));
   };
 
+  const publishStory = async () => {
+    axios
+      .post(`http://localhost:9001/api/stories/${storyId}/publish`, null, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Story is Published",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      });
+  };
+
   const [storyInfo, setStoryInfo] = useState([]);
   const [tagInfo, setTagInfo] = useState({ tags: [] });
   const [locationInfo, setLocationInfo] = useState({ locations: [] });
@@ -126,7 +158,11 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
           />
         </Grid>
         <Grid item xs={4}>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => publishStory()}
+          >
             Create a story
           </Button>
         </Grid>
