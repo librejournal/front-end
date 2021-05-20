@@ -66,7 +66,6 @@ const StoriesPage = ({ classes, loggedUser }) => {
     getStories();
   }, []);
 
-  console.log(previewStory);
   return (
     <Grid container className={classes.storyPageContainer}>
       {stories.map((el) => (

@@ -70,7 +70,7 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
           setStoryId(data.id);
           //setTagInfo(data.tags);
           //setLocationInfo(data.locations);
-        }
+        } else createNewStory();
       })
       .catch((error) => console.log(error));
   };
@@ -84,7 +84,6 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
         },
       })
       .then((response) => {
-        console.log(response);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -103,6 +102,22 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
           timer: 2000,
         });
       });
+  };
+
+  const createNewStory = async () => {
+    const info = {
+      author: loggedUser.profile_id,
+    };
+
+    await axios
+      .post("http://localhost:9001/api/stories/", info, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => getStoryInfo())
+      .catch((err) => console.log(err));
   };
 
   const [storyInfo, setStoryInfo] = useState([]);
