@@ -8,6 +8,7 @@ import {
   AccountPage,
   CreateStoryPage,
   StoriesPage,
+  PreviewStoryPage,
 } from "./pages";
 import { compose } from "recompose";
 import { useEffect } from "react";
@@ -75,6 +76,10 @@ const App = ({ loggedUser, onStateUser }) => {
           <Route path="/stories" exact>
             <StoriesPage />
           </Route>
+          <Route
+            path="/stories/:id"
+            render={(props) => <PreviewStoryPage {...props} />}
+          />
           <Route>
             <ErrorPage />
           </Route>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import axios from "axios";
+
+import { Link } from "react-router-dom";
 
 import { PreviewStory } from "../../components";
 
@@ -20,11 +22,15 @@ const useStyles = () => ({
     display: "flex",
   },
   storyContainer: {
-    border: "2px solid gray",
+    border: "1px solid lightgray",
     maxWidth: "80%",
     maxHeight: "5vh",
     cursor: "pointer",
-    margin: "0.1vh 0",
+    margin: "0.5vh 0",
+  },
+  buttonGrid: {
+    display: "flex",
+    justifyContent: "space-around",
   },
 });
 
@@ -48,24 +54,11 @@ const StoriesPage = ({ classes, loggedUser }) => {
       });
   };
 
-  const focusStory = async (id) => {
-    await axios
-      .get(`http://localhost:9001/api/stories/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${loggedUser.token}`,
-        },
-      })
-      .then((response) => {
-        setPreviewStory(response.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
     getStories();
   }, []);
 
+  console.log(stories);
   return (
     <Grid container className={classes.storyPageContainer}>
       {stories.map((el) => (
@@ -74,7 +67,6 @@ const StoriesPage = ({ classes, loggedUser }) => {
           justify="center"
           alignItems="center"
           className={classes.storyContainer}
-          onClick={() => focusStory(el.id)}
         >
           <Grid item xs={12} sm={3} className={classes.authorGrid}>
             <Typography color="primary" variant="h6" className={classes.author}>
@@ -87,11 +79,42 @@ const StoriesPage = ({ classes, loggedUser }) => {
               {el.uuid}
             </Typography>
           </Grid>
+          <Grid item xs={12} sm={3} className={classes.buttonGrid}>
+            <Link
+              to={{
+                pathname: `stories/${el.id}`,
+                state: { id: el.id },
+              }}
+              key={el.id}
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ textDecoration: "none" }}
+              >
+                Show
+              </Button>
+            </Link>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ textDecoration: "none" }}
+              onClick={() => console.log("edit")}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ textDecoration: "none" }}
+              onClick={() => console.log("delete")}
+            >
+              Delete
+            </Button>
+          </Grid>
         </Grid>
       ))}
-      {previewStory.components ? (
-        <PreviewStory storyInfo={previewStory.components} />
-      ) : null}
     </Grid>
   );
 };
