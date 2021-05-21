@@ -6,10 +6,9 @@ import axios from "axios";
 
 import { Link } from "react-router-dom";
 
-import { PreviewStory } from "../../components";
-
 import { connect } from "react-redux";
 import { mapStateToStoriesPage } from "../../redux/mapFunctions";
+import Swal from "sweetalert2";
 
 const useStyles = () => ({
   storyPageContainer: {
@@ -54,11 +53,33 @@ const StoriesPage = ({ classes, loggedUser }) => {
       });
   };
 
+  const deleteStory = async (id) => {
+    axios
+      .delete(`http://localhost:9001/api/stories/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Deletion Success",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        getStories();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getStories();
   }, []);
 
-  console.log(stories);
   return (
     <Grid container className={classes.storyPageContainer}>
       {stories.map((el) => (
@@ -99,6 +120,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
             <Button
               variant="contained"
               color="primary"
+              disabled={loggedUser.profile_id !== el.author.user.profile_id}
               style={{ textDecoration: "none" }}
               onClick={() => console.log("edit")}
             >
@@ -108,7 +130,8 @@ const StoriesPage = ({ classes, loggedUser }) => {
               variant="contained"
               color="primary"
               style={{ textDecoration: "none" }}
-              onClick={() => console.log("delete")}
+              disabled={loggedUser.profile_id !== el.author.user.profile_id}
+              onClick={() => deleteStory(el.id)}
             >
               Delete
             </Button>

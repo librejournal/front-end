@@ -7,7 +7,7 @@ import { compose } from "recompose";
 const useStyles = {
   previewContainer: {
     maxWidth: "1000px",
-    margin: "auto",
+    margin: " 0 auto",
   },
   titleItem: {
     display: "flex",
@@ -32,15 +32,13 @@ const PreviewStory = ({ classes, storyInfo }) => {
       {storyInfo.map((el) =>
         el.type === "TITLE" ? (
           <Grid item xs={12} className={classes.titleItem} key={el.id}>
-            <Typography variant="h3" key={el.id} color="primary">
+            <Typography variant="h3" color="primary">
               {el.text}
             </Typography>
           </Grid>
         ) : el.type === "TEXT" ? (
           <Grid item xs={12} className={classes.textItem} key={el.text}>
-            <Typography variant={el.type_setting} key={el.id}>
-              {el.text}
-            </Typography>
+            <Typography variant={el.type_setting}>{el.text}</Typography>
           </Grid>
         ) : el.type === "IMAGE" ? (
           <Grid

@@ -85,6 +85,7 @@ const StoryItem = ({
   const [textSize, setTextSize] = useState("h6");
   const [imageSize, setImageSize] = useState("20");
 
+  console.log(storyInfo);
   const handleChange = (event) => {
     setTextSize(event.target.value);
   };
@@ -164,7 +165,7 @@ const StoryItem = ({
         });
       })
       .catch((error) => {
-        //console.log(error);
+        console.log(error);
       });
   };
 
@@ -234,6 +235,7 @@ const StoryItem = ({
     storyInfo.forEach((el) => {
       if (el.order_id === id) {
         deletedItemId = el.id;
+        return;
       }
     });
 
@@ -269,6 +271,7 @@ const StoryItem = ({
     storyInfo.forEach((el) => {
       if (el.order_id === id) {
         editItemId = el.id;
+        return;
       }
     });
 

@@ -21,18 +21,21 @@ const useStyles = {
   },
 };
 
-const Homepage = ({ classes }) => (
-  <Grid container justify="center" className={classes.homepageContainer}>
-    <TrendingContainer data={mockupDataStory} />
-    <Grid item xs={10} alignContent="center" className={classes.firstAdv} />
-    <StoryContainer data={mockupDataStory} />
-    <StarboardContainer
-      title1="Top Authors"
-      title2="Top Locations"
-      data1={mockupDataStarboard.author}
-      data2={mockupDataStarboard.location}
-    />
-  </Grid>
-);
+const Homepage = ({ classes }) => {
+  return (
+    <Grid container justify="center" className={classes.homepageContainer}>
+      <TrendingContainer data={mockupDataStory} />
+      <Grid item xs={10} alignContent="center" className={classes.firstAdv} />
+
+      <StoryContainer data={mockupDataStory} />
+      <StarboardContainer
+        title1="Top Authors"
+        title2="Top Locations"
+        data1={mockupDataStarboard.author}
+        data2={mockupDataStarboard.location}
+      />
+    </Grid>
+  );
+};
 
 export default withStyles(useStyles)(Homepage);
