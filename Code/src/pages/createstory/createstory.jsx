@@ -37,20 +37,22 @@ const useStyles = {
     overflowY: "auto",
   },
   createStoryRightContainer: {
-    marginTop: "3vh",
     height: "65vh",
     maxHeight: "65vh",
     overflowY: "auto",
+    maxWidth: "600px",
+    margin: "0 auto ",
+    padding: "2vh 0",
   },
   createStoryTitle: {
     height: "3vh",
   },
   createStoryBottomGrid: {
-    paddingTop: "2vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "5vh",
+    height: "7vh",
+    borderTop: "2px solid lightgray",
   },
 };
 

@@ -9,6 +9,8 @@ import StoryItem from "../createstory/storyItem";
 const useStyles = {
   createStoryGrid: {
     padding: "3vh 2vw",
+    maxWidth: "600px",
+    margin: "auto",
   },
 };
 
@@ -26,7 +28,11 @@ const CreateStory = ({ classes, setStoryInfo, storyInfo, storyId, token }) => {
   const storyInfoArray = _.sortBy(storyInfo, "order_id");
 
   return (
-    <Grid contaniner className={classes.createStoryGrid}>
+    <Grid
+      contaniner
+      justifyContent="center"
+      className={classes.createStoryGrid}
+    >
       {storyInfoArray.length
         ? storyInfoArray.map((el) => (
             <StoryItem

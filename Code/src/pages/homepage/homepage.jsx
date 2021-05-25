@@ -25,7 +25,6 @@ const Homepage = ({ classes }) => {
   return (
     <Grid container justify="center" className={classes.homepageContainer}>
       <TrendingContainer data={mockupDataStory} />
-      <Grid item xs={10} alignContent="center" className={classes.firstAdv} />
 
       <StoryContainer data={mockupDataStory} />
       <StarboardContainer

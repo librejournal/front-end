@@ -14,16 +14,12 @@ import {
   mapDispatchToAccount,
 } from "../../redux/mapFunctions";
 
+import AccountInfo from "./accountInfo";
+import AccountDetails from "./accountDetails";
+
 const useStyles = () => ({
-  accountContainer: {
-    width: "max(25vw,250px)",
-    padding: "2vh 2vw",
-    minHeight: "60vh",
-    display: "flex",
-    justifyContent: "space-around",
-    textAlign: "center",
-    border: "2px solid #1687a7",
-    alignItems: "center",
+  accountpageContainer: {
+    overflowY: "auto",
   },
 });
 
@@ -37,13 +33,10 @@ const Account = ({ classes, loggedUser, onLogoutUser }) => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${loggedUser.token}`,
-
-            //"Access-Control-Allow-Origin": "*",
-            //"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
           },
         }
       )
-      .then((response) => {
+      .then(() => {
         onLogoutUser();
         Swal.fire({
           position: "top-end",
@@ -59,41 +52,14 @@ const Account = ({ classes, loggedUser, onLogoutUser }) => {
   };
 
   return (
-    <Grid container justify="center" className={classes.accountContainer}>
-      <Typography color="primary" variant="h4">
-        Account Info
-      </Typography>
-      <Grid item xs={12}>
-        <Typography color="primary" variant="h6">
-          Username:
-        </Typography>
-        <Typography variant="subtitle1">{loggedUser.username}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography color="primary" variant="h6">
-          Email:
-        </Typography>
-        <Typography variant="subtitle1">{loggedUser.email}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography color="primary" variant="h6">
-          First Name:
-        </Typography>
-        <Typography variant="subtitle1">{loggedUser.first_name}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography color="primary" variant="h6">
-          Last Name:
-        </Typography>
-        <Typography variant="subtitle1">{loggedUser.last_name}</Typography>
-      </Grid>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => logoutRequest()}
-      >
-        LOGOUT
-      </Button>
+    <Grid
+      container
+      justify="space-evenly"
+      alignItems="center"
+      className={classes.accountpageContainer}
+    >
+      <AccountInfo loggedUser={loggedUser} logoutRequest={logoutRequest} />
+      <AccountDetails />
     </Grid>
   );
 };

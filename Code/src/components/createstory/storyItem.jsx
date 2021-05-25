@@ -56,7 +56,7 @@ const useStyles = {
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginTop: "3vh",
+    marginTop: "1.5vh",
   },
   formControl: {
     minWidth: "120px",
@@ -69,13 +69,25 @@ const useStyles = {
     color: "#1687a7",
   },
   sliderContainer: {
-    width: "50%",
-    padding: "2vh 2vw",
+    padding: "2vh 2vw 0 2vw",
   },
   midSection: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  arrowGrid: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    height: "60%",
+    "& svg": {
+      color: "#1687a7",
+      height: "5vh",
+      width: "1.5vw",
+      cursor: "pointer",
+    },
   },
 };
 
@@ -94,7 +106,7 @@ const StoryItem = ({
   const [state, setState] = useState(1);
   const [text, setText] = useState("");
   const [textSize, setTextSize] = useState("h6");
-  const [imageSize, setImageSize] = useState("20");
+  const [imageSize, setImageSize] = useState("10");
 
   const handleChange = (event) => {
     setTextSize(event.target.value);
@@ -187,9 +199,9 @@ const StoryItem = ({
         setText(storyInfo.text);
         setTextSize(storyInfo.type_setting);
         break;
-      case "IMAGE_URL":
+      case "IMAGE":
         setState(511);
-        setText(storyInfo.url);
+        setText(storyInfo.text);
         setTextSize(storyInfo.type_setting);
         break;
       default:
@@ -264,12 +276,12 @@ const StoryItem = ({
     setState(41);
   };
 
-  const addImage = (url) => {
+  const addImageUrl = (url) => {
     const info = {
       type: "IMAGE",
-      url,
+      text: url,
       story: storyId,
-      size: imageSize,
+      type_setting: imageSize,
     };
     axios
       .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
@@ -279,7 +291,7 @@ const StoryItem = ({
         },
       })
       .then((response) => {
-        console.log(response);
+        updateStoryInfo();
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -291,10 +303,8 @@ const StoryItem = ({
       .catch((error) => {
         console.log(error);
       });
-    //addStoryInfo(info, id);
     setState(511);
   };
-
   const deleteItem = async (id) => {
     const deletedItemId = storyInfo.id;
 
@@ -364,7 +374,7 @@ const StoryItem = ({
 
   return (
     <Grid item xs={12} className={classes.storyItemGrid}>
-      <Grid item xs={1}>
+      <Grid item xs={1} className={classes.arrowGrid}>
         {icon ? (
           storyInfo.order_id === 1 ? null : (
             <ArrowUpwardIcon onClick={() => updateOrderInfo("up")} />
@@ -641,7 +651,6 @@ const StoryItem = ({
                 defaultValue={imageSize}
                 getAriaValueText={valuetext}
                 aria-labelledby="discrete-slider"
-                valueLabelDisplay="on"
                 step={5}
                 marks
                 min={5}
@@ -652,7 +661,7 @@ const StoryItem = ({
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => addImage(text, id)}
+                onClick={() => addImageUrl(text)}
               >
                 Add Image
               </Button>
@@ -668,23 +677,44 @@ const StoryItem = ({
         ) : null}
         {state === 511 ? (
           <Grid item xs={12} className={classes.titleAdd}>
-            <Typography color="primary" variant="h6">
-              Image
-            </Typography>
+            <Input
+              color="primary"
+              placeholder="Enter URL"
+              fullWidth
+              value={text}
+              onChange={(event) => setText(event.target.value)}
+              InputLabelProps={{
+                style: { color: "#1687a7" },
+              }}
+            />
+            <Grid item xs={12} className={classes.sliderContainer}>
+              <Typography color="primary" variant="subtitle1">
+                Change size of the image
+              </Typography>
+              <Slider
+                defaultValue={imageSize}
+                getAriaValueText={valuetext}
+                aria-labelledby="discrete-slider"
+                step={2}
+                marks
+                min={4}
+                max={24}
+              />
+            </Grid>
             <Grid item xs={12} className={classes.titleAddButtonSection}>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setState(51)}
+                onClick={() => editItem(id, "IMAGE", text, imageSize)}
               >
-                Edit
+                Edit Image
               </Button>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => deleteItem(id)}
+                onClick={() => setState(2)}
               >
-                Delete
+                Back
               </Button>
             </Grid>
           </Grid>
