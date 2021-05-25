@@ -4,6 +4,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { withStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 import { compose } from "recompose";
 
@@ -25,7 +26,13 @@ const useStyles = () => ({
   },
 });
 
-const LocationInfo = ({ classes, locationInfo, setLocationInfo }) => {
+const LocationInfo = ({
+  classes,
+  locationInfo,
+  setLocationInfo,
+  storyId,
+  loggedUser,
+}) => {
   const [open, setOpen] = useState(false);
   const [locationText, setLocationText] = useState("");
   const icon = <AddCircleIcon />;
@@ -41,10 +48,22 @@ const LocationInfo = ({ classes, locationInfo, setLocationInfo }) => {
     setLocationText("");
   };
 
-  const addNewTag = (value) => {
-    const newState = locationInfo;
-    newState.locations.push(value);
-    setLocationInfo(newState);
+  const addNewTag = async (value) => {
+    let newLocation = locationInfo.includes(`${value}`)
+      ? { locations: [...locationInfo, value] }
+      : { locations: locationInfo };
+    await axios
+      .patch(`http://localhost:9001/api/stories/${storyId}/`, locationInfo, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then(() => {
+        console.log(newLocation);
+      })
+      .catch((err) => console.log(err));
+
     setOpen(false);
   };
 
@@ -100,16 +119,18 @@ const LocationInfo = ({ classes, locationInfo, setLocationInfo }) => {
           onClick={() => handleClickOpen()}
           className={classes.chip}
         />
-        {locationInfo.locations.map((el) => (
-          <Chip
-            label={el}
-            onClick={() => deleteTag(el)}
-            className={classes.chip}
-            icon={cancelIcon}
-            color="primary"
-            variant="outlined"
-          />
-        ))}
+        {locationInfo.length
+          ? locationInfo.map((el) => (
+              <Chip
+                label={el}
+                onClick={() => deleteTag(el)}
+                className={classes.chip}
+                icon={cancelIcon}
+                color="primary"
+                variant="outlined"
+              />
+            ))
+          : null}
       </Grid>
     </Grid>
   );

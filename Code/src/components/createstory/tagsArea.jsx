@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Chip, Grid, Dialog, Button, TextField } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import axios from "axios";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -25,7 +26,7 @@ const useStyles = () => ({
   },
 });
 
-const TagsArea = ({ classes, tagInfo, setTagInfo }) => {
+const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   const [open, setOpen] = useState(false);
   const [tagText, setTagText] = useState("");
   const icon = <AddCircleIcon />;
@@ -41,10 +42,22 @@ const TagsArea = ({ classes, tagInfo, setTagInfo }) => {
     setTagText("");
   };
 
-  const addNewTag = (value) => {
-    const newState = tagInfo;
-    newState.tags.push(value);
-    setTagInfo(newState);
+  const addNewTag = async (value) => {
+    let newTag = tagInfo.includes(`${value}`)
+      ? { tags: [...tagInfo, value] }
+      : { tags: tagInfo };
+    await axios
+      .patch(`http://localhost:9001/api/stories/${storyId}/`, newTag, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then(() => {
+        console.log(newTag);
+      })
+      .catch((err) => console.log(err));
+
     setOpen(false);
   };
 
@@ -100,16 +113,18 @@ const TagsArea = ({ classes, tagInfo, setTagInfo }) => {
           onClick={() => handleClickOpen()}
           className={classes.chip}
         />
-        {tagInfo.tags.map((el) => (
-          <Chip
-            label={el}
-            onClick={() => deleteTag(el)}
-            className={classes.chip}
-            icon={cancelIcon}
-            color="primary"
-            variant="outlined"
-          />
-        ))}
+        {tagInfo.length
+          ? tagInfo.map((el) => (
+              <Chip
+                label={el}
+                onClick={() => deleteTag(el)}
+                className={classes.chip}
+                icon={cancelIcon}
+                color="primary"
+                variant="outlined"
+              />
+            ))
+          : null}
       </Grid>
     </Grid>
   );

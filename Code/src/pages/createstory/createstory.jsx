@@ -68,8 +68,8 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
           const data = response.data[0];
           setStoryInfo(data.components);
           setStoryId(data.id);
-          //setTagInfo(data.tags);
-          //setLocationInfo(data.locations);
+          setTagInfo(data.tags);
+          setLocationInfo(data.locations);
         } else createNewStory();
       })
       .catch((error) => console.log(error));
@@ -163,13 +163,20 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
       </Grid>
       <Grid container xs={12} className={classes.createStoryBottomGrid}>
         <Grid item xs={4}>
-          <TagsArea tagInfo={tagInfo} setTagInfo={setTagInfo} />
+          <TagsArea
+            tagInfo={tagInfo}
+            setTagInfo={setTagInfo}
+            storyId={storyId}
+            loggedUser={loggedUser}
+          />
         </Grid>
 
         <Grid item xs={4}>
           <LocationArea
             locationInfo={locationInfo}
             setLocationInfo={setLocationInfo}
+            loggedUser={loggedUser}
+            locationInfo={locationInfo}
           />
         </Grid>
         <Grid item xs={4}>
