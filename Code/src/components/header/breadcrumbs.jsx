@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Typography, Breadcrumbs } from "@material-ui/core";
+import { Typography, Breadcrumbs } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";

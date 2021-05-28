@@ -11,7 +11,7 @@ import { compose } from "recompose";
 const useStyles = () => ({
     tagsArea: {},
     dialogContainer: {
-        height: "10vh",
+        height: "20vh",
         minWidth: "25vw",
     },
     dialogButtonGrid: {

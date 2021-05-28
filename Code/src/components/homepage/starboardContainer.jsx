@@ -17,10 +17,11 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const useStyles = () => ({
     starboardContainer: {
-        width: (props) => (props.width < props.limit ? null : "25%"),
+        width: (props) => (props.width < 1200 ? null : "25%"),
+        maxHeight: "1000px",
         display: "flex",
-        justifyContent: "space-around",
-        alignContent: "space-around",
+        justifyContent: "space-evenly",
+        alignContent: "space-evenly",
     },
     storyboardBigadvGrid: {
         height: "35vh",

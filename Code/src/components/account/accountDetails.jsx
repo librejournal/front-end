@@ -1,13 +1,12 @@
 import React from "react";
 
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 
 const useStyles = () => ({
     accountContainer: {
-        width: "25vw",
         padding: "2vh 2vw",
         minHeight: "60vh",
         display: "flex",

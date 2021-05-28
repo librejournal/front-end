@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -21,9 +21,8 @@ import { withWindowConsumer } from "../../contexts/window/consumer";
 
 const useStyles = {
     createStoryPageContainer: {
-        padding: "1vh 3vw",
+        padding: "0 3vw",
         display: "flex",
-        alignContent: "flex-start",
         textAlign: "center",
         height: "80vh",
         overflowY: "auto",
@@ -32,7 +31,6 @@ const useStyles = {
         borderBottom: "2px solid gray",
     },
     createStoryLeftContainer: {
-        marginTop: "3vh",
         height: "65vh",
         maxHeight: "65vh",
         overflowY: "auto",
@@ -46,7 +44,7 @@ const useStyles = {
         padding: "2vh 0",
     },
     createStoryTitle: {
-        height: "3vh",
+        borderBottom: "2px solid lightgray",
     },
     createStoryBottomGrid: {
         display: "flex",
@@ -144,7 +142,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
     return (
         <Grid container className={classes.createStoryPageContainer}>
             <Grid item xs={12} className={classes.createStoryTitle}>
-                <Typography color="primary" variant="h3">
+                <Typography color="primary" variant="h4">
                     Create a new story
                 </Typography>
             </Grid>
@@ -199,7 +197,6 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
                         locationInfo={locationInfo}
                         setLocationInfo={setLocationInfo}
                         loggedUser={loggedUser}
-                        locationInfo={locationInfo}
                     />
                 </Grid>
                 <Grid
@@ -222,6 +219,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
 };
 
 export default compose(
+    memo,
     withWindowConsumer,
     connect(mapStateToCreateStoryPage),
     withStyles(useStyles)

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
 
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
@@ -96,7 +96,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
             alignItems="center"
             className={classes.accountpageContainer}
         >
-            {limit < width ? (
+            {1000 < width ? (
                 <>
                     <AccountInfo
                         loggedUser={loggedUser}

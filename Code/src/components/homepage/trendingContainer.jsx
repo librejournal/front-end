@@ -4,10 +4,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import TrendingItem from "./trendingItem";
-import Carousel, {
-    slidesToShowPlugin,
-    autoplayPlugin,
-} from "@brainhubeu/react-carousel";
+import Carousel, { slidesToShowPlugin } from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 
 import { compose } from "recompose";
@@ -44,6 +41,7 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
                 <Carousel
                     plugins={[
                         "fastSwipe",
+                        "centered",
 
                         {
                             resolve: slidesToShowPlugin,
