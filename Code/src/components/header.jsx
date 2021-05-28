@@ -1,84 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Grid, Typography, Breadcrumbs } from "@material-ui/core";
+import {
+    Grid,
+    Typography,
+    Breadcrumbs,
+    Menu,
+    MenuItem,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { ReactComponent as Logo } from "../assets/logo/default-monochrome-white.svg";
 import { Link } from "react-router-dom";
 import { compose } from "recompose";
-
+import { withWindowConsumer } from "../contexts/window/consumer";
 import { connect } from "react-redux";
 import { mapStateToPropsHeader } from "../redux/mapFunctions";
+import MenuIcon from "@material-ui/icons/Menu";
+import MyBreadcrumbs from "./header/breadcrumbs";
+import MobileMenu from "./header/mobileMenu";
 
 const useStyles = () => ({
-  headerGrid: {
-    height: "8vh",
-    backgroundColor: "#1687a7",
-    display: "flex",
-    justifyContent: "space-around",
-    padding: "2vh 5vw",
-    alignItems: "center",
-  },
-  headerMenuTexts: {
-    display: "flex",
-    justifyContent: "space-around",
-    color: "white",
-  },
-  headerMenuTextElements: {
-    cursor: "pointer",
-  },
-  headerLogo: {
-    padding: "1vh 0",
-    "& svg": {
-      maxHeight: "6vh",
+    headerGrid: {
+        height: "8vh",
+        backgroundColor: "#1687a7",
+        display: "flex",
+        justifyContent: "space-around",
+        padding: "2vh 0",
+        alignItems: "center",
     },
-  },
+    headerMenuTexts: {
+        display: "flex",
+        justifyContent: (props) =>
+            props.width < props.limit ? "flex-end" : "space-around",
+        color: "white",
+        "& svg": {
+            fontSize: "2.5rem",
+            marginRight: "2vw",
+        },
+    },
+    headerLogo: {
+        padding: "1vh 0",
+        "& svg": {
+            height: "max(6vh,40px)",
+        },
+    },
 });
 
-const Header = ({ classes, loggedUser }) => {
-  return (
-    <Grid containter className={classes.headerGrid}>
-      <Grid item xs={4} md={2} className={classes.headerLogo}>
-        <Logo />
-      </Grid>
-      <Grid item xs={6} md={4} className={classes.headerMenuTexts}>
-        <Breadcrumbs separator="|" aria-label="breadcrumb">
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <Typography className={classes.headerMenuTextElements}>
-              Home
-            </Typography>
-          </Link>
-          <Link
-            to={loggedUser.token === "" ? "/menu2" : "/stories"}
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={classes.headerMenuTextElements}>
-              {loggedUser.token === "" ? "Menu#2" : "Stories"}
-            </Typography>
-          </Link>
-          <Link
-            to={loggedUser.token === "" ? "/menu3" : "/createstory"}
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={classes.headerMenuTextElements}>
-              {loggedUser.token === "" ? "Menu#3" : "Create a story"}
-            </Typography>
-          </Link>
-          <Link
-            to={loggedUser.token === "" ? "/login" : "/account"}
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={classes.headerMenuTextElements}>
-              {loggedUser.token === "" ? "Login/Register" : "Account"}
-            </Typography>
-          </Link>
-        </Breadcrumbs>
-      </Grid>
-    </Grid>
-  );
+const Header = ({ classes, loggedUser, width, limit }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    return (
+        <Grid containter className={classes.headerGrid}>
+            <Grid item xs={3} md={2} className={classes.headerLogo}>
+                <Link to="/" style={{ textDecoration: "none" }}>
+                    <Logo />
+                </Link>
+            </Grid>
+            <Grid item md={7} lg={4} className={classes.headerMenuTexts}>
+                {width > limit ? (
+                    <MyBreadcrumbs loggedUser={loggedUser} />
+                ) : (
+                    <>
+                        <MenuIcon
+                            onClick={handleClick}
+                            aria-controls="simple-menu"
+                        />
+                        <MobileMenu
+                            loggedUser={loggedUser}
+                            anchorEl={anchorEl}
+                            handleClose={handleClose}
+                        />
+                    </>
+                )}
+            </Grid>
+        </Grid>
+    );
 };
 
 export default compose(
-  connect(mapStateToPropsHeader),
-  withStyles(useStyles)
+    withWindowConsumer,
+    connect(mapStateToPropsHeader),
+    withStyles(useStyles)
 )(Header);

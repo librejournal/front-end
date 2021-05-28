@@ -7,24 +7,29 @@ export const withWindowProvider = (Component) => {
         const getDimensions = () => {
             const w = window;
             const d = document;
-            const limit = 960;
+            const limit = 600;
             const { documentElement } = d;
             const body = d.getElementsByTagName("body")[0];
-            const width = w.innerWidth || documentElement.clientWidth || body.clientWidth;
-            let height = w.height || documentElement.clientHeight || w.innerHeight || body.clientHeight;
+            const width =
+                w.innerWidth || documentElement.clientWidth || body.clientWidth;
+            let height =
+                w.height ||
+                documentElement.clientHeight ||
+                w.innerHeight ||
+                body.clientHeight;
             if (limit > width) height *= 0.9;
             return { width, height, limit };
         };
         const [dimension, setDimension] = useState({
             width: props.width || getDimensions().width,
             height: props.height || getDimensions().height,
-            limit: props.limit || getDimensions().limit
+            limit: props.limit || getDimensions().limit,
         });
         const updateDimensions = () => {
             setDimension({
                 width: props.width || getDimensions().width,
                 height: props.height || getDimensions().height,
-                limit: props.limit || getDimensions().limit
+                limit: props.limit || getDimensions().limit,
             });
         };
 
@@ -37,7 +42,7 @@ export const withWindowProvider = (Component) => {
 
         return (
             <WindowContext.Provider value={dimension}>
-                <Component {...props}/>
+                <Component {...props} />
             </WindowContext.Provider>
         );
     };

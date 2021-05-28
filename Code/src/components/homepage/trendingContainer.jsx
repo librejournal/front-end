@@ -4,34 +4,65 @@ import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import TrendingItem from "./trendingItem";
+import Carousel, {
+    slidesToShowPlugin,
+    autoplayPlugin,
+} from "@brainhubeu/react-carousel";
+import "@brainhubeu/react-carousel/lib/style.css";
+
+import { compose } from "recompose";
+import { withWindowConsumer } from "../../contexts/window/consumer";
 
 const useStyles = {
-  trendingContainerGrid: {
-    display: "flex",
-    justifyContent: "space-around",
-    padding: "3vh 5vw",
-  },
-  titleText: {
-    padding: "1vh 0",
-    "& p": {
-      color: "#1687a7",
+    trendingContainerGrid: {
+        display: "flex",
+        justifyContent: "space-around",
+        padding: "3vh 5vw",
     },
-  },
+    titleText: {
+        padding: "1vh 0",
+        "& p": {
+            color: "#1687a7",
+        },
+    },
 };
 
-const TrendingContainer = ({ data, classes }) => {
-  return (
-    <Grid container className={classes.trendingContainerGrid}>
-      <Grid item className={classes.titleText} xs={12}>
-        <Typography color="primary" variant="h5">
-          Trending News
-        </Typography>
-      </Grid>
-      {data.map((el) => (
-        <TrendingItem title={el.title} imageUrl={el.imageUrl} />
-      ))}
-    </Grid>
-  );
+const TrendingContainer = ({ data, classes, limit, width }) => {
+    return (
+        <Grid container className={classes.trendingContainerGrid}>
+            <Grid item className={classes.titleText} xs={12}>
+                <Typography color="primary" variant="h5">
+                    Trending News
+                </Typography>
+            </Grid>
+
+            {limit < width ? (
+                data.map((el) => (
+                    <TrendingItem title={el.title} imageUrl={el.imageUrl} />
+                ))
+            ) : (
+                <Carousel
+                    plugins={[
+                        "fastSwipe",
+
+                        {
+                            resolve: slidesToShowPlugin,
+                            options: {
+                                numberOfSlides: 2,
+                            },
+                        },
+                    ]}
+                >
+                    {data.map((el) => (
+                        <TrendingItem title={el.title} imageUrl={el.imageUrl} />
+                    ))}
+                </Carousel>
+            )}
+        </Grid>
+    );
 };
 
-export default withStyles(useStyles)(TrendingContainer);
+export default compose(
+    withWindowConsumer,
+    withStyles(useStyles)
+)(TrendingContainer);
