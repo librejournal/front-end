@@ -12,10 +12,10 @@ import Swal from "sweetalert2";
 
 const useStyles = () => ({
     storyPageContainer: {
-        height: "80vh",
+        minHeight: "80vh",
         display: "flex",
         padding: "5vh 2vw",
-        flexDirection: "column",
+        overflowY: "auto",
     },
     authorGrid: {
         display: "flex",
@@ -23,7 +23,8 @@ const useStyles = () => ({
     storyContainer: {
         border: "1px solid lightgray",
         cursor: "pointer",
-        margin: "0.5vh 0",
+        margin: "2vh 0",
+        padding: "2vh 0",
     },
     buttonGrid: {
         display: "flex",

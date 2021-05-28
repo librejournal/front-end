@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Typography, Container } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import StoryItem from "./storyItem";
@@ -22,7 +22,7 @@ const useStyles = () => ({
 
 const StoryContainer = ({ classes, data, limit, width }) => {
     return (
-        <Container className={classes.storyContainerGrid}>
+        <Grid container className={classes.storyContainerGrid}>
             <Grid item xs={12} className={classes.titleText}>
                 <Typography color="primary" variant="h5">
                     Stories
@@ -60,7 +60,7 @@ const StoryContainer = ({ classes, data, limit, width }) => {
                     ))}
                 </Carousel>
             )}
-        </Container>
+        </Grid>
     );
 };
 
