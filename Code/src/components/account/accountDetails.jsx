@@ -7,7 +7,7 @@ import { compose } from "recompose";
 
 const useStyles = () => ({
     accountContainer: {
-        width: "max(25vw,250px)",
+        width: "25vw",
         padding: "2vh 2vw",
         minHeight: "60vh",
         display: "flex",
@@ -16,7 +16,7 @@ const useStyles = () => ({
         textAlign: "center",
         border: "2px solid #1687a7",
         alignItems: "center",
-        maxWidth: "500px",
+        maxWidth: "450px",
         margin: "2vh",
     },
 });

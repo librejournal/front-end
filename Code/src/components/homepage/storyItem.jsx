@@ -16,7 +16,7 @@ const useStyles = {
         border: "black 2px solid",
         padding: "1vh 1vw",
         alignSelf: "center",
-        margin: "2vh 0",
+        margin: "2vh 1vw",
     },
     storyItemHeader: {
         margin: (props) => (props.width < props.limit ? "0" : "1vh 0"),
@@ -66,6 +66,7 @@ const useStyles = {
     storyItemIcons: {
         margin: (props) => (props.width < props.limit ? "none" : "1vh 1vw"),
         display: "flex",
+        padding: "10px 0",
     },
 
     storyItemIcon: {

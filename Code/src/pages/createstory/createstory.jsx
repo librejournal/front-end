@@ -17,6 +17,7 @@ import {
     TagsArea,
     LocationArea,
 } from "../../components";
+import { withWindowConsumer } from "../../contexts/window/consumer";
 
 const useStyles = {
     createStoryPageContainer: {
@@ -51,12 +52,16 @@ const useStyles = {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "7vh",
+        minHeight: "7vh",
         borderTop: "2px solid lightgray",
+        padding: "1vh 5vw",
+    },
+    bottomButton: {
+        margin: "2vh 0 1vh 0",
     },
 };
 
-const CreateStoryPage = ({ classes, loggedUser }) => {
+const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
     const getStoryInfo = async () => {
         axios
             .get("http://localhost:9001/api/stories/drafts", {
@@ -143,7 +148,12 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
                     Create a new story
                 </Typography>
             </Grid>
-            <Grid item xs={6} className={classes.createStoryLeftContainer}>
+            <Grid
+                item
+                xs={12}
+                md={6}
+                className={classes.createStoryLeftContainer}
+            >
                 <CreateStory
                     storyInfo={storyInfo}
                     setStoryInfo={setStoryInfo}
@@ -152,7 +162,12 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
                     token={loggedUser.token}
                 />
             </Grid>
-            <Grid item xs={6} className={classes.createStoryRightContainer}>
+            <Grid
+                item
+                xs={12}
+                md={6}
+                className={classes.createStoryRightContainer}
+            >
                 <Typography
                     variant="h4"
                     color="primary"
@@ -170,7 +185,7 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
                 )}
             </Grid>
             <Grid container xs={12} className={classes.createStoryBottomGrid}>
-                <Grid item xs={4}>
+                <Grid item xs={6} md={4}>
                     <TagsArea
                         tagInfo={tagInfo}
                         setTagInfo={setTagInfo}
@@ -179,7 +194,7 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
                     />
                 </Grid>
 
-                <Grid item xs={4}>
+                <Grid item xs={6} md={4}>
                     <LocationArea
                         locationInfo={locationInfo}
                         setLocationInfo={setLocationInfo}
@@ -187,7 +202,12 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
                         locationInfo={locationInfo}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid
+                    item
+                    xs={12}
+                    md={4}
+                    className={limit > width ? classes.bottomButton : null}
+                >
                     <Button
                         variant="contained"
                         color="primary"
@@ -202,6 +222,7 @@ const CreateStoryPage = ({ classes, loggedUser }) => {
 };
 
 export default compose(
+    withWindowConsumer,
     connect(mapStateToCreateStoryPage),
     withStyles(useStyles)
 )(CreateStoryPage);

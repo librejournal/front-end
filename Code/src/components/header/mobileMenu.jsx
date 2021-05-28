@@ -17,14 +17,14 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
         onClose={handleClose}
     >
         <MenuItem onClick={handleClose}>
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link to="/" style={{ textDecoration: "none", width: "100%" }}>
                 <Typography color="primary">Home</Typography>
             </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
             <Link
                 to={loggedUser.token === "" ? "/menu2" : "/stories"}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none", width: "100%" }}
             >
                 <Typography color="primary">
                     {loggedUser.token === "" ? "Menu#2" : "Stories"}
@@ -34,7 +34,7 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
         <MenuItem onClick={handleClose}>
             <Link
                 to={loggedUser.token === "" ? "/menu3" : "/createstory"}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none", width: "100%" }}
             >
                 <Typography color="primary">
                     {loggedUser.token === "" ? "Menu#3" : "Create a story"}
@@ -44,7 +44,7 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
         <MenuItem onClick={handleClose}>
             <Link
                 to={loggedUser.token === "" ? "/login" : "/account"}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none", width: "100%" }}
             >
                 <Typography color="primary">
                     {loggedUser.token === "" ? "Login/Register" : "Account"}

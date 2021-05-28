@@ -10,7 +10,7 @@ const useStyles = () => ({
         width: "max(10vw,250px)",
         height: "350px",
         backgroundColor: "#1687a7",
-        padding: "1vh 1.5vw",
+        padding: "1vh 0",
         borderRadius: "15px",
         margin: "2vh 0",
         display: "flex",

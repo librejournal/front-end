@@ -16,14 +16,35 @@ import {
 
 import AccountInfo from "./accountInfo";
 import AccountDetails from "./accountDetails";
+import { withWindowConsumer } from "../../contexts/window/consumer";
+
+import Carousel, {
+    slidesToShowPlugin,
+    arrowsPlugin,
+} from "@brainhubeu/react-carousel";
+import "@brainhubeu/react-carousel/lib/style.css";
+
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const useStyles = () => ({
     accountpageContainer: {
         overflowY: "auto",
     },
+    arrowActive: {
+        fill: "#1687a7",
+    },
+    arrowDeactive: {
+        fill: "white",
+    },
+    bottomButton: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });
 
-const Account = ({ classes, loggedUser, onLogoutUser }) => {
+const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
     const [detailedInfo, setDetailedInfo] = useState(null);
 
     useEffect(() => {
@@ -67,7 +88,6 @@ const Account = ({ classes, loggedUser, onLogoutUser }) => {
             .then((response) => setDetailedInfo(response.data))
             .catch((err) => console.log(err));
     };
-    console.log(detailedInfo);
 
     return (
         <Grid
@@ -76,18 +96,77 @@ const Account = ({ classes, loggedUser, onLogoutUser }) => {
             alignItems="center"
             className={classes.accountpageContainer}
         >
-            <AccountInfo
-                loggedUser={loggedUser}
-                logoutRequest={logoutRequest}
-            />
-            {detailedInfo ? (
-                <AccountDetails detailedInfo={detailedInfo} />
-            ) : null}
+            {limit < width ? (
+                <>
+                    <AccountInfo
+                        loggedUser={loggedUser}
+                        logoutRequest={logoutRequest}
+                    />
+                    {detailedInfo ? (
+                        <AccountDetails detailedInfo={detailedInfo} />
+                    ) : null}
+                </>
+            ) : (
+                <Carousel
+                    plugins={[
+                        "fastSwipe",
+                        "centered",
+
+                        {
+                            resolve: slidesToShowPlugin,
+                            options: {
+                                numberOfSlides: 1.05,
+                            },
+                        },
+                        {
+                            resolve: arrowsPlugin,
+                            options: {
+                                arrowLeft: (
+                                    <ArrowBackIosIcon
+                                        className={classes.arrowActive}
+                                    />
+                                ),
+                                arrowLeftDisabled: (
+                                    <ArrowBackIosIcon
+                                        className={classes.arrowDeactive}
+                                    />
+                                ),
+                                arrowRight: (
+                                    <ArrowForwardIosIcon
+                                        className={classes.arrowActive}
+                                    />
+                                ),
+                                arrowRightDisabled: (
+                                    <ArrowForwardIosIcon
+                                        className={classes.arrowDeactive}
+                                    />
+                                ),
+                                addArrowClickHandler: true,
+                            },
+                        },
+                    ]}
+                >
+                    <AccountInfo loggedUser={loggedUser} />
+                    {detailedInfo ? (
+                        <AccountDetails detailedInfo={detailedInfo} />
+                    ) : null}
+                </Carousel>
+            )}
+            <Grid item xs={12} className={classes.bottomButton}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => logoutRequest()}
+                >
+                    LOGOUT
+                </Button>
+            </Grid>
         </Grid>
     );
 };
 
 export default compose(
+    withWindowConsumer,
     connect(mapStateToAccount, mapDispatchToAccount),
     withStyles(useStyles)
 )(Account);
