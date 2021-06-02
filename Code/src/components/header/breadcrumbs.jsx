@@ -40,7 +40,7 @@ const MyBreadcrumbs = ({ classes, loggedUser }) => (
             style={{ textDecoration: "none" }}
         >
             <Typography className={classes.headerMenuTextElements}>
-                {loggedUser.token === "" ? "Login/Register" : "Account"}
+                {loggedUser.token === "" ? "Login" : "Account"}
             </Typography>
         </Link>
     </Breadcrumbs>

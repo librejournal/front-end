@@ -25,6 +25,10 @@ const useStyles = () => ({
         justifyContent: "space-between",
         textAlign: "center",
         border: "2px solid #1687a7",
+        "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        background:'white',
     },
     bottomText: {
         color: "gray",

@@ -11,6 +11,9 @@ const useStyles = () => ({
     left: 0,
     bottom: 0,
     width: "100%",
+    "-webkit-box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
+    "-moz-box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
+    "box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)"
   },
 });
 

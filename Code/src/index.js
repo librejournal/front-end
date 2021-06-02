@@ -7,14 +7,17 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store.jsx";
 import { PersistGate } from "redux-persist/integration/react";
+import { ParallaxProvider } from "react-scroll-parallax";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>,
-  document.getElementById("root")
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <ParallaxProvider>
+                <App />
+            </ParallaxProvider>
+        </PersistGate>
+    </Provider>,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

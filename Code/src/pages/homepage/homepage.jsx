@@ -11,6 +11,9 @@ import { mockupDataStarboard, mockupDataStory } from "../../constants/index";
 
 import { compose } from "recompose";
 import { withWindowConsumer } from "../../contexts/window/consumer";
+import { ParallaxBanner } from "react-scroll-parallax";
+import Background from "../../assets/images/ekrulila-3957616.jpg";
+import Typed from "react-typed";
 
 const useStyles = {
     firstAdv: {
@@ -29,6 +32,16 @@ const useStyles = {
     homePageSelectionTextActive: {
         cursor: "pointer",
     },
+    typedDiv: {
+        position: "absolute",
+        height: "100%",
+        width: "95%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-end",
+        textAlign:'center',
+        "& span": { color: "white", fontSize: "2rem" },
+    },
 };
 
 const Homepage = ({ classes, limit, width }) => {
@@ -37,7 +50,30 @@ const Homepage = ({ classes, limit, width }) => {
 
     return (
         <Grid container justify="center" className={classes.homepageContainer}>
+            <ParallaxBanner
+                className="your-class"
+                layers={[
+                    {
+                        image: Background,
+                        amount: 0.5,
+                    },
+                ]}
+                style={{
+                    height: "250px",
+                }}
+            >
+                <div className={classes.typedDiv}>
+                    <Typed
+                        strings={["Time to share your experience"]}
+                        typeSpeed={40}
+                        backSpeed={50}
+                        loop
+                    />
+                </div>
+            </ParallaxBanner>
+
             <TrendingContainer data={mockupDataStory} />
+
             {limit < width ? null : (
                 <Breadcrumbs separator="|" aria-label="breadcrumb">
                     <Typography
@@ -66,6 +102,7 @@ const Homepage = ({ classes, limit, width }) => {
                     </Typography>
                 </Breadcrumbs>
             )}
+
             {limit < width ? (
                 <>
                     <StoryContainer data={mockupDataStory} />

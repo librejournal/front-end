@@ -12,10 +12,13 @@ const useStyles = () => ({
         padding: "2vh 2vw",
         minHeight: "500px",
         display: "flex",
-        flexDirection: "column",
         justifyContent: "space-between",
         textAlign: "center",
         border: "2px solid #1687a7",
+        "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        background:'white',
     },
     bottomText: {
         color: "gray",
@@ -70,10 +73,12 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
 
     return (
         <Grid container justify="center" className={classes.signinContainer}>
+            <Grid item xs={12}>
             <Typography color="primary" variant="h4">
                 Register Form
             </Typography>
-            <>
+            </Grid>
+            <Grid item xs={12}>
                 <TextField
                     id="standard-basic"
                     color="primary"
@@ -130,7 +135,8 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
                     }}
                     onChange={addInfo("last_name")}
                 />
-            </>
+            </Grid>
+            <Grid item xs={12}>
             <Button
                 variant="contained"
                 color="primary"
@@ -138,6 +144,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
             >
                 REGISTER
             </Button>
+            </Grid>
             {mobileState === "SignIn" ? (
                 <Typography
                     color="secondary"

@@ -47,7 +47,7 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
                 style={{ textDecoration: "none", width: "100%" }}
             >
                 <Typography color="primary">
-                    {loggedUser.token === "" ? "Login/Register" : "Account"}
+                    {loggedUser.token === "" ? "Login" : "Account"}
                 </Typography>
             </Link>
         </MenuItem>

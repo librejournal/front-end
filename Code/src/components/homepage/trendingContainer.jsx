@@ -15,6 +15,7 @@ const useStyles = {
         display: "flex",
         justifyContent: "space-around",
         padding: "3vh 5vw",
+        
     },
     titleText: {
         padding: "1vh 0",

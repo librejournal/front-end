@@ -17,6 +17,11 @@ const useStyles = {
         padding: "1vh 1vw",
         alignSelf: "center",
         margin: "2vh 1vw",
+        "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        borderRadius:'15px',
+        backgroundColor:'white'
     },
     storyItemHeader: {
         margin: (props) => (props.width < props.limit ? "0" : "1vh 0"),

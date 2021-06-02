@@ -16,6 +16,7 @@ const useStyles = () => ({
         padding: "3vh 5vw",
         margin: 0,
         maxWidth: "900px",
+        
     },
     titleText: {},
 });

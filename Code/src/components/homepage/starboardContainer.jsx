@@ -22,6 +22,7 @@ const useStyles = () => ({
         display: "flex",
         justifyContent: "space-evenly",
         alignContent: "space-evenly",
+        
     },
     storyboardBigadvGrid: {
         height: "35vh",
