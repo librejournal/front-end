@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 
 import axios from "axios";
-import { PreviewStory } from "../../components";
+import { PreviewStory, StoryCommments } from "../../components";
 import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
@@ -99,7 +99,10 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
             ) : null}
             {previewStory ? (
                 <Grid container className={classes.commentSection}>
-                    Comment section - to be implemented
+                    <StoryCommments
+                        loggedUser={loggedUser}
+                        id={previewStory.id}
+                    />
                 </Grid>
             ) : null}
             <Grid item xs={12} className={classes.linkGrid}>

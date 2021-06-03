@@ -77,7 +77,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
     useEffect(() => {
         getStories();
     }, []);
-
+    console.log(stories);
     return (
         <Grid container className={classes.storyPageContainer}>
             {stories.map((el) => (
@@ -86,6 +86,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
                     justify="center"
                     alignItems="center"
                     className={classes.storyContainer}
+                    key={el.uuid}
                 >
                     <Grid item xs={12} sm={4} className={classes.authorGrid}>
                         <Typography

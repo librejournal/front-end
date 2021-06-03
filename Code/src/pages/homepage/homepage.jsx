@@ -59,7 +59,7 @@ const Homepage = ({ classes, limit, width }) => {
                     },
                 ]}
                 style={{
-                    height: "250px",
+                    height: "35vh",
                 }}
             >
                 <div className={classes.typedDiv}>
