@@ -12,60 +12,61 @@ import { compose } from "recompose";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 
 const useStyles = () => ({
-    storyContainerGrid: {
-        padding: "3vh 5vw",
-        margin: 0,
-        maxWidth: "900px",
-        
-    },
-    titleText: {},
+  storyContainerGrid: {
+    padding: "3vh 5vw",
+    margin: 0,
+    maxWidth: "900px",
+  },
+  titleText: {},
 });
 
 const StoryContainer = ({ classes, data, limit, width }) => {
-    return (
-        <Grid container className={classes.storyContainerGrid}>
-            <Grid item xs={12} className={classes.titleText}>
-                <Typography color="primary" variant="h5">
-                    Stories
-                </Typography>
-            </Grid>
-            {limit < width ? (
-                data
-                    .slice(0, 3)
-                    .map((el) => (
-                        <StoryItem
-                            title={el.title}
-                            imageUrl={el.imageUrl}
-                            like={el.like}
-                        />
-                    ))
-            ) : (
-                <Carousel
-                    plugins={[
-                        "fastSwipe",
-                        "centered",
-                        {
-                            resolve: slidesToShowPlugin,
-                            options: {
-                                numberOfSlides: 1.05,
-                            },
-                        },
-                    ]}
-                >
-                    {data.slice(0, 3).map((el) => (
-                        <StoryItem
-                            title={el.title}
-                            imageUrl={el.imageUrl}
-                            like={el.like}
-                        />
-                    ))}
-                </Carousel>
-            )}
-        </Grid>
-    );
+  return (
+    <Grid container className={classes.storyContainerGrid}>
+      <Grid item xs={12} className={classes.titleText}>
+        <Typography color="primary" variant="h5">
+          Stories
+        </Typography>
+      </Grid>
+      {limit < width ? (
+        data
+          .slice(0, 3)
+          .map((el) => (
+            <StoryItem
+              title={el.title}
+              imageUrl={el.imageUrl}
+              like={el.like}
+              key={el.title}
+            />
+          ))
+      ) : (
+        <Carousel
+          plugins={[
+            "fastSwipe",
+            "centered",
+            {
+              resolve: slidesToShowPlugin,
+              options: {
+                numberOfSlides: 1.05,
+              },
+            },
+          ]}
+        >
+          {data.slice(0, 3).map((el) => (
+            <StoryItem
+              title={el.title}
+              imageUrl={el.imageUrl}
+              like={el.like}
+              key={el.title}
+            />
+          ))}
+        </Carousel>
+      )}
+    </Grid>
+  );
 };
 
 export default compose(
-    withWindowConsumer,
-    withStyles(useStyles)
+  withWindowConsumer,
+  withStyles(useStyles)
 )(StoryContainer);
