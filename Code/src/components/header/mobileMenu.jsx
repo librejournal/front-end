@@ -23,12 +23,10 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
         </MenuItem>
         <MenuItem onClick={handleClose}>
             <Link
-                to={loggedUser.token === "" ? "/menu2" : "/stories"}
+                to={"/stories"}
                 style={{ textDecoration: "none", width: "100%" }}
             >
-                <Typography color="primary">
-                    {loggedUser.token === "" ? "Menu#2" : "Stories"}
-                </Typography>
+                <Typography color="primary">Stories</Typography>
             </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>

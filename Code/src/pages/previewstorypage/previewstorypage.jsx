@@ -35,6 +35,7 @@ const useStyles = () => ({
         minHeight: "60vh",
         borderBottom: "2px solid lightgray",
         alignContent: "flex-start",
+        background: "white",
     },
 });
 
@@ -44,12 +45,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
 
     const focusStory = async () => {
         await axios
-            .get(`http://localhost:9001/api/stories/${location.state.id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${loggedUser.token}`,
-                },
-            })
+            .get(`http://localhost:9001/api/stories/${location.state.id}`)
             .then((response) => {
                 setPreviewStory(response.data);
             })
@@ -92,6 +88,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
                     </Grid>
                 </Grid>
             ) : null}
+
             {previewStory ? (
                 <Grid container className={classes.storySection}>
                     <PreviewStory storyInfo={previewStory.components} />

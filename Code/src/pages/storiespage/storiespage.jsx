@@ -25,6 +25,10 @@ const useStyles = () => ({
         cursor: "pointer",
         margin: "2vh 0",
         padding: "2vh 0",
+        background: "white",
+        "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
     },
     buttonGrid: {
         display: "flex",
@@ -37,12 +41,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
     const getStories = async () => {
         await axios
-            .get("http://localhost:9001/api/stories/", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${loggedUser.token}`,
-                },
-            })
+            .get("http://localhost:9001/api/stories/")
             .then((response) => {
                 setStories(response.data);
             })

@@ -17,8 +17,13 @@ const useStyles = () => ({
         "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-        borderRadius:'15px',
-        backgroundColor:'white'
+        borderRadius: "15px",
+        backgroundColor: "white",
+        transition: "all 0.8s ease-out",
+        "&:hover": {
+            backgroundColor: "#1687a7",
+            padding: "2vh 1vh",
+        },
     },
     itemTitleGrid: {
         background: (props) =>

@@ -15,7 +15,9 @@ const useStyles = {
         display: "flex",
         justifyContent: "space-around",
         padding: "3vh 5vw",
-        
+        "-webkit-box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
+        "-moz-box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
+        "box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
     },
     titleText: {
         padding: "1vh 0",

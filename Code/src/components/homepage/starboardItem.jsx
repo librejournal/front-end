@@ -19,7 +19,7 @@ const useStyles = () => ({
         "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-        borderRadius:'15px',
+        borderRadius: "15px",
     },
     starboardTitle: {
         color: "white",
@@ -36,6 +36,11 @@ const useStyles = () => ({
         margin: "1vh 2vw",
         alignItems: "center",
         borderRadius: "10px",
+        transition: "all 0.8s ease-out",
+        "&:hover": {
+            backgroundColor: "cornsilk",
+            padding: "0 1vw",
+        },
     },
 });
 

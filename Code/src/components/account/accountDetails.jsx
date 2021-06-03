@@ -17,6 +17,10 @@ const useStyles = () => ({
         alignItems: "center",
         maxWidth: "450px",
         margin: "2vh",
+        background: "white",
+        "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
+        "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
     },
 });
 

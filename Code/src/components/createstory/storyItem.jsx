@@ -32,6 +32,7 @@ const useStyles = {
         maxWidth: "1500px",
         margin: "3vh auto",
         minHeight: "10vh",
+        background: "white",
         "& img": {
             cursor: "pointer",
             maxHeight: "50px",

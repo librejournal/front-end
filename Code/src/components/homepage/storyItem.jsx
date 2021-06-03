@@ -20,8 +20,13 @@ const useStyles = {
         "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-        borderRadius:'15px',
-        backgroundColor:'white'
+        borderRadius: "15px",
+        backgroundColor: "white",
+        transition: "all 0.8s ease-out",
+        "&:hover": {
+            backgroundColor: "cornsilk",
+            padding: "1vh 0.5vw",
+        },
     },
     storyItemHeader: {
         margin: (props) => (props.width < props.limit ? "0" : "1vh 0"),
@@ -58,6 +63,7 @@ const useStyles = {
         "-ms-transition": "all 1.8s ease-in",
         "-o-transition": "all 1.8s ease-in",
         "-webkit-transition": "all 1.8s ease-in",
+
         "& h3": {
             paddingBot: "2vh 0",
             borderTop: "solid white 2px",
@@ -88,7 +94,7 @@ const useStyles = {
     },
     storyItemText: {
         display: "flex",
-        justifyContent: "end",
+        justifyContent: "flex-end",
         alignItems: "center",
         "& h6": {
             cursor: "pointer",

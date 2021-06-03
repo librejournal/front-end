@@ -8,11 +8,14 @@ import { mapStateToPropsComments } from "../../redux/mapFunctions";
 import UpArrow from "../../assets/logo/UpArrow.svg";
 import DownArrow from "../../assets/logo/DownArrow.svg";
 import { withWindowConsumer } from "../../contexts/window/consumer";
+import _ from "underscore";
+import Swal from "sweetalert2";
 
 const useStyles = () => ({
     input: {
         minWidth: "30%",
-        maxWidth: "min(50%,600px)",
+        maxWidth: (props) =>
+            props.width < props.limit ? null : "min(50%,600px)",
         minHeight: "5rem",
         backgroundColor: "white",
         border: "2px solid lightgray",
@@ -22,6 +25,7 @@ const useStyles = () => ({
         alignItems: "flex-end",
         justifyContent: "flex-end",
         flexDirection: "column",
+        marginTop: "10%",
     },
     storyItemIcon: {
         display: "flex",
@@ -37,18 +41,24 @@ const useStyles = () => ({
     },
     commentGrid: {
         background: "white",
-        maxWidth: "min(50%,600px)",
+        maxWidth: (props) =>
+            props.width < props.limit ? null : "min(50%,600px)",
         padding: "1vh 2vw",
         "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-        margin: "2vh",
+        margin: "1vh 0",
+        display: "flex",
     },
     comment: {
         borderBottom: "2px solid lightgray",
         borderTop: "2px solid lightgray",
         minHeight: "5rem",
         padding: "0.5rem 0",
+    },
+    commentScore: {
+        display: "flex",
+        alignItems: "center",
     },
 });
 
@@ -84,7 +94,16 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                     },
                 }
             )
-            .then(getComments())
+            .then(() => {
+                getComments();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You have entered your comment successfully",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
             .catch((err) => console.log(err));
     };
 
@@ -100,7 +119,16 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                     },
                 }
             )
-            .then(getComments())
+            .then(() => {
+                getComments();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You have liked a comment",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
             .catch((err) => console.log(err));
     };
 
@@ -116,7 +144,16 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                     },
                 }
             )
-            .then(getComments())
+            .then(() => {
+                getComments();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You have disliked a comment",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
             .catch((err) => console.log(err));
     };
 
@@ -130,8 +167,20 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
             >
                 Comments
             </Typography>
+            {comments ? null : (
+                <Typography
+                    color="primary"
+                    variant="subtitle2"
+                    style={{ textAlign: "center", margin: "2vh" }}
+                >
+                    You have to be logged in to see comments.
+                </Typography>
+            )}
             {comments
-                ? comments.map((el) =>
+                ? _.sortBy(
+                      comments,
+                      (el) => el.dislike_count - el.like_count
+                  ).map((el) =>
                       el.story === id ? (
                           <Grid
                               item
@@ -140,103 +189,120 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                               key={el.uuid}
                               className={classes.commentGrid}
                           >
-                              <Typography color="primary" variant="subtitle2">
-                                  {el.author}
-                              </Typography>
-                              <Typography
-                                  variant="subtitle1"
-                                  className={classes.comment}
-                              >
-                                  {el.text}
-                              </Typography>
-
                               <Grid
                                   item
-                                  xs={12}
-                                  style={{
-                                      display: "flex",
-                                      justifyContent: "space-around",
-                                      padding: "1rem 0",
-                                  }}
+                                  xs={1}
+                                  className={classes.commentScore}
                               >
-                                  {el.can_user_like ? (
-                                      <Grid
-                                          item
-                                          md={2}
-                                          xs={4}
-                                          className={classes.storyItemIcon}
-                                          alignItems="center"
-                                          onClick={() => {
-                                              likeComment(el.id);
-                                          }}
-                                      >
-                                          <img src={UpArrow} alt="UpArrow" />
-                                          <Typography
-                                              variant={
-                                                  limit > width
-                                                      ? "subtitle2"
-                                                      : "subtitle1"
-                                              }
-                                              color="primary"
+                                  <Typography color="primary" variant="h6">
+                                      {el.like_count - el.dislike_count}
+                                  </Typography>
+                              </Grid>
+                              <Grid item xs={11}>
+                                  {" "}
+                                  <Typography
+                                      color="primary"
+                                      variant="subtitle2"
+                                  >
+                                      {el.author}
+                                  </Typography>
+                                  <Typography
+                                      variant="subtitle1"
+                                      className={classes.comment}
+                                  >
+                                      {el.text}
+                                  </Typography>
+                                  <Grid
+                                      item
+                                      xs={12}
+                                      style={{
+                                          display: "flex",
+                                          justifyContent: "space-around",
+                                          padding: "1rem 0",
+                                      }}
+                                  >
+                                      {el.can_user_like ? (
+                                          <Grid
+                                              item
+                                              md={2}
+                                              xs={4}
+                                              className={classes.storyItemIcon}
+                                              onClick={() => {
+                                                  likeComment(el.id);
+                                              }}
                                           >
-                                              Like
-                                          </Typography>
-                                      </Grid>
-                                  ) : null}
-                                  {el.can_user_dislike ? (
-                                      <Grid
-                                          item
-                                          md={2}
-                                          xs={4}
-                                          className={classes.storyItemIcon}
-                                          alignItems="center"
-                                          onClick={() => {
-                                              dislikeComment(el.id);
-                                          }}
-                                      >
-                                          <img
-                                              src={DownArrow}
-                                              alt="DownArrow"
-                                          />
-                                          <Typography
-                                              variant={
-                                                  limit > width
-                                                      ? "subtitle2"
-                                                      : "subtitle1"
-                                              }
-                                              color="primary"
+                                              <img
+                                                  src={UpArrow}
+                                                  alt="UpArrow"
+                                              />
+                                              <Typography
+                                                  variant={
+                                                      limit > width
+                                                          ? "subtitle2"
+                                                          : "subtitle1"
+                                                  }
+                                                  color="primary"
+                                              >
+                                                  Like
+                                              </Typography>
+                                          </Grid>
+                                      ) : null}
+                                      {el.can_user_dislike ? (
+                                          <Grid
+                                              item
+                                              md={2}
+                                              xs={4}
+                                              className={classes.storyItemIcon}
+                                              onClick={() => {
+                                                  dislikeComment(el.id);
+                                              }}
                                           >
-                                              Dislike
-                                          </Typography>
-                                      </Grid>
-                                  ) : null}
+                                              <img
+                                                  src={DownArrow}
+                                                  alt="DownArrow"
+                                              />
+                                              <Typography
+                                                  variant={
+                                                      limit > width
+                                                          ? "subtitle2"
+                                                          : "subtitle1"
+                                                  }
+                                                  color="primary"
+                                              >
+                                                  Dislike
+                                              </Typography>
+                                          </Grid>
+                                      ) : null}
+                                  </Grid>
                               </Grid>
                           </Grid>
                       ) : null
                   )
                 : null}
-            <Grid item xs={12} className={classes.sendCommentGrid}>
-                <Input
-                    color="primary"
-                    placeholder="Enter your text"
-                    fullWidth
-                    multiline
-                    className={classes.input}
-                    value={text}
-                    onChange={(event) => setText(event.target.value)}
-                    InputLabelProps={{
-                        style: { color: "#1687a7" },
-                    }}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ textDecoration: "none" }}
-                    onClick={() => createComment(text)}
-                >
-                    Comment
-                </Button>
-            </Grid>
+            {loggedUser.token ? (
+                <Grid item xs={12} className={classes.sendCommentGrid}>
+                    <Input
+                        color="primary"
+                        placeholder="Enter your text"
+                        fullWidth
+                        multiline
+                        className={classes.input}
+                        value={text}
+                        onChange={(event) => setText(event.target.value)}
+                        InputLabelProps={{
+                            style: { color: "#1687a7" },
+                        }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ textDecoration: "none" }}
+                        onClick={() => createComment(text)}
+                    >
+                        Comment
+                    </Button>
+                </Grid>
+            ) : null}
         </Grid>
     );
 };

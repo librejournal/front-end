@@ -5,26 +5,38 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
 import { compose } from "recompose";
+import LoginButton from "./loginbutton";
 
 const useStyles = () => ({
     headerMenuTextElements: {
         cursor: "pointer",
     },
+    breadcrums: {
+        "& li": {
+            "&:hover": {
+                background: "black",
+                padding: "0.5vh 0.5vw",
+                borderRadius: "20px",
+            },
+            transition: "all 0.8s ease-out",
+        },
+    },
 });
 
 const MyBreadcrumbs = ({ classes, loggedUser }) => (
-    <Breadcrumbs separator="|" aria-label="breadcrumb">
+    <Breadcrumbs
+        separator=""
+        aria-label="breadcrumb"
+        className={classes.breadcrums}
+    >
         <Link to="/" style={{ textDecoration: "none" }}>
             <Typography className={classes.headerMenuTextElements}>
                 Home
             </Typography>
         </Link>
-        <Link
-            to={loggedUser.token === "" ? "/menu2" : "/stories"}
-            style={{ textDecoration: "none" }}
-        >
+        <Link to={"/stories"} style={{ textDecoration: "none" }}>
             <Typography className={classes.headerMenuTextElements}>
-                {loggedUser.token === "" ? "Menu#2" : "Stories"}
+                Stories{" "}
             </Typography>
         </Link>
         <Link
@@ -35,14 +47,7 @@ const MyBreadcrumbs = ({ classes, loggedUser }) => (
                 {loggedUser.token === "" ? "Menu#3" : "Create a story"}
             </Typography>
         </Link>
-        <Link
-            to={loggedUser.token === "" ? "/login" : "/account"}
-            style={{ textDecoration: "none" }}
-        >
-            <Typography className={classes.headerMenuTextElements}>
-                {loggedUser.token === "" ? "Login" : "Account"}
-            </Typography>
-        </Link>
+        <LoginButton />
     </Breadcrumbs>
 );
 
