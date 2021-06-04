@@ -7,6 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { mapStateToStoriesPage } from "../../redux/mapFunctions";
 import Swal from "sweetalert2";
 
@@ -38,6 +39,7 @@ const useStyles = () => ({
 
 const StoriesPage = ({ classes, loggedUser }) => {
     const [stories, setStories] = useState([]);
+    const [editSuccess, setEditSuccess] = useState(0);
 
     const getStories = async () => {
         await axios
@@ -73,12 +75,41 @@ const StoriesPage = ({ classes, loggedUser }) => {
             });
     };
 
+    const editStory = async (id) => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/`;
+        await axios
+            .patch(
+                url,
+                {
+                    is_draft: true,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Token ${loggedUser.token}`,
+                    },
+                }
+            )
+            .then((response) => {
+                setEditSuccess(id);
+            })
+            .catch((err) => console.log(err));
+    };
+
     useEffect(() => {
         getStories();
     }, []);
-    console.log(stories);
+
     return (
         <Grid container className={classes.storyPageContainer}>
+            {editSuccess ? (
+                <Redirect
+                    to={{
+                        pathname: "/createstory",
+                        state: { editId: editSuccess },
+                    }}
+                />
+            ) : null}
             {stories.map((el) => (
                 <Grid
                     container
@@ -129,7 +160,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
                                 el.author.user.profile_id
                             }
                             style={{ textDecoration: "none" }}
-                            onClick={() => console.log("edit")}
+                            onClick={() => editStory(el.id)}
                         >
                             Edit
                         </Button>

@@ -44,8 +44,9 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
     const [previewStory, setPreviewStory] = useState(null);
 
     const focusStory = async () => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`;
         await axios
-            .get(`http://localhost:9001/api/stories/${location.state.id}`)
+            .get(url)
             .then((response) => {
                 setPreviewStory(response.data);
             })

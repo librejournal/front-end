@@ -28,7 +28,7 @@ const useStyles = () => ({
         "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
         "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-        background:'white',
+        background: "white",
     },
     bottomText: {
         color: "gray",
@@ -56,8 +56,9 @@ const LoginForm = ({
         setUser({ ...user, [infoType]: event.target.value });
 
     const loginRequest = async (info) => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/auth/login`;
         await axios
-            .post("http://localhost:9001/api/auth/login", info, {
+            .post(url, info, {
                 headers: {
                     "Content-Type": "application/json",
                 },

@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { mapStateToCreateStoryPage } from "../../redux/mapFunctions";
 
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 import Swal from "sweetalert2";
 
@@ -64,7 +65,14 @@ const useStyles = {
     },
 };
 
-const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
+const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
+    const [editId, setEditId] = useState(null);
+    const [storyInfo, setStoryInfo] = useState([]);
+    const [tagInfo, setTagInfo] = useState({ tags: [] });
+    const [locationInfo, setLocationInfo] = useState({ locations: [] });
+    const [storyId, setStoryId] = useState(null);
+    const [success, setSuccess] = useState(false);
+
     const getStoryInfo = async () => {
         axios
             .get("http://localhost:9001/api/stories/drafts", {
@@ -76,7 +84,6 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
             .then((response) => {
                 if (response.data.length > 0) {
                     const data = response.data[0];
-                    console.log(data);
                     setStoryInfo(data.components);
                     setStoryId(data.id);
                     setTagInfo(data.tags);
@@ -102,10 +109,11 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Story is Published",
+                    title: `Story is ${location ? "edited" : "published"}`,
                     showConfirmButton: false,
                     timer: 2000,
                 });
+                setSuccess(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -134,21 +142,44 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
             .then((response) => getStoryInfo())
             .catch((err) => console.log(err));
     };
-
-    const [storyInfo, setStoryInfo] = useState([]);
-    const [tagInfo, setTagInfo] = useState({ tags: [] });
-    const [locationInfo, setLocationInfo] = useState({ locations: [] });
-    const [storyId, setStoryId] = useState(null);
+    const editStoryInfo = async (id) => {
+        axios
+            .get(`http://localhost:9001/api/stories/drafts/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Token ${loggedUser.token}`,
+                },
+            })
+            .then((response) => {
+                const data = response.data;
+                setStoryInfo(data.components);
+                setStoryId(data.id);
+                setTagInfo(data.tags);
+                setLocationInfo(data.locations);
+            })
+            .catch((error) => console.log(error));
+    };
 
     useEffect(() => {
-        getStoryInfo();
+        if (location.state) {
+            editStoryInfo(location.state.editId);
+        } else {
+            getStoryInfo();
+        }
     }, []);
-    console.log(storyInfo);
+
     return (
         <Grid container className={classes.createStoryPageContainer}>
+            {success ? (
+                <Redirect
+                    to={{
+                        pathname: "/stories",
+                    }}
+                />
+            ) : null}
             <Grid item xs={12} className={classes.createStoryTitle}>
                 <Typography color="primary" variant="h4">
-                    Create a new story
+                    {location.state ? "Edit" : "Create"} a story
                 </Typography>
             </Grid>
             <Grid
@@ -215,7 +246,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width }) => {
                         color="primary"
                         onClick={() => publishStory()}
                     >
-                        Create a story
+                        {location.state ? "Edit" : "Create"} a story
                     </Button>
                 </Grid>
             </Grid>
