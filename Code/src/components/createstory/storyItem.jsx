@@ -142,7 +142,6 @@ const StoryItem = ({
                         : { id: el.id, order_id: el.order_id }
                 );
                 return newArray;
-                break;
 
             case "up":
                 newArray = orderArray.map((el, ind) =>
@@ -153,7 +152,7 @@ const StoryItem = ({
                         : el
                 );
                 return newArray;
-                break;
+
             case "down":
                 newArray = orderArray.map((el, ind) =>
                     el.order_id === itemOrder
@@ -163,7 +162,7 @@ const StoryItem = ({
                         : el
                 );
                 return newArray;
-                break;
+
             default:
                 return orderArray;
         }

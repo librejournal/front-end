@@ -66,7 +66,6 @@ const useStyles = {
 };
 
 const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
-    const [editId, setEditId] = useState(null);
     const [storyInfo, setStoryInfo] = useState([]);
     const [tagInfo, setTagInfo] = useState({ tags: [] });
     const [locationInfo, setLocationInfo] = useState({ locations: [] });

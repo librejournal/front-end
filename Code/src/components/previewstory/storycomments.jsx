@@ -185,7 +185,6 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                           <Grid
                               item
                               xs={12}
-                              className={classes.previewComment}
                               key={el.uuid}
                               className={classes.commentGrid}
                           >

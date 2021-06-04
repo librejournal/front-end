@@ -13,18 +13,19 @@ export const withWindowProvider = (Component) => {
             const width =
                 w.innerWidth || documentElement.clientWidth || body.clientWidth;
             let height =
-                w.height ||
-                documentElement.clientHeight ||
                 w.innerHeight ||
+                documentElement.clientHeight ||
+                w.height ||
                 body.clientHeight;
-            if (limit > width) height *= 0.9;
             return { width, height, limit };
         };
+
         const [dimension, setDimension] = useState({
             width: props.width || getDimensions().width,
             height: props.height || getDimensions().height,
             limit: props.limit || getDimensions().limit,
         });
+
         const updateDimensions = () => {
             setDimension({
                 width: props.width || getDimensions().width,
