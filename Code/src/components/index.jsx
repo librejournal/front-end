@@ -10,7 +10,8 @@ import CreateStory from "./createstory/createStory";
 import PreviewStory from "./createstory/previewStory";
 import TagsArea from "./createstory/tagsArea";
 import LocationArea from "./createstory/locationArea";
-import StoryCommments from './previewstory/storycomments'
+import StoryCommments from "./previewstory/storycomments";
+import UserInfo from "./user/user";
 
 export {
   Header,
@@ -25,5 +26,6 @@ export {
   PreviewStory,
   TagsArea,
   LocationArea,
-  StoryCommments
+  StoryCommments,
+  UserInfo,
 };

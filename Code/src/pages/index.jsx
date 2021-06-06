@@ -5,6 +5,7 @@ import AccountPage from "./accountpage/accountpage";
 import CreateStoryPage from "./createstory/createstory";
 import StoriesPage from "./storiespage/storiespage";
 import PreviewStoryPage from "./previewstorypage/previewstorypage";
+import UserPage from "./userpage/userpage";
 
 export {
   Homepage,
@@ -14,4 +15,5 @@ export {
   CreateStoryPage,
   StoriesPage,
   PreviewStoryPage,
+  UserPage,
 };

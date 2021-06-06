@@ -10,8 +10,8 @@ import axios from "axios";
 
 import { connect } from "react-redux";
 import {
-    mapStateToAccount,
-    mapDispatchToAccount,
+  mapStateToAccount,
+  mapDispatchToAccount,
 } from "../../redux/mapFunctions";
 
 import AccountInfo from "./accountInfo";
@@ -19,8 +19,8 @@ import AccountDetails from "./accountDetails";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 
 import Carousel, {
-    slidesToShowPlugin,
-    arrowsPlugin,
+  slidesToShowPlugin,
+  arrowsPlugin,
 } from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 
@@ -28,145 +28,130 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const useStyles = () => ({
-    accountpageContainer: {
-        overflowY: "auto",
-    },
-    arrowActive: {
-        fill: "#1687a7",
-    },
-    arrowDeactive: {
-        fill: "white",
-    },
-    bottomButton: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
+  accountpageContainer: {
+    overflowY: "auto",
+  },
+  arrowActive: {
+    fill: "#1687a7",
+  },
+  arrowDeactive: {
+    fill: "white",
+  },
+  bottomButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
-    const [detailedInfo, setDetailedInfo] = useState(null);
+  const [detailedInfo, setDetailedInfo] = useState(null);
 
-    useEffect(() => {
-        getProfileDetails();
-    }, []);
-    const logoutRequest = async () => {
-        await axios
-            .post(
-                "http://localhost:9001/api/auth/logout",
-                {},
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Token ${loggedUser.token}`,
-                    },
-                }
-            )
-            .then(() => {
-                onLogoutUser();
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "You have logged out successfully",
-                    showConfirmButton: false,
-                    timer: 2000,
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+  useEffect(() => {
+    getProfileDetails();
+  }, []);
 
-    const getProfileDetails = async () => {
-        axios
-            .get("http://localhost:9001/api/profile/self-detail", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${loggedUser.token}`,
-                },
-            })
-            .then((response) => setDetailedInfo(response.data))
-            .catch((err) => console.log(err));
-    };
+  console.log(detailedInfo);
+  const logoutRequest = async () => {
+    await axios
+      .post(
+        "http://localhost:9001/api/auth/logout",
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then(() => {
+        onLogoutUser();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "You have logged out successfully",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    return (
-        <Grid
-            container
-            justify="space-evenly"
-            alignItems="center"
-            className={classes.accountpageContainer}
+  const getProfileDetails = async () => {
+    axios
+      .get("http://localhost:9001/api/profile/self-detail", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => setDetailedInfo(response.data))
+      .catch((err) => console.log(err));
+  };
+
+  return (
+    <Grid
+      container
+      justify="space-evenly"
+      alignItems="center"
+      className={classes.accountpageContainer}
+    >
+      {1000 < width ? (
+        <>
+          <AccountInfo loggedUser={loggedUser} logoutRequest={logoutRequest} />
+          {detailedInfo ? <AccountDetails detailedInfo={detailedInfo} /> : null}
+        </>
+      ) : (
+        <Carousel
+          plugins={[
+            "fastSwipe",
+            "centered",
+
+            {
+              resolve: slidesToShowPlugin,
+              options: {
+                numberOfSlides: 1.05,
+              },
+            },
+            {
+              resolve: arrowsPlugin,
+              options: {
+                arrowLeft: <ArrowBackIosIcon className={classes.arrowActive} />,
+                arrowLeftDisabled: (
+                  <ArrowBackIosIcon className={classes.arrowDeactive} />
+                ),
+                arrowRight: (
+                  <ArrowForwardIosIcon className={classes.arrowActive} />
+                ),
+                arrowRightDisabled: (
+                  <ArrowForwardIosIcon className={classes.arrowDeactive} />
+                ),
+                addArrowClickHandler: true,
+              },
+            },
+          ]}
         >
-            {1000 < width ? (
-                <>
-                    <AccountInfo
-                        loggedUser={loggedUser}
-                        logoutRequest={logoutRequest}
-                    />
-                    {detailedInfo ? (
-                        <AccountDetails detailedInfo={detailedInfo} />
-                    ) : null}
-                </>
-            ) : (
-                <Carousel
-                    plugins={[
-                        "fastSwipe",
-                        "centered",
-
-                        {
-                            resolve: slidesToShowPlugin,
-                            options: {
-                                numberOfSlides: 1.05,
-                            },
-                        },
-                        {
-                            resolve: arrowsPlugin,
-                            options: {
-                                arrowLeft: (
-                                    <ArrowBackIosIcon
-                                        className={classes.arrowActive}
-                                    />
-                                ),
-                                arrowLeftDisabled: (
-                                    <ArrowBackIosIcon
-                                        className={classes.arrowDeactive}
-                                    />
-                                ),
-                                arrowRight: (
-                                    <ArrowForwardIosIcon
-                                        className={classes.arrowActive}
-                                    />
-                                ),
-                                arrowRightDisabled: (
-                                    <ArrowForwardIosIcon
-                                        className={classes.arrowDeactive}
-                                    />
-                                ),
-                                addArrowClickHandler: true,
-                            },
-                        },
-                    ]}
-                >
-                    <AccountInfo loggedUser={loggedUser} />
-                    {detailedInfo ? (
-                        <AccountDetails detailedInfo={detailedInfo} />
-                    ) : null}
-                </Carousel>
-            )}
-            <Grid item xs={12} className={classes.bottomButton}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => logoutRequest()}
-                >
-                    LOGOUT
-                </Button>
-            </Grid>
-        </Grid>
-    );
+          <AccountInfo loggedUser={loggedUser} />
+          {detailedInfo ? <AccountDetails detailedInfo={detailedInfo} /> : null}
+        </Carousel>
+      )}
+      <Grid item xs={12} className={classes.bottomButton}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => logoutRequest()}
+        >
+          LOGOUT
+        </Button>
+      </Grid>
+    </Grid>
+  );
 };
 
 export default compose(
-    withWindowConsumer,
-    connect(mapStateToAccount, mapDispatchToAccount),
-    withStyles(useStyles)
+  withWindowConsumer,
+  connect(mapStateToAccount, mapDispatchToAccount),
+  withStyles(useStyles)
 )(Account);
