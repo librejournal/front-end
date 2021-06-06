@@ -4,7 +4,10 @@ import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import TrendingItem from "./trendingItem";
-import Carousel, { slidesToShowPlugin } from "@brainhubeu/react-carousel";
+import Carousel, {
+  slidesToShowPlugin,
+  slidesToScrollPlugin,
+} from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 
 import { compose } from "recompose";
@@ -48,6 +51,12 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
             "centered",
             {
               resolve: slidesToShowPlugin,
+              options: {
+                numberOfSlides: 2.05,
+              },
+            },
+            {
+              resolve: slidesToScrollPlugin,
               options: {
                 numberOfSlides: 2.05,
               },

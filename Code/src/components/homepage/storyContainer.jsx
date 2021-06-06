@@ -5,7 +5,10 @@ import { withStyles } from "@material-ui/core/styles";
 
 import StoryItem from "./storyItem";
 
-import Carousel, { slidesToShowPlugin } from "@brainhubeu/react-carousel";
+import Carousel, {
+  slidesToShowPlugin,
+  slidesToScrollPlugin,
+} from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 
 import { compose } from "recompose";
@@ -46,6 +49,12 @@ const StoryContainer = ({ classes, data, limit, width }) => {
             "centered",
             {
               resolve: slidesToShowPlugin,
+              options: {
+                numberOfSlides: 1.05,
+              },
+            },
+            {
+              resolve: slidesToScrollPlugin,
               options: {
                 numberOfSlides: 1.05,
               },

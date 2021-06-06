@@ -11,7 +11,7 @@ const useStyles = () => ({
     height: "20vh",
     display: "flex",
     justifyContent: "flex-end",
-    width: "max(15vw, 160px)",
+    width: "max(15vw, 200px)",
     padding: "2vh",
     margin: "1vh 0",
     border: "0.5px solid gray",
@@ -66,7 +66,7 @@ const TrendingItem = ({ title, classes, imageUrl }) => {
     };
     loadData(imageUrl);
   }, [imageUrl]);
-  console.log("asd");
+
   return (
     <Grid container className={classes.itemGrid}>
       <Grid
@@ -74,6 +74,7 @@ const TrendingItem = ({ title, classes, imageUrl }) => {
         xs={12}
         className={classes.itemTitleGrid}
         id={`trendingImage-${imageUrl}`}
+        key={imageUrl}
       >
         <Typography className={classes.itemTitleText}>{title}</Typography>
       </Grid>

@@ -42,15 +42,31 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
     setTagText("");
   };
 
+  const searchTag = async (value) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/tags?search=${value}`;
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) =>
+        response.data.length ? console.log(response.data) : addNewTag(value)
+      )
+      .catch((err) => console.log(err));
+  };
+
   const addNewTag = async (value) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/tags`;
     let newTag = tagInfo.tags.includes(`${value}`)
       ? [...tagInfo.tags]
       : [...tagInfo.tags, value];
+
     await axios
-      .patch(
+      .post(
         url,
-        { tags: newTag },
+        { tag: value },
         {
           headers: {
             "Content-Type": "application/json",
@@ -58,10 +74,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
           },
         }
       )
-      .then(() => {
-        setTagInfo([...tagInfo, value]);
-        console.log(newTag);
-      })
+      .then()
       .catch((err) => console.log(err));
 
     setOpen(false);
@@ -97,7 +110,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
               variant="contained"
               color="primary"
               onClick={() => {
-                addNewTag(tagText);
+                searchTag(tagText);
               }}
             >
               Add Tag

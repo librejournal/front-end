@@ -4,7 +4,11 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 
 import axios from "axios";
-import { PreviewStory, StoryCommments } from "../../components";
+import {
+  PreviewStory,
+  StoryCommments,
+  StoryLikeDislike,
+} from "../../components";
 import { Link, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
@@ -46,8 +50,19 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   const focusStory = async () => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`;
     await axios
-      .get(url)
+      .get(
+        url,
+        loggedUser.token
+          ? {
+              headers: {
+                Authorization: `Token ${loggedUser.token}`,
+              },
+            }
+          : null
+      )
+
       .then((response) => {
+        console.log(response.data);
         setPreviewStory(response.data);
       })
       .catch((err) => console.log(err));
@@ -56,7 +71,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   useEffect(() => {
     focusStory();
   }, []);
-  console.log(previewStory);
+
   return (
     <Grid container className={classes.storyPreviewContainer}>
       {previewStory ? (
@@ -94,7 +109,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
               Created At: &nbsp; &nbsp;
             </Typography>
             <Typography color="primary" variant="subtitle2">
-              Date will appear here
+              {previewStory.created.split("T")[0]}
             </Typography>
           </Grid>
         </Grid>
@@ -105,6 +120,8 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
           <PreviewStory storyInfo={previewStory.components} />
         </Grid>
       ) : null}
+      {previewStory ? <StoryLikeDislike storyInfo={previewStory} /> : null}
+
       {previewStory ? (
         <Grid container className={classes.commentSection}>
           <StoryCommments loggedUser={loggedUser} id={previewStory.id} />

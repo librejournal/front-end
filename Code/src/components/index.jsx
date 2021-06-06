@@ -12,6 +12,7 @@ import TagsArea from "./createstory/tagsArea";
 import LocationArea from "./createstory/locationArea";
 import StoryCommments from "./previewstory/storycomments";
 import UserInfo from "./user/user";
+import StoryLikeDislike from "./previewstory/storylikedislike";
 
 export {
   Header,
@@ -28,4 +29,5 @@ export {
   LocationArea,
   StoryCommments,
   UserInfo,
+  StoryLikeDislike,
 };

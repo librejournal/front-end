@@ -233,7 +233,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
             color="primary"
             onClick={() => publishStory()}
           >
-            {location.state ? "Edit" : "Create"} a story
+            {location.state === "undefined" ? "Edit" : "Create"} a story
           </Button>
         </Grid>
       </Grid>
