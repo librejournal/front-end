@@ -9,7 +9,7 @@ import {
   StoryCommments,
   StoryLikeDislike,
 } from "../../components";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { mapStateToStoriesPage } from "../../redux/mapFunctions";
@@ -72,6 +72,8 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
     focusStory();
   }, []);
 
+
+
   return (
     <Grid container className={classes.storyPreviewContainer}>
       {previewStory ? (
@@ -91,7 +93,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
               key={previewStory.author.id}
               style={{ textDecoration: "none", display: "flex" }}
             >
-              <Typography variant="subtitle1">Author: &nbsp; &nbsp;</Typography>
+              <Typography style={{color:'black'}} variant="subtitle1">Author: &nbsp; &nbsp;</Typography>
               <Typography color="primary" variant="subtitle1">
                 {previewStory.author.user.username}
               </Typography>
@@ -120,7 +122,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
           <PreviewStory storyInfo={previewStory.components} />
         </Grid>
       ) : null}
-      {previewStory ? <StoryLikeDislike storyInfo={previewStory} /> : null}
+      {previewStory ? <StoryLikeDislike storyInfo={previewStory} focusStory={focusStory}/> : null}
 
       {previewStory ? (
         <Grid container className={classes.commentSection}>

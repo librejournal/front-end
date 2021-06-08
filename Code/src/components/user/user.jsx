@@ -50,7 +50,7 @@ const useStyles = () => ({
 
 const UserInfo = ({ classes, loggedUser, userInfo }) => {
   const [user, setUser] = useState(null);
-  const [selfUser, setSelfUser] = useState(null);
+  
   const getUserInfo = async (id) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/profile/${id}/detail`;
     await axios
@@ -65,7 +65,6 @@ const UserInfo = ({ classes, loggedUser, userInfo }) => {
   };
 
   const followUser = async (id) => {
-    console.log(id);
     const url = `${process.env.REACT_APP_DB_HOST}/api/profile/follow`;
     await axios
       .patch(
@@ -90,22 +89,11 @@ const UserInfo = ({ classes, loggedUser, userInfo }) => {
       .catch((err) => console.log(err));
   };
 
-  const selfUserInfo = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profile/self-detail`;
-    await axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${loggedUser.token}`,
-        },
-      })
-      .then((response) => setSelfUser(response.data))
-      .catch((err) => console.log(err));
-  };
+ 
 
   useEffect(() => {
     getUserInfo(userInfo.user.profile_id);
-    selfUserInfo();
+    
   }, []);
 
   console.log(userInfo);

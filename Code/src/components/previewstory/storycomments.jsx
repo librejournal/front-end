@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, Input, Button } from "@material-ui/core";
+import { Grid, Typography, Input, Button, Breadcrumbs } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import axios from "axios";
@@ -8,7 +8,6 @@ import { mapStateToPropsComments } from "../../redux/mapFunctions";
 import UpArrow from "../../assets/logo/UpArrow.svg";
 import DownArrow from "../../assets/logo/DownArrow.svg";
 import { withWindowConsumer } from "../../contexts/window/consumer";
-import _ from "underscore";
 import Swal from "sweetalert2";
 
 const useStyles = () => ({
@@ -59,26 +58,31 @@ const useStyles = () => ({
     display: "flex",
     alignItems: "center",
   },
+  orderGrid:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
+  }
 });
 
 const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const [text, setText] = useState("");
   const [comments, setComments] = useState(null);
+  const [toggle,setToggle] = useState(false)
 
   useEffect(() => {
-    getComments();
+    getComments('likes');
   }, []);
 
-  console.log(comments);
-  const getComments = async () => {
+  const getComments = async (order) => {
     await axios
-      .get(`http://localhost:9001/api/stories/${id}/comments/`, {
+      .get(`http://localhost:9001/api/stories/${id}/comments?ordering=${toggle ? order : "-" + order}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
         },
       })
-      .then((response) => setComments(response.data))
+      .then((response) => setComments(response.data), setToggle(!toggle))
       .catch((err) => console.log(err));
   };
 
@@ -95,7 +99,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
         }
       )
       .then(() => {
-        getComments();
+        getComments('date');
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -120,7 +124,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
         }
       )
       .then(() => {
-        getComments();
+        getComments('date');
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -145,7 +149,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
         }
       )
       .then(() => {
-        getComments();
+        getComments('date');
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -157,8 +161,11 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
       .catch((err) => console.log(err));
   };
 
+
+
   return (
     <Grid item xs={12}>
+      <Grid item xs={12}>
       <Typography
         color="primary"
         variant="h5"
@@ -166,6 +173,8 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
       >
         Comments
       </Typography>
+      </Grid>
+     
       {comments ? null : (
         <Typography
           color="primary"
@@ -175,8 +184,45 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
           You have to be logged in to see comments.
         </Typography>
       )}
+      {comments ?  <Grid item xs={12} className={classes.orderGrid}>
+        <Breadcrumbs seperator="|" style={{border:'2px solid lightgray'}}>
+        <Typography
+        color="primary"
+        variant="subtitle1"
+        style={{ textAlign: "center", margin: "2vh", cursor:'pointer' }}
+        onClick={()=>getComments('date')}
+      >
+        Date
+      </Typography>
+      <Typography
+        color="primary"
+        variant="subtitle1"
+        style={{ textAlign: "center", margin: "2vh", cursor:'pointer' }}
+        onClick={()=>getComments('score')}
+      >
+        Score
+      </Typography>
+      <Typography
+        color="primary"
+        variant="subtitle1"
+        style={{ textAlign: "center", margin: "2vh", cursor:'pointer' }}
+        onClick={()=>getComments('likes')}
+      >
+        Like
+      </Typography>
+      <Typography
+        color="primary"
+        variant="subtitle1"
+        style={{ textAlign: "center", margin: "2vh", cursor:'pointer' }}
+        onClick={()=>getComments('dislikes')}
+      >
+        Dislike
+      </Typography>
+        </Breadcrumbs>
+      </Grid> : null}
       {comments
-        ? _.sortBy(comments, (el) => el.dislike_count - el.like_count).map(
+        ? 
+        comments.map(
             (el) => (
               <Grid item xs={12} key={el.uuid} className={classes.commentGrid}>
                 <Grid item xs={1} className={classes.commentScore}>
@@ -187,7 +233,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                 <Grid item xs={11}>
                   {" "}
                   <Typography color="primary" variant="subtitle2">
-                    {el.author.user.username} - {el.created.split("T")[0]}
+                    {el.author.user.username} - {el.created.split("T")[0]} - {el.created.split("T")[1].split('.')[0]}
                   </Typography>
                   <Typography variant="subtitle1" className={classes.comment}>
                     {el.text}

@@ -32,6 +32,7 @@ const useStyles = {
 
 const PreviewStory = ({ classes, storyInfo }) => {
     const storyInfoArray = _.sortBy(storyInfo, "order_id");
+   
     return (
         <Grid container className={classes.previewContainer}>
             {storyInfoArray.map((el) =>

@@ -78,6 +78,7 @@ const useStyles = {
     margin: (props) => (props.width < props.limit ? "none" : "1vh 1vw"),
     display: "flex",
     padding: "10px 0",
+    
   },
 
   storyItemIcon: {
