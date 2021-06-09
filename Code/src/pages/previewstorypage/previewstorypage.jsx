@@ -63,7 +63,6 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
       )
 
       .then((response) => {
-        console.log(response.data);
         setPreviewStory(response.data);
       })
       .catch((err) => console.log(err));

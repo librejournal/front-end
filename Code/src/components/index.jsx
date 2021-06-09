@@ -15,6 +15,8 @@ import UserInfo from "./user/user";
 import StoryLikeDislike from "./previewstory/storylikedislike";
 import DialogBox from "./account/dialogBox";
 import TitleDialog from "./createstory/titleDialog";
+import SearchBar from "./homepage/searchBar";
+import OrderBar from "./homepage/orderBar";
 
 export {
   Header,
@@ -34,4 +36,6 @@ export {
   StoryLikeDislike,
   DialogBox,
   TitleDialog,
+  SearchBar,
+  OrderBar,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -24,15 +24,12 @@ const useStyles = () => ({
   },
 });
 
-const TitleDialog = ({
-  classes,
-  open,
-  handleClose,
-  storyId,
-  token,
-  publishStory,
-}) => {
-  const [text, setText] = useState("");
+const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
+  const [text, setText] = useState(title);
+
+  useEffect(() => {
+    setText(title);
+  }, [title]);
 
   const editTitle = async (title) => {
     const info = {
@@ -46,20 +43,13 @@ const TitleDialog = ({
           Authorization: `Token ${token}`,
         },
       })
-      .then(() => {
-        publishStory();
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
   };
-
   return (
-    <Dialog
-      onClose={handleClose}
-      aria-labelledby="simple-dialog-title"
-      open={open}
-    >
+    <Dialog aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">
         Enter title for your story
       </DialogTitle>
@@ -72,6 +62,7 @@ const TitleDialog = ({
               fullWidth
               multiline
               value={text}
+              defaultValue={text}
               onChange={(event) => setText(event.target.value)}
               InputLabelProps={{
                 style: { color: "#1687a7" },
@@ -81,8 +72,10 @@ const TitleDialog = ({
               <Button
                 variant="contained"
                 color="primary"
+                disabled={text === ""}
                 onClick={() => {
                   editTitle(text);
+                  handleClose();
                 }}
               >
                 Save Title

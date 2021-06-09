@@ -4,6 +4,8 @@ import {
   TrendingContainer,
   StoryContainer,
   StarboardContainer,
+  SearchBar,
+  OrderBar,
 } from "../../components";
 import { Breadcrumbs, Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -42,6 +44,15 @@ const useStyles = {
     textAlign: "center",
     "& span": { color: "white", fontSize: "2rem" },
   },
+  titleText: {
+    textAlign: "center",
+    padding: "2vh 0 ",
+    "& h5": {
+      backgroundColor: "#1687a7",
+      color: "white",
+      borderRadius: "10px",
+    },
+  },
 };
 
 const Homepage = ({ classes, limit, width }) => {
@@ -60,7 +71,7 @@ const Homepage = ({ classes, limit, width }) => {
             },
           ]}
           style={{
-            height: "35vh",
+            height: "65vh",
           }}
         >
           <div className={classes.typedDiv}>
@@ -106,7 +117,28 @@ const Homepage = ({ classes, limit, width }) => {
         )}
 
         {limit < width ? (
-          <>
+          <Grid container justify="center" style={{ maxWidth: "1600px" }}>
+            <Grid item xs={12} className={classes.titleText}>
+              <Typography color="primary" variant="h5">
+                Stories
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{
+                minHeight: "10rem",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+                backgroundColor: "white",
+                borderBottom: "2px solid lightgray",
+                borderTop: "2px solid lightgray",
+              }}
+            >
+              <SearchBar />
+              <OrderBar />
+            </Grid>
             <StoryContainer data={mockupDataStory} />
             <StarboardContainer
               title1="Top Authors"
@@ -114,7 +146,7 @@ const Homepage = ({ classes, limit, width }) => {
               data1={mockupDataStarboard.author}
               data2={mockupDataStarboard.location}
             />
-          </>
+          </Grid>
         ) : container === "Stories" ? (
           <StoryContainer data={mockupDataStory} />
         ) : (

@@ -20,17 +20,11 @@ const useStyles = () => ({
     margin: 0,
     maxWidth: "900px",
   },
-  titleText: {},
 });
 
 const StoryContainer = ({ classes, data, limit, width }) => {
   return (
     <Grid container className={classes.storyContainerGrid}>
-      <Grid item xs={12} className={classes.titleText}>
-        <Typography color="primary" variant="h5">
-          Stories
-        </Typography>
-      </Grid>
       {limit < width ? (
         data
           .slice(0, 3)

@@ -71,12 +71,10 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
   const [tagInfo, setTagInfo] = useState({ tags: [] });
   const [locationInfo, setLocationInfo] = useState({ locations: [] });
   const [storyId, setStoryId] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [storyTitle, setStoryTitle] = useState("");
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [success, setSuccess] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleClose = (value) => {
     setOpen(false);
@@ -97,6 +95,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
           setStoryId(data.id);
           setTagInfo(data.tags);
           setLocationInfo(data.locations);
+          setStoryTitle(data.title);
         } else createNewStory();
       })
       .catch((error) => console.log(error));
@@ -164,6 +163,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
         setStoryId(data.id);
         setTagInfo(data.tags);
         setLocationInfo(data.locations);
+        setStoryTitle(data.title);
       })
       .catch((error) => console.log(error));
   };
@@ -191,6 +191,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
         publishStory={publishStory}
         token={loggedUser.token}
         storyId={storyId}
+        title={storyTitle}
       />
       <Grid item xs={12} className={classes.createStoryTitle}>
         <Typography color="primary" variant="h4">
@@ -248,9 +249,9 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleClickOpen()}
+            onClick={() => publishStory()}
           >
-            {location.state !== "undefined" ? "Edit" : "Create"} a story
+            {location.state ? "Edit" : "Create"} a story
           </Button>
         </Grid>
       </Grid>
