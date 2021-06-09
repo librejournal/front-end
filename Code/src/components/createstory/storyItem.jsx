@@ -353,7 +353,7 @@ const StoryItem = ({
       });
   };
 
-  const editItem = (id, type, value, type_setting) => {
+  const editItem = async (id, type, value, type_setting) => {
     let editItemId = storyInfo.id;
 
     const info = {
@@ -363,7 +363,7 @@ const StoryItem = ({
       story: storyId,
     };
 
-    axios
+    await axios
       .patch(
         `http://localhost:9001/api/stories/${storyId}/components/${editItemId}`,
         info,

@@ -14,6 +14,7 @@ import StoryCommments from "./previewstory/storycomments";
 import UserInfo from "./user/user";
 import StoryLikeDislike from "./previewstory/storylikedislike";
 import DialogBox from "./account/dialogBox";
+import TitleDialog from "./createstory/titleDialog";
 
 export {
   Header,
@@ -32,4 +33,5 @@ export {
   UserInfo,
   StoryLikeDislike,
   DialogBox,
+  TitleDialog,
 };

@@ -134,7 +134,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
               </Grid>
               <Grid item xs={12} sm={4}>
                 <Typography variant="h6" color="primary">
-                  {el.uuid}
+                  {el.title}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4} className={classes.buttonGrid}>
