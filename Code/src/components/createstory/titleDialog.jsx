@@ -12,7 +12,17 @@ import { withStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const useStyles = () => ({});
+const useStyles = () => ({
+  titleAdd: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    "& button": {
+      marginTop: "2vh",
+    },
+  },
+});
 
 const TitleDialog = ({
   classes,

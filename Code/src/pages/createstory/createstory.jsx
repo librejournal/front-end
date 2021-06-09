@@ -194,7 +194,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
       />
       <Grid item xs={12} className={classes.createStoryTitle}>
         <Typography color="primary" variant="h4">
-          {location.state ? "Edit" : "Create"} a story
+          {location.state !== undefined ? "Edit" : "Create"} a story
         </Typography>
       </Grid>
       <Grid item xs={12} md={6} className={classes.createStoryLeftContainer}>
@@ -250,7 +250,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
             color="primary"
             onClick={() => handleClickOpen()}
           >
-            {location.state === "undefined" ? "Edit" : "Create"} a story
+            {location.state !== "undefined" ? "Edit" : "Create"} a story
           </Button>
         </Grid>
       </Grid>
