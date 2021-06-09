@@ -85,11 +85,17 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
               className={classes.storyPreviewInfoGrid}
             >
               <Link
-                to={{
-                  pathname: `/user`,
-                  hash: `#${previewStory.author.id}`,
-                  state: { user: previewStory.author },
-                }}
+                to={
+                  previewStory.author.user.id !== loggedUser.id
+                    ? {
+                        pathname: `/user`,
+                        hash: `#${previewStory.author.id}`,
+                        state: { user: previewStory.author },
+                      }
+                    : {
+                        pathname: `/account`,
+                      }
+                }
                 key={previewStory.author.id}
                 style={{ textDecoration: "none", display: "flex" }}
               >

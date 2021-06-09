@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
+import { DialogBox } from "../";
 
 const useStyles = () => ({
   accountContainer: {
@@ -24,48 +25,120 @@ const useStyles = () => ({
   },
 });
 
-const AccountDetails = ({ classes, detailedInfo }) => (
-  <Grid item md={6} xs={12} className={classes.accountContainer}>
-    <Typography color="primary" variant="h4">
-      Account Info
-    </Typography>
-    <Grid item xs={12}>
-      <Typography color="primary" variant="h6">
-        Role:
+const AccountDetails = ({ classes, detailedInfo }) => {
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+  };
+
+  const handleData = (data) => {
+    setData(data);
+    setTimeout(() => {
+      handleClickOpen();
+    }, 250);
+  };
+
+  return (
+    <Grid item md={6} xs={12} className={classes.accountContainer}>
+      {data ? (
+        <DialogBox
+          title={"Authors"}
+          data={data}
+          open={open}
+          handleClose={handleClose}
+        />
+      ) : null}
+
+      <Typography color="primary" variant="h4">
+        Account Info
       </Typography>
-      <Typography variant="subtitle1">{detailedInfo.type}</Typography>
+      <Grid item xs={12}>
+        <Typography color="primary" variant="h6">
+          Role:
+        </Typography>
+        <Typography variant="subtitle1">{detailedInfo.type}</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography color="primary" variant="h6">
+          Followed Authors:
+        </Typography>
+        {detailedInfo.followed_authors.length ? (
+          <>
+            <Typography variant="subtitle1">
+              {detailedInfo.followed_authors.length} authors
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              onClick={() => {
+                handleData(detailedInfo.followed_authors);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              Expand
+            </Typography>
+          </>
+        ) : (
+          "None"
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <Typography color="primary" variant="h6">
+          Followed Tags:
+        </Typography>
+
+        {detailedInfo.followed_tags.length ? (
+          <>
+            <Typography variant="subtitle1">
+              {detailedInfo.followed_tags.length} tags
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              onClick={() => {
+                handleData(detailedInfo.followed_tags);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              Expand
+            </Typography>
+          </>
+        ) : (
+          "None"
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <Typography color="primary" variant="h6">
+          Followed Locations:
+        </Typography>
+        {detailedInfo.followed_locations.length ? (
+          <>
+            <Typography variant="subtitle1">
+              {detailedInfo.followed_locations.length} locations
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              onClick={() => {
+                handleData(detailedInfo.followed_locations);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              Expand
+            </Typography>
+          </>
+        ) : (
+          "None"
+        )}
+      </Grid>
     </Grid>
-    <Grid item xs={12}>
-      <Typography color="primary" variant="h6">
-        Followed Authors:
-      </Typography>
-      <Typography variant="subtitle1">
-        {detailedInfo.followed_authors.length
-          ? detailedInfo.followed_authors.map((el) => el.user.username)
-          : "None"}
-      </Typography>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography color="primary" variant="h6">
-        Followed Tags:
-      </Typography>
-      <Typography variant="subtitle1">
-        {detailedInfo.followed_tags.length
-          ? detailedInfo.followed_tags.map((el) => el.name)
-          : "None"}
-      </Typography>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography color="primary" variant="h6">
-        Followed Locations:
-      </Typography>
-      <Typography variant="subtitle1">
-        {detailedInfo.followed_locations.length
-          ? detailedInfo.followed_locations.map((el) => el.name)
-          : "None"}
-      </Typography>
-    </Grid>
-  </Grid>
-);
+  );
+};
 
 export default compose(withStyles(useStyles))(AccountDetails);

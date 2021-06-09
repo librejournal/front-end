@@ -13,6 +13,7 @@ import LocationArea from "./createstory/locationArea";
 import StoryCommments from "./previewstory/storycomments";
 import UserInfo from "./user/user";
 import StoryLikeDislike from "./previewstory/storylikedislike";
+import DialogBox from "./account/dialogBox";
 
 export {
   Header,
@@ -30,4 +31,5 @@ export {
   StoryCommments,
   UserInfo,
   StoryLikeDislike,
+  DialogBox,
 };

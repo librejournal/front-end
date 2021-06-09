@@ -45,13 +45,6 @@ const useStyles = () => ({
 });
 
 const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
-  const [detailedInfo, setDetailedInfo] = useState(null);
-
-  useEffect(() => {
-    getProfileDetails();
-  }, []);
-
-  console.log(detailedInfo);
   const logoutRequest = async () => {
     await axios
       .post(
@@ -79,18 +72,6 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
       });
   };
 
-  const getProfileDetails = async () => {
-    axios
-      .get("http://localhost:9001/api/profile/self-detail", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${loggedUser.token}`,
-        },
-      })
-      .then((response) => setDetailedInfo(response.data))
-      .catch((err) => console.log(err));
-  };
-
   return (
     <Grid
       container
@@ -101,7 +82,9 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
       {1000 < width ? (
         <>
           <AccountInfo loggedUser={loggedUser} logoutRequest={logoutRequest} />
-          {detailedInfo ? <AccountDetails detailedInfo={detailedInfo} /> : null}
+          {loggedUser.userInfo ? (
+            <AccountDetails detailedInfo={loggedUser.userInfo} />
+          ) : null}
         </>
       ) : (
         <Carousel
@@ -134,7 +117,9 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
           ]}
         >
           <AccountInfo loggedUser={loggedUser} />
-          {detailedInfo ? <AccountDetails detailedInfo={detailedInfo} /> : null}
+          {loggedUser.userInfo ? (
+            <AccountDetails detailedInfo={loggedUser.userInfo} />
+          ) : null}
         </Carousel>
       )}
       <Grid item xs={12} className={classes.bottomButton}>
