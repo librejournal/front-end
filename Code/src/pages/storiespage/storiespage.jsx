@@ -16,7 +16,8 @@ const useStyles = () => ({
     minHeight: "80vh",
     display: "flex",
     padding: "5vh 2vw",
-    overflowY: "auto",
+    maxWidth: "1600px",
+    margin: "auto",
   },
   authorGrid: {
     display: "flex",
@@ -102,77 +103,79 @@ const StoriesPage = ({ classes, loggedUser }) => {
   }, []);
 
   return (
-    <Grid container className={classes.storyPageContainer}>
-      <Grid item xs={12}>
-        {editSuccess ? (
-          <Redirect
-            to={{
-              pathname: "/createstory",
-              state: { editId: editSuccess },
-            }}
-          />
-        ) : null}
-        {stories.map((el) => (
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.storyContainer}
-            key={el.uuid}
-          >
-            <Grid item xs={12} sm={4} className={classes.authorGrid}>
-              <Typography
-                color="primary"
-                variant="h6"
-                className={classes.author}
-              >
-                Author:&nbsp;&nbsp;
-              </Typography>
-              <Typography variant="h6">{el.author.user.username}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Typography variant="h6" color="primary">
-                {el.uuid}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={4} className={classes.buttonGrid}>
-              <Link
-                to={{
-                  pathname: `stories/${el.id}`,
-                  state: { id: el.id },
-                }}
-                key={el.id}
-                style={{ textDecoration: "none" }}
-              >
+    <Grid container style={{ overflowY: "auto" }}>
+      <Grid container className={classes.storyPageContainer}>
+        <Grid item xs={12}>
+          {editSuccess ? (
+            <Redirect
+              to={{
+                pathname: "/createstory",
+                state: { editId: editSuccess },
+              }}
+            />
+          ) : null}
+          {stories.map((el) => (
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.storyContainer}
+              key={el.uuid}
+            >
+              <Grid item xs={12} sm={4} className={classes.authorGrid}>
+                <Typography
+                  color="primary"
+                  variant="h6"
+                  className={classes.author}
+                >
+                  Author:&nbsp;&nbsp;
+                </Typography>
+                <Typography variant="h6">{el.author.user.username}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="h6" color="primary">
+                  {el.uuid}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4} className={classes.buttonGrid}>
+                <Link
+                  to={{
+                    pathname: `stories/${el.id}`,
+                    state: { id: el.id },
+                  }}
+                  key={el.id}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Show
+                  </Button>
+                </Link>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={loggedUser.profile_id !== el.author.user.profile_id}
+                  style={{ textDecoration: "none" }}
+                  onClick={() => editStory(el.id)}
+                >
+                  Edit
+                </Button>
                 <Button
                   variant="contained"
                   color="primary"
                   style={{ textDecoration: "none" }}
+                  disabled={loggedUser.profile_id !== el.author.user.profile_id}
+                  onClick={() => deleteStory(el.id)}
                 >
-                  Show
+                  Delete
                 </Button>
-              </Link>
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={loggedUser.profile_id !== el.author.user.profile_id}
-                style={{ textDecoration: "none" }}
-                onClick={() => editStory(el.id)}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ textDecoration: "none" }}
-                disabled={loggedUser.profile_id !== el.author.user.profile_id}
-                onClick={() => deleteStory(el.id)}
-              >
-                Delete
-              </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        ))}
+          ))}
+        </Grid>
       </Grid>
     </Grid>
   );

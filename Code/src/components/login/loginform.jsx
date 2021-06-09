@@ -17,7 +17,7 @@ import {
 
 const useStyles = () => ({
   loginContainer: {
-    width: "max(25vw,250px)",
+    width: "max(20vw,250px)",
     padding: "2vh 2vw",
     height: "500px",
     display: "flex",
@@ -39,14 +39,7 @@ const useStyles = () => ({
   },
 });
 
-const LoginForm = ({
-  classes,
-  loggedUser,
-  onLoginUser,
-  onStateUser,
-  mobileState,
-  setMobileState,
-}) => {
+const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
