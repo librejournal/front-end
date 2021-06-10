@@ -130,7 +130,25 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
           </Grid>
         ) : null}
         {previewStory ? (
-          <StoryLikeDislike storyInfo={previewStory} focusStory={focusStory} />
+          <>
+            <Grid item xs={12}>
+              <Typography
+                color="primary"
+                variant="subtitle2"
+                style={{
+                  borderBottom: "2px solid lightgray",
+                  background: "white",
+                }}
+              >
+                Like:&nbsp;{previewStory.like_count}&nbsp;|&nbsp;Dislike:&nbsp;
+                {previewStory.dislike_count}
+              </Typography>
+            </Grid>
+            <StoryLikeDislike
+              storyInfo={previewStory}
+              focusStory={focusStory}
+            />
+          </>
         ) : null}
 
         {previewStory ? (
@@ -139,7 +157,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
           </Grid>
         ) : null}
         <Grid item xs={12} className={classes.linkGrid}>
-          <Link to="/stories" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <Button color="primary" variant="outlined">
               Back
             </Button>

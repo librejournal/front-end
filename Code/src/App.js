@@ -96,7 +96,7 @@ const App = ({ loggedUser, onStateUser, onInfoUser }) => {
                             />
                         )}
                     />
-                    <Route path="/stories" exact>
+                    <Route path="/dashboard" exact>
                         <StoriesPage />
                     </Route>
                     <Route

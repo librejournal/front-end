@@ -44,10 +44,9 @@ const useStyles = () => ({
 });
 
 const StarboardItem = ({ classes, title, data, limit, width }) => {
-  const [titleSize, setTitleSize] = useState(limit > width ? "h5" : "h4");
-  const [textSize, setTextSize] = useState(
-    limit > width ? "subtitle2" : "subtitle1"
-  );
+  const titleSize = limit > width ? "h5" : "h4";
+  const textSize = limit > width ? "subtitle2" : "subtitle1";
+
   return (
     <Grid contaniner className={classes.starboardGrid}>
       <Grid item xs={12} className={classes.starboardTitle}>

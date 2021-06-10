@@ -16,7 +16,7 @@ import StoryLikeDislike from "./previewstory/storylikedislike";
 import DialogBox from "./account/dialogBox";
 import TitleDialog from "./createstory/titleDialog";
 import SearchBar from "./homepage/searchBar";
-import OrderBar from "./homepage/orderBar";
+import CommentGrid from "./previewstory/commentgrid";
 
 export {
   Header,
@@ -37,5 +37,5 @@ export {
   DialogBox,
   TitleDialog,
   SearchBar,
-  OrderBar,
+  CommentGrid,
 };

@@ -5,9 +5,11 @@ import { withStyles } from "@material-ui/core/styles";
 
 import UpArrow from "../../assets/logo/UpArrow.svg";
 import DownArrow from "../../assets/logo/DownArrow.svg";
-import CommentButton from "../../assets/logo/CommentButton.svg";
 import { compose } from "recompose";
 import { withWindowConsumer } from "../../contexts/window/consumer";
+import { Link } from "react-router-dom";
+import { mapStateToPropsStoryItem } from "../../redux/mapFunctions";
+import { connect } from "react-redux";
 
 const useStyles = {
   storyItemContainer: {
@@ -34,6 +36,7 @@ const useStyles = {
   storyItemVote: {
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
     "& img": {
       width: "max(30%,25px)",
       cursor: "pointer",
@@ -41,7 +44,7 @@ const useStyles = {
   },
   storyItemImage: {
     border: "black 2px solid",
-    height: "75%",
+    height: "60%",
     background: (props) =>
       "url('https://cdn.windowsreport.com/wp-content/uploads/2020/10/IMG-file-886x590.jpg') no-repeat center center",
     backgroundColor: "#1687a7",
@@ -78,7 +81,6 @@ const useStyles = {
     margin: (props) => (props.width < props.limit ? "none" : "1vh 1vw"),
     display: "flex",
     padding: "10px 0",
-    
   },
 
   storyItemIcon: {
@@ -103,23 +105,65 @@ const useStyles = {
   },
 };
 
-const StoryItem = ({ classes, title, imageUrl, like, limit, width }) => {
+const StoryItem = ({
+  classes,
+  title,
+  thumbnail,
+  like,
+  limit,
+  width,
+  likeCount,
+  dislikeCount,
+  author,
+  date,
+  id,
+  loggedUser,
+  state,
+}) => {
   useEffect(() => {
     const loadData = async (url) => {
       const data = await import(`../../assets/images/${url}`);
 
       document.getElementById(
-        `storyImage-${imageUrl}`
+        `storyImage-${thumbnail}`
       ).style.backgroundImage = `url("${data.default}")`;
     };
-    loadData(imageUrl);
-  }, [imageUrl]);
+    if (thumbnail) {
+      loadData(thumbnail);
+    }
+  }, [thumbnail]);
 
   return (
     <Grid container className={classes.storyItemContainer}>
       <Grid item xs={1} />
       <Grid item xs={11} className={classes.storyItemHeader}>
-        header
+        <Link
+          to={
+            state.user.id !== loggedUser.id
+              ? {
+                  pathname: `/user`,
+                  hash: `#${state.id}`,
+                  state: { user: state },
+                }
+              : {
+                  pathname: `/account`,
+                }
+          }
+          key={id}
+          style={{ textDecoration: "none", display: "flex" }}
+        >
+          <Typography
+            color="primary"
+            variant="subtitle1"
+            style={{ borderBottom: "0.5px solid lightgray" }}
+          >
+            {author}
+          </Typography>
+        </Link>
+        <Typography color="primary" variant="subtitle2">
+          {date.split("T")[0]}&nbsp;&nbsp;-&nbsp;&nbsp;
+          {date.split("T")[1].split(".")[0]}
+        </Typography>
       </Grid>
       <Grid item xs={1} className={classes.storyItemVote}>
         <img src={UpArrow} alt="UpArrow" />
@@ -127,7 +171,7 @@ const StoryItem = ({ classes, title, imageUrl, like, limit, width }) => {
           color="primary"
           variant={limit < width ? "h6" : "subtitle2"}
         >
-          {like}
+          {likeCount}
         </Typography>
         <img src={DownArrow} alt="DownArrow" />
       </Grid>
@@ -135,50 +179,52 @@ const StoryItem = ({ classes, title, imageUrl, like, limit, width }) => {
         item
         xs={10}
         className={classes.storyItemImage}
-        id={`storyImage-${imageUrl}`}
+        id={`storyImage-${thumbnail}`}
       >
         <Typography variant="h3">{title}</Typography>
       </Grid>
       <Grid container className={classes.storyItemIcons}>
-        <Grid item md={3} xs={4} className={classes.storyItemIcon}>
-          <img src={CommentButton} alt="CommentButton" />
+        <Grid item md={2} xs={4} className={classes.storyItemIcon}>
           <Typography
             variant={limit > width ? "subtitle2" : "subtitle1"}
             color="primary"
           >
-            Comment
+            Like: &nbsp;{likeCount}
           </Typography>
         </Grid>
         <Grid item md={2} xs={4} className={classes.storyItemIcon}>
-          <img src={UpArrow} alt="UpArrow" />
           <Typography
             variant={limit > width ? "subtitle2" : "subtitle1"}
             color="primary"
           >
-            Like
-          </Typography>
-        </Grid>
-        <Grid item md={2} xs={4} className={classes.storyItemIcon}>
-          <img src={DownArrow} alt="DownArrow" />
-          <Typography
-            variant={limit > width ? "subtitle2" : "subtitle1"}
-            color="primary"
-          >
-            Dislike
+            Dislike: &nbsp;{dislikeCount}
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md={5} className={classes.storyItemText}>
-          <Typography
-            variant={limit > width ? "subtitle2" : "subtitle1"}
-            color="primary"
+        <Grid item xs={12} md={7} className={classes.storyItemText}>
+          <Link
+            to={{
+              pathname: `stories/${id}`,
+              state: { id: id },
+            }}
+            key={id}
+            style={{ textDecoration: "none" }}
           >
-            Click to read more...
-          </Typography>
+            <Typography
+              variant={limit > width ? "subtitle2" : "subtitle1"}
+              color="primary"
+            >
+              Click to read more...
+            </Typography>
+          </Link>
         </Grid>
       </Grid>
     </Grid>
   );
 };
 
-export default compose(withWindowConsumer, withStyles(useStyles))(StoryItem);
+export default compose(
+  withWindowConsumer,
+  connect(mapStateToPropsStoryItem),
+  withStyles(useStyles)
+)(StoryItem);

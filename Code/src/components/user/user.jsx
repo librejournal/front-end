@@ -65,7 +65,6 @@ const UserInfo = ({ classes, loggedUser, userInfo }) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setUser(response.data);
         checkFollowStatus(response.data);
       })

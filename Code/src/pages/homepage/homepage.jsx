@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   TrendingContainer,
   StoryContainer,
   StarboardContainer,
   SearchBar,
-  OrderBar,
 } from "../../components";
-import { Breadcrumbs, Grid, Typography } from "@material-ui/core";
+import { Breadcrumbs, Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { mockupDataStarboard, mockupDataStory } from "../../constants/index";
 
@@ -16,6 +15,7 @@ import { withWindowConsumer } from "../../contexts/window/consumer";
 import { ParallaxBanner } from "react-scroll-parallax";
 import Background from "../../assets/images/ekrulila-3957616.jpg";
 import Typed from "react-typed";
+import axios from "axios";
 
 const useStyles = {
   firstAdv: {
@@ -57,7 +57,42 @@ const useStyles = {
 
 const Homepage = ({ classes, limit, width }) => {
   const [container, setContainer] = useState("Stories");
+  const [stories, setStories] = useState(null);
+  const [page, setPage] = useState(1);
+
   const changeContainer = (value) => setContainer(value);
+  const changePage = (val) => {
+    setPage(val);
+    setTimeout(() => {
+      document.getElementById("title").scrollIntoView({ behavior: "smooth" });
+    }, 200);
+  };
+
+  const getStories = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories`;
+    await axios
+      .get(
+        url,
+        limit < width
+          ? {
+              headers: {
+                "X-Pagination-Offset": 3 * (page - 1),
+                "X-Pagination-Limit": 3,
+              },
+            }
+          : null
+      )
+      .then((response) => {
+        setStories(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getStories();
+  }, [page]);
 
   return (
     <>
@@ -71,7 +106,7 @@ const Homepage = ({ classes, limit, width }) => {
             },
           ]}
           style={{
-            height: "65vh",
+            height: "30vh",
           }}
         >
           <div className={classes.typedDiv}>
@@ -118,7 +153,7 @@ const Homepage = ({ classes, limit, width }) => {
 
         {limit < width ? (
           <Grid container justify="center" style={{ maxWidth: "1600px" }}>
-            <Grid item xs={12} className={classes.titleText}>
+            <Grid item xs={12} className={classes.titleText} id="title">
               <Typography color="primary" variant="h5">
                 Stories
               </Typography>
@@ -137,9 +172,9 @@ const Homepage = ({ classes, limit, width }) => {
               }}
             >
               <SearchBar />
-              <OrderBar />
             </Grid>
-            <StoryContainer data={mockupDataStory} />
+            {stories ? <StoryContainer data={stories} /> : null}
+
             <StarboardContainer
               title1="Top Authors"
               title2="Top Locations"
@@ -147,8 +182,8 @@ const Homepage = ({ classes, limit, width }) => {
               data2={mockupDataStarboard.location}
             />
           </Grid>
-        ) : container === "Stories" ? (
-          <StoryContainer data={mockupDataStory} />
+        ) : container === "Stories" && stories ? (
+          <StoryContainer data={stories} />
         ) : (
           <StarboardContainer
             title1="Top Authors"
@@ -157,6 +192,53 @@ const Homepage = ({ classes, limit, width }) => {
             data2={mockupDataStarboard.location}
           />
         )}
+        <Grid container justify="center" alignItems="center">
+          {limit < width ? (
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                margin: "2vh",
+                width: "50%",
+                backgroundColor: "white",
+                border: "2px solid lightgray",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => changePage(page - 1)}
+                disabled={page === 1}
+              >
+                Previous Page
+              </Button>
+              <Typography
+                color="secondary"
+                variant="h6"
+                style={{
+                  backgroundColor: "#1687a7",
+                  height: "30px",
+                  width: "30px",
+                  borderRadius: "5px",
+                  textAlign: "center",
+                }}
+              >
+                {page}
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                disabled={stories ? stories.length < 3 : null}
+                onClick={() => changePage(page + 1)}
+              >
+                Next Page
+              </Button>
+            </Grid>
+          ) : null}
+        </Grid>
       </Grid>
     </>
   );

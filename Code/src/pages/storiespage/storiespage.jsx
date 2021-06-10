@@ -21,6 +21,8 @@ const useStyles = () => ({
   },
   authorGrid: {
     display: "flex",
+    flexDirection: "column",
+    borderRight: "0.5px solid lightgray",
   },
   storyContainer: {
     border: "1px solid lightgray",
@@ -101,7 +103,6 @@ const StoriesPage = ({ classes, loggedUser }) => {
   useEffect(() => {
     getStories();
   }, []);
-
   return (
     <Grid container style={{ overflowY: "auto" }}>
       <Grid container className={classes.storyPageContainer}>
@@ -114,67 +115,112 @@ const StoriesPage = ({ classes, loggedUser }) => {
               }}
             />
           ) : null}
-          {stories.map((el) => (
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.storyContainer}
-              key={el.uuid}
-            >
-              <Grid item xs={12} sm={4} className={classes.authorGrid}>
-                <Typography
-                  color="primary"
-                  variant="h6"
-                  className={classes.author}
-                >
-                  Author:&nbsp;&nbsp;
-                </Typography>
-                <Typography variant="h6">{el.author.user.username}</Typography>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Typography variant="h6" color="primary">
-                  {el.title}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={4} className={classes.buttonGrid}>
-                <Link
-                  to={{
-                    pathname: `stories/${el.id}`,
-                    state: { id: el.id },
-                  }}
-                  key={el.id}
-                  style={{ textDecoration: "none" }}
-                >
+          {stories.map((el) =>
+            loggedUser.profile_id === el.author.user.profile_id ? (
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                className={classes.storyContainer}
+                key={el.uuid}
+              >
+                <Grid item xs={12} sm={3} className={classes.authorGrid}>
+                  <Grid container alignItems="center">
+                    <Typography
+                      color="primary"
+                      variant="subtitle1"
+                      className={classes.author}
+                    >
+                      Author:&nbsp;&nbsp;
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {el.author.user.username}
+                    </Typography>
+                  </Grid>
+                  <Grid container alignItems="center">
+                    <Typography
+                      color="primary"
+                      variant="subtitle1"
+                      className={classes.author}
+                    >
+                      Created At:&nbsp;&nbsp;
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {el.created.split("T")[0]} -{" "}
+                      {el.created.split("T")[1].split(".")[0]}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={4} className={classes.authorGrid}>
+                  <Grid container alignItems="center" justify="center">
+                    <Typography variant="subtitle1" color="primary">
+                      Title:&nbsp;
+                    </Typography>
+                    <Typography variant="h6">{el.title}</Typography>
+                  </Grid>
+                  <Grid container alignItems="center" justify="space-around">
+                    <Typography variant="subtitle2" color="primary">
+                      Like:&nbsp;{el.like_count}
+                    </Typography>
+                    <Typography variant="subtitle2" color="primary">
+                      Dislike:&nbsp;{el.dislike_count}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={4} className={classes.buttonGrid}>
+                  <Link
+                    to={{
+                      pathname: `stories/${el.id}`,
+                      state: { id: el.id },
+                    }}
+                    key={el.id}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Show
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                      loggedUser.profile_id !== el.author.user.profile_id
+                    }
+                    style={{ textDecoration: "none" }}
+                    onClick={() => editStory(el.id)}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     variant="contained"
                     color="primary"
                     style={{ textDecoration: "none" }}
+                    disabled={
+                      loggedUser.profile_id !== el.author.user.profile_id
+                    }
+                    onClick={() => deleteStory(el.id)}
                   >
-                    Show
+                    Delete
                   </Button>
-                </Link>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={loggedUser.profile_id !== el.author.user.profile_id}
-                  style={{ textDecoration: "none" }}
-                  onClick={() => editStory(el.id)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ textDecoration: "none" }}
-                  disabled={loggedUser.profile_id !== el.author.user.profile_id}
-                  onClick={() => deleteStory(el.id)}
-                >
-                  Delete
-                </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          ))}
+            ) : null
+          )}
+          <Grid container justify="center">
+            <Link to="/createstory">
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ textDecoration: "none" }}
+              >
+                Add a new story
+              </Button>
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

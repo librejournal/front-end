@@ -9,47 +9,44 @@ import { compose } from "recompose";
 const useStyles = () => ({});
 
 const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
-    <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-    >
-        <MenuItem onClick={handleClose}>
-            <Link to="/" style={{ textDecoration: "none", width: "100%" }}>
-                <Typography color="primary">Home</Typography>
-            </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-            <Link
-                to={"/stories"}
-                style={{ textDecoration: "none", width: "100%" }}
-            >
-                <Typography color="primary">Stories</Typography>
-            </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-            <Link
-                to={loggedUser.token === "" ? "/menu3" : "/createstory"}
-                style={{ textDecoration: "none", width: "100%" }}
-            >
-                <Typography color="primary">
-                    {loggedUser.token === "" ? "Menu#3" : "Create a story"}
-                </Typography>
-            </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-            <Link
-                to={loggedUser.token === "" ? "/login" : "/account"}
-                style={{ textDecoration: "none", width: "100%" }}
-            >
-                <Typography color="primary">
-                    {loggedUser.token === "" ? "Login" : "Account"}
-                </Typography>
-            </Link>
-        </MenuItem>
-    </Menu>
+  <Menu
+    id="simple-menu"
+    anchorEl={anchorEl}
+    keepMounted
+    open={Boolean(anchorEl)}
+    onClose={handleClose}
+  >
+    <MenuItem onClick={handleClose}>
+      <Link to="/" style={{ textDecoration: "none", width: "100%" }}>
+        <Typography color="primary">Home</Typography>
+      </Link>
+    </MenuItem>
+    <MenuItem onClick={handleClose}>
+      <Link to="/about" style={{ textDecoration: "none", width: "100%" }}>
+        <Typography color="primary">About</Typography>
+      </Link>
+    </MenuItem>
+    {loggedUser.token ? (
+      <MenuItem onClick={handleClose}>
+        <Link
+          to={"/dashboard"}
+          style={{ textDecoration: "none", width: "100%" }}
+        >
+          <Typography color="primary">Dashboard</Typography>
+        </Link>
+      </MenuItem>
+    ) : null}
+    <MenuItem onClick={handleClose}>
+      <Link
+        to={loggedUser.token === "" ? "/login" : "/account"}
+        style={{ textDecoration: "none", width: "100%" }}
+      >
+        <Typography color="primary">
+          {loggedUser.token === "" ? "Login" : "Account"}
+        </Typography>
+      </Link>
+    </MenuItem>
+  </Menu>
 );
 
 export default compose(withStyles(useStyles))(MobileMenu);

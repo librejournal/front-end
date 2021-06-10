@@ -14,76 +14,73 @@ import MyBreadcrumbs from "./header/breadcrumbs";
 import MobileMenu from "./header/mobileMenu";
 
 const useStyles = () => ({
-    headerGrid: {
-        height: "8vh",
-        backgroundColor: "#1687a7",
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "2vh 0",
-        alignItems: "center",
-        "-webkit-box-shadow": "inset 0px -0.1vh 2px 0px rgba(0,0,0,0.8)",
-        "-moz-box-shadow": "inset 0px -0.1vh 2px 0px rgba(0,0,0,0.8)",
-        "box-shadow": "inset 0px -0.1vh 2px 0px rgba(0,0,0,0.8)",
+  headerGrid: {
+    height: "8vh",
+    backgroundColor: "#1687a7",
+    display: "flex",
+    justifyContent: "space-around",
+    padding: "2vh 0",
+    alignItems: "center",
+    "-webkit-box-shadow": "inset 0px -0.1vh 2px 0px rgba(0,0,0,0.8)",
+    "-moz-box-shadow": "inset 0px -0.1vh 2px 0px rgba(0,0,0,0.8)",
+    "box-shadow": "inset 0px -0.1vh 2px 0px rgba(0,0,0,0.8)",
+  },
+  headerMenuTexts: {
+    display: "flex",
+    justifyContent: (props) =>
+      props.width < props.limit ? "flex-end" : "space-around",
+    color: "white",
+    "& svg": {
+      fontSize: "2.5rem",
+      marginRight: "2vw",
     },
-    headerMenuTexts: {
-        display: "flex",
-        justifyContent: (props) =>
-            props.width < props.limit ? "flex-end" : "space-around",
-        color: "white",
-        "& svg": {
-            fontSize: "2.5rem",
-            marginRight: "2vw",
-        },
+  },
+  headerLogo: {
+    padding: "1vh 0",
+    "& svg": {
+      height: "max(6vh,40px)",
     },
-    headerLogo: {
-        padding: "1vh 0",
-        "& svg": {
-            height: "max(6vh,40px)",
-        },
-    },
+  },
 });
 
 const Header = ({ classes, loggedUser, width, limit }) => {
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    return (
-        <Grid containter className={classes.headerGrid}>
-            <Grid item xs={3} md={2} className={classes.headerLogo}>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                    <Logo />
-                </Link>
-            </Grid>
-            <Grid item md={7} lg={4} className={classes.headerMenuTexts}>
-                {width > limit ? (
-                    <MyBreadcrumbs loggedUser={loggedUser} />
-                ) : (
-                    <>
-                        <MenuIcon
-                            onClick={handleClick}
-                            aria-controls="simple-menu"
-                        />
-                        <MobileMenu
-                            loggedUser={loggedUser}
-                            anchorEl={anchorEl}
-                            handleClose={handleClose}
-                        />
-                    </>
-                )}
-            </Grid>
-        </Grid>
-    );
+  return (
+    <Grid containter className={classes.headerGrid} id="header">
+      <Grid item xs={3} md={2} className={classes.headerLogo}>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Logo />
+        </Link>
+      </Grid>
+      <Grid item md={7} lg={4} className={classes.headerMenuTexts}>
+        {width > limit ? (
+          <MyBreadcrumbs loggedUser={loggedUser} />
+        ) : (
+          <>
+            <MenuIcon onClick={handleClick} aria-controls="simple-menu" />
+            <MobileMenu
+              loggedUser={loggedUser}
+              anchorEl={anchorEl}
+              handleClose={handleClose}
+            />
+          </>
+        )}
+      </Grid>
+    </Grid>
+  );
 };
 
 export default compose(
-    withWindowConsumer,
-    connect(mapStateToPropsHeader),
-    withStyles(useStyles)
+  withWindowConsumer,
+  connect(mapStateToPropsHeader),
+  withStyles(useStyles)
 )(Header);

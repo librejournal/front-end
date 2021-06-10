@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import StoryItem from "./storyItem";
@@ -26,16 +26,20 @@ const StoryContainer = ({ classes, data, limit, width }) => {
   return (
     <Grid container className={classes.storyContainerGrid}>
       {limit < width ? (
-        data
-          .slice(0, 3)
-          .map((el) => (
-            <StoryItem
-              title={el.title}
-              imageUrl={el.imageUrl}
-              like={el.like}
-              key={el.title}
-            />
-          ))
+        data.map((el) => (
+          <StoryItem
+            title={el.title}
+            thumbnail={el.thumbnail}
+            like={el.like_count}
+            key={el.uuid}
+            likeCount={el.like_count}
+            dislikeCount={el.dislike_count}
+            author={el.author.user.username}
+            date={el.modified ? el.modified : el.created}
+            id={el.id}
+            state={el.author}
+          />
+        ))
       ) : (
         <Carousel
           plugins={[
@@ -44,23 +48,29 @@ const StoryContainer = ({ classes, data, limit, width }) => {
             {
               resolve: slidesToShowPlugin,
               options: {
-                numberOfSlides: 1.05,
+                numberOfSlides: 1,
               },
             },
             {
               resolve: slidesToScrollPlugin,
               options: {
-                numberOfSlides: 1.05,
+                numberOfSlides: 1,
               },
             },
           ]}
         >
-          {data.slice(0, 3).map((el) => (
+          {data.map((el) => (
             <StoryItem
               title={el.title}
-              imageUrl={el.imageUrl}
-              like={el.like}
-              key={el.title}
+              thumbnail={el.thumbnail}
+              like={el.like_count}
+              key={el.uuid}
+              likeCount={el.like_count}
+              dislikeCount={el.dislike_count}
+              author={el.author.user.username}
+              date={el.modified ? el.modified : el.created}
+              id={el.id}
+              state={el.author}
             />
           ))}
         </Carousel>

@@ -25,6 +25,12 @@ export const mapStateToStoriesPage = (state) => {
   };
 };
 
+export const mapStateToPropsStoryItem = (state) => {
+  return {
+    loggedUser: getUserInfo(state),
+  };
+};
+
 export const mapStateToPropsComments = (state) => {
   return {
     loggedUser: getUserInfo(state),
@@ -51,6 +57,12 @@ export const mapStateToAccount = (state) => {
 };
 
 export const mapStateToApp = (state) => {
+  return {
+    loggedUser: getUserInfo(state),
+  };
+};
+
+export const mapStateToPropsStarboard = (state) => {
   return {
     loggedUser: getUserInfo(state),
   };
