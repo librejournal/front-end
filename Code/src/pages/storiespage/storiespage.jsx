@@ -211,7 +211,10 @@ const StoriesPage = ({ classes, loggedUser }) => {
             ) : null
           )}
           <Grid container justify="center">
-            <Link to="/createstory">
+            <Link
+              to="/createstory"
+              style={{ textDecoration: "none", display: "flex" }}
+            >
               <Button
                 variant="contained"
                 color="primary"

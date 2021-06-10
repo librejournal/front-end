@@ -50,7 +50,10 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
   };
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle id="simple-dialog-title">
+      <DialogTitle
+        id="simple-dialog-title"
+        style={{ textAlign: "center", borderBottom: "0.2px solid lightgray" }}
+      >
         Enter title for your story
       </DialogTitle>
       <List>

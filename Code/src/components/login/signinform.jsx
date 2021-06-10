@@ -10,9 +10,12 @@ const useStyles = () => ({
   signinContainer: {
     width: "max(20vw,250px)",
     padding: "2vh 2vw",
-    minHeight: "500px",
+    height: "500px",
+    maxHeight: "50vh",
+    overflowY: "auto",
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
     textAlign: "center",
     border: "2px solid #1687a7",
     "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",

@@ -7,7 +7,7 @@ import { withWindowConsumer } from "../../contexts/window/consumer";
 
 const useStyles = () => ({
   loginpageContainer: {
-    height: "80vh",
+    minHeight: "80vh",
     maxWidth: "1600px",
     margin: "auto",
   },

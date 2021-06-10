@@ -4,18 +4,19 @@ import { withStyles } from "@material-ui/core/styles";
 import { Account } from "../../components";
 
 const useStyles = () => ({
-    accountpageContainer: {
-        height: "80vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
+  accountpageContainer: {
+    minHeight: "80vh",
+    padding: "1vh 0",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const AccountPage = ({ classes }) => (
-    <Grid container className={classes.accountpageContainer}>
-        <Account />
-    </Grid>
+  <Grid container className={classes.accountpageContainer}>
+    <Account />
+  </Grid>
 );
 
 export default withStyles(useStyles)(AccountPage);
