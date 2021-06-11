@@ -101,13 +101,16 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           onChange={addInfo("password")}
         />
       </>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => loginRequest(user)}
-      >
-        LOG IN
-      </Button>
+      <Grid container justify="center" alignItems="center">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => loginRequest(user)}
+        >
+          LOG IN
+        </Button>
+      </Grid>
+
       {mobileState === "Login" ? (
         <Typography
           color="secondary"

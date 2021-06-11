@@ -178,7 +178,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                   cursor: "pointer",
                 }}
                 className={toggle === "likes" ? classes.underlined : null}
-                onClick={() => getComments("likes")}
+                onClick={() => getComments("dislikes")}
               >
                 Like
               </Typography>
@@ -191,7 +191,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
                   cursor: "pointer",
                 }}
                 className={toggle === "dislikes" ? classes.underlined : null}
-                onClick={() => getComments("dislikes")}
+                onClick={() => getComments("likes")}
               >
                 Dislike
               </Typography>

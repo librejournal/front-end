@@ -66,7 +66,14 @@ const useStyles = {
   },
 };
 
-const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
+const CreateStoryPage = ({
+  classes,
+  loggedUser,
+  limit,
+  width,
+  location,
+  onInfoUser,
+}) => {
   const [storyInfo, setStoryInfo] = useState([]);
   const [tagInfo, setTagInfo] = useState({ tags: [] });
   const [locationInfo, setLocationInfo] = useState({ locations: [] });
@@ -181,7 +188,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
       {success ? (
         <Redirect
           to={{
-            pathname: "/stories",
+            pathname: "/dashboard",
           }}
         />
       ) : null}

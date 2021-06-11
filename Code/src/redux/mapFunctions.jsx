@@ -79,5 +79,6 @@ export const mapDispatchToAccount = (dispatch) => {
   return {
     onLogoutUser: () => dispatch(doLogoutUser()),
     onStateUser: (info) => dispatch(doCheckUserState(info)),
+    onInfoUser: (info) => dispatch(doGetUserInfo(info)),
   };
 };

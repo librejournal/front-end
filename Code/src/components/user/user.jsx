@@ -51,7 +51,7 @@ const useStyles = () => ({
   },
 });
 
-const UserInfo = ({ classes, loggedUser, userInfo }) => {
+const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
   const [user, setUser] = useState(null);
   const [followStatus, setFollowStatus] = useState(false);
 
@@ -79,6 +79,22 @@ const UserInfo = ({ classes, loggedUser, userInfo }) => {
     }
   };
 
+  const myUserInfo = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profile/self-detail`;
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        const info = response.data;
+        onInfoUser(info);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const followUser = async (id) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/profile/follow`;
     await axios
@@ -92,7 +108,7 @@ const UserInfo = ({ classes, loggedUser, userInfo }) => {
           },
         }
       )
-      .then(() => {
+      .then((response) => {
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -102,8 +118,10 @@ const UserInfo = ({ classes, loggedUser, userInfo }) => {
         });
         if (userInfo.user !== undefined) {
           getUserInfo(userInfo.user.profile_id);
+          myUserInfo();
         } else {
           getUserInfo(userInfo.profile_id);
+          myUserInfo();
         }
       })
       .catch((err) => console.log(err));
