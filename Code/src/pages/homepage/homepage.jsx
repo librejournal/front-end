@@ -6,9 +6,19 @@ import {
   StarboardContainer,
   SearchBar,
 } from "../../components";
-import { Breadcrumbs, Grid, Typography, Button } from "@material-ui/core";
+import {
+  Breadcrumbs,
+  Grid,
+  Typography,
+  Button,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@material-ui/core";
+
 import { withStyles } from "@material-ui/core/styles";
 import { mockupDataStarboard, mockupDataStory } from "../../constants/index";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { compose } from "recompose";
 import { withWindowConsumer } from "../../contexts/window/consumer";
@@ -46,12 +56,10 @@ const useStyles = {
   },
   titleText: {
     textAlign: "center",
-    padding: "2vh 0 ",
-    "& h5": {
-      backgroundColor: "#1687a7",
-      color: "white",
-      borderRadius: "10px",
-    },
+    backgroundColor: "#1687a7",
+    borderRadius: "10px",
+    "& h5": { color: "white" },
+    "& svg": { color: "white" },
   },
 };
 
@@ -59,6 +67,10 @@ const Homepage = ({ classes, limit, width }) => {
   const [container, setContainer] = useState("Stories");
   const [stories, setStories] = useState(null);
   const [page, setPage] = useState(1);
+  const [orderState, setOrderState] = useState(null);
+  const [textWord, setTextWord] = useState(null);
+  const [textLocation, setTextLocation] = useState(null);
+  const [textTag, setTextTag] = useState(null);
 
   const changeContainer = (value) => setContainer(value);
   const changePage = (val) => {
@@ -68,8 +80,14 @@ const Homepage = ({ classes, limit, width }) => {
     }, 200);
   };
 
-  const getStories = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories`;
+  const getStories = async (type, component, tag, location) => {
+    const url =
+      `${process.env.REACT_APP_DB_HOST}/api/stories/` +
+      (component !== null ? `?components=${component}` : "") +
+      (tag !== null ? `?tags=${tag}` : "") +
+      (tag !== location ? `?locations=${location}` : "") +
+      (type !== null ? `?ordering=${type}` : "");
+    console.log(url);
     await axios
       .get(
         url,
@@ -91,7 +109,7 @@ const Homepage = ({ classes, limit, width }) => {
   };
 
   useEffect(() => {
-    getStories();
+    getStories(orderState, textWord, textTag, textLocation);
   }, [page]);
 
   return (
@@ -153,26 +171,48 @@ const Homepage = ({ classes, limit, width }) => {
 
         {limit < width ? (
           <Grid container justify="center" style={{ maxWidth: "1600px" }}>
-            <Grid item xs={12} className={classes.titleText} id="title">
-              <Typography color="primary" variant="h5">
-                Stories
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              style={{
-                minHeight: "10rem",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-                backgroundColor: "white",
-                borderBottom: "2px solid lightgray",
-                borderTop: "2px solid lightgray",
-              }}
-            >
-              <SearchBar />
-            </Grid>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className={classes.titleText}
+              >
+                <Grid item xs={12} id="title">
+                  <Typography color="primary" variant="h5">
+                    Stories
+                  </Typography>
+                </Grid>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    minHeight: "10rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-evenly",
+                    backgroundColor: "white",
+                    borderBottom: "2px solid lightgray",
+                    borderTop: "2px solid lightgray",
+                  }}
+                >
+                  <SearchBar
+                    getStories={getStories}
+                    orderState={orderState}
+                    setOrderState={setOrderState}
+                    textTag={textTag}
+                    textLocation={textLocation}
+                    textWord={textWord}
+                    setTextLocation={setTextLocation}
+                    setTextTag={setTextTag}
+                    setTextWord={setTextWord}
+                  />
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+
             {stories ? <StoryContainer data={stories} /> : null}
 
             <StarboardContainer

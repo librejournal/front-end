@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
 import { Grid, Input, Card, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -18,20 +18,38 @@ const useStyles = () => ({
   },
 });
 
-const SearchBar = ({ classes }) => {
-  const [textWord, setTextWord] = useState("");
-  const [textLocation, setTextLocation] = useState("");
-  const [textTag, setTextTag] = useState("");
-  const [orderState, setOrderState] = useState(null);
-
-  const changeOrderState = (order) => setOrderState(order);
+const SearchBar = ({
+  classes,
+  searchStories,
+  orderState,
+  setOrderState,
+  getStories,
+  textTag,
+  textLocation,
+  textWord,
+  setTextLocation,
+  setTextTag,
+  setTextWord,
+}) => {
+  const changeOrderState = (order) => {
+    setOrderState(order);
+    getStories(order, textWord, textTag, textLocation);
+  };
   const resetState = () => {
-    setOrderState("");
-    setTextWord("");
-    setTextTag("");
-    setTextLocation("");
+    setOrderState(null);
+    setTextWord(null);
+    setTextTag(null);
+    setTextLocation(null);
+    getStories(null, null, null, null);
   };
 
+  const search = () => {
+    getStories(orderState, textWord, textTag, textLocation);
+  };
+
+  useEffect(() => {
+    return () => {};
+  }, [textWord]);
   return (
     <>
       <Grid container justify="space-around">
@@ -98,20 +116,33 @@ const SearchBar = ({ classes }) => {
         </Card>
         <Card variant="outlined" className={classes.card}>
           <Button
-            variant={orderState === "like" ? "contained" : "outlined"}
+            variant={orderState === "likes" ? "contained" : "outlined"}
             color="primary"
-            onClick={() => changeOrderState("like")}
+            onClick={() => changeOrderState("likes")}
           >
             Order by Like
           </Button>
         </Card>
         <Card variant="outlined" className={classes.card}>
           <Button
-            variant={orderState === "dislike" ? "contained" : "outlined"}
+            variant={orderState === "dislikes" ? "contained" : "outlined"}
             color="primary"
-            onClick={() => changeOrderState("dislike")}
+            onClick={() => changeOrderState("dislikes")}
           >
             Order by Dislike
+          </Button>
+        </Card>
+      </Grid>
+      <Grid container justify="space-around" alignItems="center">
+        <Card variant="text" className={classes.card}>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={() => {
+              search();
+            }}
+          >
+            Search
           </Button>
         </Card>
         <Card variant="text" className={classes.card}>

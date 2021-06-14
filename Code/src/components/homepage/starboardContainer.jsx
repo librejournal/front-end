@@ -70,7 +70,7 @@ const StarboardContainer = ({
         <>
           {loggedUser.token ? null : (
             <Grid item xs={12} className={classes.loginGrid}>
-              <Link to="/login">
+              <Link to="/login" style={{ textDecoration: "none" }}>
                 <Button color="secondary" variant="contained">
                   Click here to login / register
                 </Button>

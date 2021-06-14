@@ -56,7 +56,7 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
   const [followStatus, setFollowStatus] = useState(false);
 
   const getUserInfo = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profile/${id}/detail`;
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/${id}/detail`;
     await axios
       .get(url, {
         headers: {
@@ -80,7 +80,7 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
   };
 
   const myUserInfo = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profile/self-detail`;
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/self-detail`;
     await axios
       .get(url, {
         headers: {
@@ -96,7 +96,7 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
   };
 
   const followUser = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profile/follow`;
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/follow`;
     await axios
       .patch(
         url,

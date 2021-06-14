@@ -46,7 +46,7 @@ const App = ({ loggedUser, onStateUser, onInfoUser }) => {
     };
 
     const getUserInfo = async () => {
-        const url = `${process.env.REACT_APP_DB_HOST}/api/profile/self-detail`;
+        const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/self-detail`;
         await axios
             .get(url, {
                 headers: {
