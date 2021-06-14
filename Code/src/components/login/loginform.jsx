@@ -6,7 +6,7 @@ import { Grid, TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from "recompose";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 
@@ -110,6 +110,11 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           LOG IN
         </Button>
       </Grid>
+      <Link to="/password-reset" style={{ textDecoration: "none" }}>
+        <Typography color="primary" variant="subtitle2">
+          Did you forget your password?
+        </Typography>
+      </Link>
 
       {mobileState === "Login" ? (
         <Typography

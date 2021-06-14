@@ -1,6 +1,16 @@
 import React, { useEffect } from "react";
 
-import { Grid, Input, Card, Button } from "@material-ui/core";
+import {
+  Grid,
+  Input,
+  Card,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import SearchIcon from "@material-ui/icons/Search";
@@ -20,7 +30,6 @@ const useStyles = () => ({
 
 const SearchBar = ({
   classes,
-  searchStories,
   orderState,
   setOrderState,
   getStories,
@@ -45,6 +54,10 @@ const SearchBar = ({
 
   const search = () => {
     getStories(orderState, textWord, textTag, textLocation);
+  };
+
+  const handleChange = (event) => {
+    setOrderState(event.target.value);
   };
 
   useEffect(() => {
@@ -96,42 +109,79 @@ const SearchBar = ({
         </Card>
       </Grid>
       <Grid container justify="space-around">
-        <Card variant="outlined" className={classes.card}>
-          <Button
-            variant={orderState === "date" ? "contained" : "outlined"}
-            color="primary"
-            onClick={() => changeOrderState("date")}
+        <FormControl style={{ width: "40%" }}>
+          <InputLabel id="demo-simple-select-label">
+            <Typography variant="subtitle1" color="primary">
+              Order By
+            </Typography>
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            onChange={handleChange}
           >
-            Order by Date
-          </Button>
-        </Card>
-        <Card variant="outlined" className={classes.card}>
-          <Button
-            variant={orderState === "score" ? "contained" : "outlined"}
-            color="primary"
-            onClick={() => changeOrderState("score")}
+            <MenuItem value={"date"}>
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                onClick={() => changeOrderState("date")}
+              >
+                Date
+              </Typography>
+            </MenuItem>
+            <MenuItem value={"score"}>
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                onClick={() => changeOrderState("score")}
+              >
+                Score
+              </Typography>
+            </MenuItem>
+            <MenuItem value={"likes"}>
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                onClick={() => changeOrderState("likes")}
+              >
+                Likes
+              </Typography>
+            </MenuItem>
+            <MenuItem value={"dislikes"}>
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                onClick={() => changeOrderState("dislikes")}
+              >
+                Dislikes
+              </Typography>
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl style={{ width: "20%" }}>
+          <InputLabel id="demo-simple-select-label-mode">
+            <Typography variant="subtitle1" color="primary">
+              Mode
+            </Typography>
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label-mode"
+            id="demo-simple-select-label-mode"
+            onChange={handleChange}
           >
-            Order by Score
-          </Button>
-        </Card>
-        <Card variant="outlined" className={classes.card}>
-          <Button
-            variant={orderState === "likes" ? "contained" : "outlined"}
-            color="primary"
-            onClick={() => changeOrderState("likes")}
-          >
-            Order by Like
-          </Button>
-        </Card>
-        <Card variant="outlined" className={classes.card}>
-          <Button
-            variant={orderState === "dislikes" ? "contained" : "outlined"}
-            color="primary"
-            onClick={() => changeOrderState("dislikes")}
-          >
-            Order by Dislike
-          </Button>
-        </Card>
+            <MenuItem value={"-"}>
+              <Typography variant="subtitle1" color="primary">
+                Descending
+              </Typography>
+            </MenuItem>
+            <MenuItem value={"+"}>
+              <Typography variant="subtitle1" color="primary">
+                Ascending
+              </Typography>
+            </MenuItem>
+          </Select>
+        </FormControl>
+        ;
       </Grid>
       <Grid container justify="space-around" alignItems="center">
         <Card variant="text" className={classes.card}>

@@ -170,7 +170,7 @@ const Homepage = ({ classes, limit, width }) => {
         )}
 
         {limit < width ? (
-          <Grid container justify="center" style={{ maxWidth: "1600px" }}>
+          <Grid container justify="space-around" style={{ maxWidth: "1600px" }}>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
