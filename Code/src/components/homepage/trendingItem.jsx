@@ -76,7 +76,9 @@ const TrendingItem = ({ title, classes, imageUrl }) => {
         id={`trendingImage-${imageUrl}`}
         key={imageUrl}
       >
-        <Typography className={classes.itemTitleText}>{title}</Typography>
+        <Typography color="secondary" className={classes.itemTitleText}>
+          {title}
+        </Typography>
       </Grid>
     </Grid>
   );

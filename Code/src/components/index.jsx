@@ -17,6 +17,7 @@ import DialogBox from "./account/dialogBox";
 import TitleDialog from "./createstory/titleDialog";
 import SearchBar from "./homepage/searchBar";
 import CommentGrid from "./previewstory/commentgrid";
+import PasswordReset from "./passwordreset/passwordReset";
 
 export {
   Header,
@@ -38,4 +39,5 @@ export {
   TitleDialog,
   SearchBar,
   CommentGrid,
+  PasswordReset,
 };

@@ -15,6 +15,11 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import SearchIcon from "@material-ui/icons/Search";
 
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+
 const useStyles = () => ({
   card: {
     display: "flex",
@@ -39,30 +44,37 @@ const SearchBar = ({
   setTextLocation,
   setTextTag,
   setTextWord,
+  mode,
+  setMode,
 }) => {
   const changeOrderState = (order) => {
     setOrderState(order);
     getStories(order, textWord, textTag, textLocation);
   };
+
   const resetState = () => {
     setOrderState(null);
     setTextWord(null);
     setTextTag(null);
     setTextLocation(null);
-    getStories(null, null, null, null);
+    getStories(null, null, null, null, null);
   };
 
   const search = () => {
-    getStories(orderState, textWord, textTag, textLocation);
+    getStories(orderState, textWord, textTag, textLocation, mode);
   };
 
   const handleChange = (event) => {
     setOrderState(event.target.value);
   };
 
+  const handleChangeMode = (event) => {
+    setMode(event.target.value);
+  };
+
   useEffect(() => {
     return () => {};
-  }, [textWord]);
+  }, [getStories]);
   return (
     <>
       <Grid container justify="space-around">
@@ -109,7 +121,7 @@ const SearchBar = ({
         </Card>
       </Grid>
       <Grid container justify="space-around">
-        <FormControl style={{ width: "40%" }}>
+        <FormControl style={{ width: "40%", margin: "auto 0" }}>
           <InputLabel id="demo-simple-select-label">
             <Typography variant="subtitle1" color="primary">
               Order By
@@ -158,35 +170,43 @@ const SearchBar = ({
             </MenuItem>
           </Select>
         </FormControl>
-        <FormControl style={{ width: "20%" }}>
-          <InputLabel id="demo-simple-select-label-mode">
+
+        <FormControl
+          component="fieldset"
+          style={{ width: "20%", margin: "15px 0" }}
+        >
+          <FormLabel component="legend">
             <Typography variant="subtitle1" color="primary">
               Mode
             </Typography>
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label-mode"
-            id="demo-simple-select-label-mode"
-            onChange={handleChange}
+          </FormLabel>
+
+          <RadioGroup
+            aria-label="gender"
+            name="gender"
+            value={mode}
+            onChange={handleChangeMode}
+            color="primary"
           >
-            <MenuItem value={"-"}>
-              <Typography variant="subtitle1" color="primary">
-                Descending
-              </Typography>
-            </MenuItem>
-            <MenuItem value={"+"}>
-              <Typography variant="subtitle1" color="primary">
-                Ascending
-              </Typography>
-            </MenuItem>
-          </Select>
+            <FormControlLabel
+              value=""
+              control={<Radio color="primary" />}
+              label="Ascending"
+              color="primary"
+            />
+            <FormControlLabel
+              value="-"
+              control={<Radio color="primary" />}
+              label="Descending"
+              color="primary"
+            />
+          </RadioGroup>
         </FormControl>
-        ;
       </Grid>
       <Grid container justify="space-around" alignItems="center">
         <Card variant="text" className={classes.card}>
           <Button
-            variant="text"
+            variant="outlined"
             color="primary"
             onClick={() => {
               search();
@@ -196,7 +216,11 @@ const SearchBar = ({
           </Button>
         </Card>
         <Card variant="text" className={classes.card}>
-          <Button variant="text" color="primary" onClick={() => resetState()}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => resetState()}
+          >
             Reset
           </Button>
         </Card>

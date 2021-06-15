@@ -71,6 +71,7 @@ const Homepage = ({ classes, limit, width }) => {
   const [textWord, setTextWord] = useState(null);
   const [textLocation, setTextLocation] = useState(null);
   const [textTag, setTextTag] = useState(null);
+  const [mode, setMode] = useState("");
 
   const changeContainer = (value) => setContainer(value);
   const changePage = (val) => {
@@ -80,13 +81,13 @@ const Homepage = ({ classes, limit, width }) => {
     }, 200);
   };
 
-  const getStories = async (type, component, tag, location) => {
+  const getStories = async (type, component, tag, location, order) => {
     const url =
-      `${process.env.REACT_APP_DB_HOST}/api/stories/` +
-      (component !== null ? `?components=${component}` : "") +
-      (tag !== null ? `?tags=${tag}` : "") +
-      (tag !== location ? `?locations=${location}` : "") +
-      (type !== null ? `?ordering=${type}` : "");
+      `${process.env.REACT_APP_DB_HOST}/api/stories/?` +
+      (component !== null ? `components=${component}&` : "") +
+      (tag !== null ? `tags=${tag}&` : "") +
+      (tag !== location ? `locations=${location}&` : "") +
+      (type !== null ? `ordering=${order}${type}&` : "");
     console.log(url);
     await axios
       .get(
@@ -109,7 +110,7 @@ const Homepage = ({ classes, limit, width }) => {
   };
 
   useEffect(() => {
-    getStories(orderState, textWord, textTag, textLocation);
+    getStories(orderState, textWord, textTag, textLocation, mode);
   }, [page]);
 
   return (
@@ -194,8 +195,6 @@ const Homepage = ({ classes, limit, width }) => {
                     flexDirection: "column",
                     justifyContent: "space-evenly",
                     backgroundColor: "white",
-                    borderBottom: "2px solid lightgray",
-                    borderTop: "2px solid lightgray",
                   }}
                 >
                   <SearchBar
@@ -208,6 +207,8 @@ const Homepage = ({ classes, limit, width }) => {
                     setTextLocation={setTextLocation}
                     setTextTag={setTextTag}
                     setTextWord={setTextWord}
+                    mode={mode}
+                    setMode={setMode}
                   />
                 </Grid>
               </AccordionDetails>

@@ -30,14 +30,23 @@ const MyBreadcrumbs = ({ classes, loggedUser }) => (
     className={classes.breadcrums}
   >
     <Link to="/" style={{ textDecoration: "none" }}>
-      <Typography className={classes.headerMenuTextElements}>Home</Typography>
+      <Typography color="secondary" className={classes.headerMenuTextElements}>
+        Home
+      </Typography>
     </Link>
     <Link to="about" style={{ textDecoration: "none" }}>
-      <Typography className={classes.headerMenuTextElements}>About</Typography>
+      <Typography color="secondary" className={classes.headerMenuTextElements}>
+        About
+      </Typography>
     </Link>
-    {loggedUser.token ? (
+    {loggedUser.token &&
+    loggedUser.userInfo &&
+    loggedUser.userInfo.type === "WRITER" ? (
       <Link to={"/dashboard"} style={{ textDecoration: "none" }}>
-        <Typography className={classes.headerMenuTextElements}>
+        <Typography
+          color="secondary"
+          className={classes.headerMenuTextElements}
+        >
           Dashboard
         </Typography>
       </Link>

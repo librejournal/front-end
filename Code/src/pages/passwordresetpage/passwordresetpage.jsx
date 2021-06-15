@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { PasswordReset } from "../../components";
 
 const useStyles = () => ({
   accountpageContainer: {
@@ -14,7 +15,7 @@ const useStyles = () => ({
 
 const PasswordResetPage = ({ classes }) => (
   <Grid container className={classes.accountpageContainer}>
-    asd
+    <PasswordReset />
   </Grid>
 );
 

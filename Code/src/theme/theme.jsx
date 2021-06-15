@@ -13,7 +13,6 @@ const Theme = createMuiTheme({
       fontFamily: "inherit",
       fontWeight: 400,
       fontSize: "1.25rem",
-      color: "white",
     },
     h1: {
       fontFamily: "inherit",
