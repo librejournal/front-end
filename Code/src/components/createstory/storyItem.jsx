@@ -111,20 +111,23 @@ const StoryItem = ({
   const [imageFile, setImageFile] = useState(null);
 
   const onFileChange = (event) => {
-    setImageFile({ selectedFile: event.target.files[0] });
-    onFileUpload();
+    setImageFile(event.target.files[0]);
   };
 
-  const onFileUpload = () => {
-    // Create an object of formData
-    //const formData = new FormData();
+  useEffect(() => {
+    if (imageFile) {
+      onFileUpload(imageFile);
+    }
+  }, [imageFile]);
 
-    // Update the formData object
-    //formData.append("myFile", imageFile, imageFile.name);
+  const onFileUpload = (file) => {
+    const formData = new FormData();
+    formData.append("myFile", file, file.name);
 
-    // Details of the uploaded file
-    console.log(imageFile);
-    setState(51);
+    for (var [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    uploadImage(formData);
   };
 
   const handleChange = (event) => {
@@ -323,6 +326,40 @@ const StoryItem = ({
       });
     setState(511);
   };
+
+  const uploadImage = async (file) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/files/upload`;
+    await axios
+      .post(url, file, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then(async () => {
+        const componentUrl = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
+        const info = {
+          type: "IMAGE",
+          text: file.name + file.lastModified,
+          story: storyId,
+          type_setting: imageSize,
+        };
+        await axios
+          .post(componentUrl, info, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setState(51);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  };
+
   const deleteItem = async (id) => {
     const deletedItemId = storyInfo.id;
 

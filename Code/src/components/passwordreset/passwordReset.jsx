@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Grid, Typography, Input, Button, TextField } from "@material-ui/core";
 
@@ -29,14 +29,16 @@ const useStyles = () => ({
 
 const PasswordReset = ({ classes, detailedInfo }) => {
   const [text, setText] = useState("");
-  const [state, setState] = useState(1);
+  const [state, setState] = useState("");
+
+  useEffect(() => setState(window.location.search), []);
+  console.log(state);
 
   const sendEmail = async (email) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/auth/password-reset?email=${email}`;
     await axios
       .get(url)
       .then((response) => {
-        setState(2);
         setText("");
         Swal.fire(
           "Password Reset",
@@ -46,9 +48,21 @@ const PasswordReset = ({ classes, detailedInfo }) => {
       .catch((err) => console.log(err));
   };
 
+  const changePassword = async (pwd) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/auth/password-reset`;
+
+    await axios
+      .post(url, {
+        token: "GenericToken",
+        password: `${pwd}`,
+      })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Grid item md={6} xs={12} className={classes.accountContainer}>
-      {state === 1 ? (
+      {state.includes("?token===") ? (
         <>
           <Grid item xs={12}>
             <Typography variant="h6">
@@ -106,7 +120,11 @@ const PasswordReset = ({ classes, detailedInfo }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => changePassword(text)}
+            >
               Reset Password
             </Button>
           </Grid>
