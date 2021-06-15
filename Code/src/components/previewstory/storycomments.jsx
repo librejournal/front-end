@@ -4,7 +4,17 @@ import {
   Typography,
   Input,
   Button,
-  Breadcrumbs,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  FormLabel,
+  Radio,
+  InputLabel,
+  Select,
+  MenuItem,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
@@ -15,6 +25,7 @@ import { mapStateToPropsComments } from "../../redux/mapFunctions";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 import Swal from "sweetalert2";
 import { CommentGrid } from "../";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = () => ({
   input: {
@@ -44,11 +55,7 @@ const useStyles = () => ({
       cursor: "pointer",
     },
   },
-  orderGrid: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   breadcrumbsStyle: {
     border: "2px solid lightgray",
     "& ol": { flexWrap: "inherit" },
@@ -60,6 +67,13 @@ const useStyles = () => ({
     textDecoration: "underline",
     fontSize: "1.25rem",
   },
+  titleText: {
+    textAlign: "center",
+    backgroundColor: "#1687a7",
+    borderRadius: "10px",
+    "& h5": { color: "white" },
+    "& svg": { color: "white" },
+  },
 });
 
 const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
@@ -67,6 +81,16 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const [comments, setComments] = useState(null);
   const [toggle, setToggle] = useState(false);
   const [type, setType] = useState(false);
+  const [orderState, setOrderState] = useState(null);
+  const [mode, setMode] = useState(null);
+
+  const handleChange = (event) => {
+    setOrderState(event.target.value);
+  };
+
+  const handleChangeMode = (event) => {
+    setMode(event.target.value);
+  };
 
   useEffect(() => {
     getComments("likes");
@@ -122,13 +146,118 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
     <Grid item xs={12}>
       <Grid container className={classes.commentsFirstContainer}>
         <Grid item xs={12}>
-          <Typography
-            color="primary"
-            variant="h5"
-            style={{ textAlign: "center", margin: "2vh" }}
-          >
-            Comments
-          </Typography>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              className={classes.titleText}
+            >
+              <Grid item xs={12} id="title">
+                <Typography
+                  color="primary"
+                  variant="h5"
+                  style={{ textAlign: "center", margin: "2vh" }}
+                >
+                  Comments
+                </Typography>
+              </Grid>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  minHeight: "10rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-evenly",
+                  backgroundColor: "white",
+                }}
+              >
+                <FormControl style={{ width: "40%", margin: "auto 0" }}>
+                  <InputLabel id="demo-simple-select-label">
+                    <Typography variant="subtitle1" color="primary">
+                      Order By
+                    </Typography>
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={"date"}>
+                      <Typography
+                        variant="subtitle1"
+                        color="primary"
+                        onClick={() => getComments("date")}
+                      >
+                        Date
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem value={"score"}>
+                      <Typography
+                        variant="subtitle1"
+                        color="primary"
+                        onClick={() => getComments("score")}
+                      >
+                        Score
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem value={"likes"}>
+                      <Typography
+                        variant="subtitle1"
+                        color="primary"
+                        onClick={() => getComments("likes")}
+                      >
+                        Likes
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem value={"dislikes"}>
+                      <Typography
+                        variant="subtitle1"
+                        color="primary"
+                        onClick={() => getComments("dislikes")}
+                      >
+                        Dislikes
+                      </Typography>
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl
+                  component="fieldset"
+                  style={{ width: "20%", margin: "15px 0" }}
+                >
+                  <FormLabel component="legend">
+                    <Typography variant="subtitle1" color="primary">
+                      Mode
+                    </Typography>
+                  </FormLabel>
+
+                  <RadioGroup
+                    aria-label="gender"
+                    name="gender"
+                    value={mode}
+                    onChange={handleChangeMode}
+                    color="primary"
+                  >
+                    <FormControlLabel
+                      value=""
+                      control={<Radio color="primary" />}
+                      label="Ascending"
+                      color="primary"
+                    />
+                    <FormControlLabel
+                      value="-"
+                      control={<Radio color="primary" />}
+                      label="Descending"
+                      color="primary"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </AccordionDetails>
+          </Accordion>
         </Grid>
 
         {comments ? null : (
@@ -140,64 +269,6 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
             You have to be logged in to see comments.
           </Typography>
         )}
-        {comments ? (
-          <Grid item xs={12} className={classes.orderGrid}>
-            <Breadcrumbs seperator="|" className={classes.breadcrumbsStyle}>
-              <Typography
-                color="primary"
-                variant="subtitle1"
-                style={{
-                  textAlign: "center",
-                  margin: "2vh",
-                  cursor: "pointer",
-                }}
-                className={toggle === "date" ? classes.underlined : null}
-                onClick={() => getComments("date")}
-              >
-                Date
-              </Typography>
-              <Typography
-                color="primary"
-                variant="subtitle1"
-                style={{
-                  textAlign: "center",
-                  margin: "2vh",
-                  cursor: "pointer",
-                }}
-                className={toggle === "score" ? classes.underlined : null}
-                onClick={() => getComments("score")}
-              >
-                Score
-              </Typography>
-              <Typography
-                color="primary"
-                variant="subtitle1"
-                style={{
-                  textAlign: "center",
-                  margin: "2vh",
-                  cursor: "pointer",
-                }}
-                className={toggle === "likes" ? classes.underlined : null}
-                onClick={() => getComments("dislikes")}
-              >
-                Like
-              </Typography>
-              <Typography
-                color="primary"
-                variant="subtitle1"
-                style={{
-                  textAlign: "center",
-                  margin: "2vh",
-                  cursor: "pointer",
-                }}
-                className={toggle === "dislikes" ? classes.underlined : null}
-                onClick={() => getComments("likes")}
-              >
-                Dislike
-              </Typography>
-            </Breadcrumbs>
-          </Grid>
-        ) : null}
       </Grid>
       {comments ? (
         <CommentGrid

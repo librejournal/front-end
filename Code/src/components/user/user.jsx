@@ -108,7 +108,7 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
           },
         }
       )
-      .then((response) => {
+      .then(() => {
         Swal.fire({
           position: "top-end",
           icon: "success",
