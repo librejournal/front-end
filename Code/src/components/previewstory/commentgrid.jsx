@@ -49,6 +49,8 @@ const StoryCommments = ({
   width,
   comments,
   getComments,
+  orderState,
+  mode,
 }) => {
   const likeComment = async (id) => {
     axios
@@ -63,7 +65,7 @@ const StoryCommments = ({
         }
       )
       .then(() => {
-        getComments("date");
+        getComments(orderState, mode);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -88,7 +90,7 @@ const StoryCommments = ({
         }
       )
       .then(() => {
-        getComments("date");
+        getComments(orderState, mode);
         Swal.fire({
           position: "top-end",
           icon: "success",

@@ -67,11 +67,12 @@ const Homepage = ({ classes, limit, width }) => {
   const [container, setContainer] = useState("Stories");
   const [stories, setStories] = useState(null);
   const [page, setPage] = useState(1);
-  const [orderState, setOrderState] = useState(null);
+  const [orderState, setOrderState] = useState("likes");
   const [textWord, setTextWord] = useState(null);
   const [textLocation, setTextLocation] = useState(null);
   const [textTag, setTextTag] = useState(null);
   const [mode, setMode] = useState("");
+  const [storylength, setStorylength] = useState(0);
 
   const changeContainer = (value) => setContainer(value);
   const changePage = (val) => {
@@ -81,6 +82,13 @@ const Homepage = ({ classes, limit, width }) => {
     }, 200);
   };
 
+  const getStoryLength = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/?`;
+    await axios
+      .get(url)
+      .then((response) => setStorylength(response.data.length));
+  };
+
   const getStories = async (type, component, tag, location, order) => {
     const url =
       `${process.env.REACT_APP_DB_HOST}/api/stories/?` +
@@ -88,7 +96,7 @@ const Homepage = ({ classes, limit, width }) => {
       (tag !== null ? `tags=${tag}&` : "") +
       (tag !== location ? `locations=${location}&` : "") +
       (type !== null ? `ordering=${order}${type}&` : "");
-    console.log(url);
+
     await axios
       .get(
         url,
@@ -111,10 +119,11 @@ const Homepage = ({ classes, limit, width }) => {
 
   useEffect(() => {
     getStories(orderState, textWord, textTag, textLocation, mode);
+    getStoryLength();
   }, [page]);
 
   return (
-    <>
+    <Grid container>
       <Grid item xs={12}>
         <ParallaxBanner
           className="your-class"
@@ -172,7 +181,7 @@ const Homepage = ({ classes, limit, width }) => {
 
         {limit < width ? (
           <Grid container justify="space-around" style={{ maxWidth: "1600px" }}>
-            <Accordion>
+            <Accordion style={{ width: "100%" }}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -272,7 +281,7 @@ const Homepage = ({ classes, limit, width }) => {
               <Button
                 variant="outlined"
                 color="primary"
-                disabled={stories ? stories.length < 3 : null}
+                disabled={page === storylength / 3}
                 onClick={() => changePage(page + 1)}
               >
                 Next Page
@@ -281,7 +290,7 @@ const Homepage = ({ classes, limit, width }) => {
           ) : null}
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

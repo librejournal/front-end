@@ -4,14 +4,6 @@ import {
   Typography,
   Input,
   Button,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  FormLabel,
-  Radio,
-  InputLabel,
-  Select,
-  MenuItem,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -26,6 +18,7 @@ import { withWindowConsumer } from "../../contexts/window/consumer";
 import Swal from "sweetalert2";
 import { CommentGrid } from "../";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { CommentSearchBar } from "../";
 
 const useStyles = () => ({
   input: {
@@ -71,6 +64,7 @@ const useStyles = () => ({
     textAlign: "center",
     backgroundColor: "#1687a7",
     borderRadius: "10px",
+    height: "5rem",
     "& h5": { color: "white" },
     "& svg": { color: "white" },
   },
@@ -79,29 +73,18 @@ const useStyles = () => ({
 const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const [text, setText] = useState("");
   const [comments, setComments] = useState(null);
-  const [toggle, setToggle] = useState(false);
   const [type, setType] = useState(false);
-  const [orderState, setOrderState] = useState(null);
-  const [mode, setMode] = useState(null);
-
-  const handleChange = (event) => {
-    setOrderState(event.target.value);
-  };
-
-  const handleChangeMode = (event) => {
-    setMode(event.target.value);
-  };
+  const [orderState, setOrderState] = useState("likes");
+  const [mode, setMode] = useState("");
 
   useEffect(() => {
-    getComments("likes");
+    getComments(orderState, mode);
   }, []);
 
-  const getComments = async (order) => {
+  const getComments = async (order, mode) => {
     await axios
       .get(
-        `http://localhost:9001/api/stories/${id}/comments/?ordering=${
-          type ? order : "-" + order
-        }`,
+        `http://localhost:9001/api/stories/${id}/comments/?ordering=${mode}${order}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -109,11 +92,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
           },
         }
       )
-      .then(
-        (response) => setComments(response.data),
-        setToggle(order),
-        setType(!type)
-      )
+      .then((response) => setComments(response.data), setType(!type))
       .catch((err) => console.log(err));
   };
 
@@ -130,7 +109,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
         }
       )
       .then(() => {
-        getComments("date");
+        getComments(orderState, mode);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -143,124 +122,79 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   };
 
   return (
-    <Grid item xs={12}>
-      <Grid container className={classes.commentsFirstContainer}>
-        <Grid item xs={12}>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-              className={classes.titleText}
+    <Grid container xs={12}>
+      {comments ? (
+        <Grid container className={classes.commentsFirstContainer}>
+          <Grid item xs={12}>
+            <Accordion
+              square
+              style={{ margin: "2rem 0", borderBottom: "3px solid lightgray" }}
             >
-              <Grid item xs={12} id="title">
-                <Typography
-                  color="primary"
-                  variant="h5"
-                  style={{ textAlign: "center", margin: "2vh" }}
-                >
-                  Comments
-                </Typography>
-              </Grid>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid
-                item
-                xs={12}
-                style={{
-                  minHeight: "10rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-evenly",
-                  backgroundColor: "white",
-                }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className={classes.titleText}
               >
-                <FormControl style={{ width: "40%", margin: "auto 0" }}>
-                  <InputLabel id="demo-simple-select-label">
-                    <Typography variant="subtitle1" color="primary">
-                      Order By
-                    </Typography>
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={"date"}>
-                      <Typography
-                        variant="subtitle1"
-                        color="primary"
-                        onClick={() => getComments("date")}
-                      >
-                        Date
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem value={"score"}>
-                      <Typography
-                        variant="subtitle1"
-                        color="primary"
-                        onClick={() => getComments("score")}
-                      >
-                        Score
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem value={"likes"}>
-                      <Typography
-                        variant="subtitle1"
-                        color="primary"
-                        onClick={() => getComments("likes")}
-                      >
-                        Likes
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem value={"dislikes"}>
-                      <Typography
-                        variant="subtitle1"
-                        color="primary"
-                        onClick={() => getComments("dislikes")}
-                      >
-                        Dislikes
-                      </Typography>
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl
-                  component="fieldset"
-                  style={{ width: "20%", margin: "15px 0" }}
-                >
-                  <FormLabel component="legend">
-                    <Typography variant="subtitle1" color="primary">
-                      Mode
-                    </Typography>
-                  </FormLabel>
-
-                  <RadioGroup
-                    aria-label="gender"
-                    name="gender"
-                    value={mode}
-                    onChange={handleChangeMode}
+                <Grid item xs={12} id="title">
+                  <Typography
                     color="primary"
+                    variant="h5"
+                    style={{ textAlign: "center" }}
                   >
-                    <FormControlLabel
-                      value=""
-                      control={<Radio color="primary" />}
-                      label="Ascending"
-                      color="primary"
-                    />
-                    <FormControlLabel
-                      value="-"
-                      control={<Radio color="primary" />}
-                      label="Descending"
-                      color="primary"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
+                    Comments
+                  </Typography>
+                </Grid>
+              </AccordionSummary>
+              <AccordionDetails>
+                <CommentSearchBar
+                  orderState={orderState}
+                  setOrderState={setOrderState}
+                  mode={mode}
+                  setMode={setMode}
+                  getComments={getComments}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
 
-        {comments ? null : (
+          <Grid item xs={12}>
+            <CommentGrid
+              loggedUser={loggedUser}
+              comments={comments}
+              getComments={getComments}
+              orderState={orderState}
+              mode={mode}
+            />
+          </Grid>
+
+          <Grid item xs={12} className={classes.sendCommentGrid}>
+            <Input
+              color="primary"
+              placeholder="Enter your text"
+              fullWidth
+              multiline
+              className={classes.input}
+              value={text}
+              onChange={(event) => setText(event.target.value)}
+              key="myButton"
+              InputLabelProps={{
+                style: { color: "#1687a7" },
+              }}
+            />
+            <Button
+              id="comment-button"
+              variant="contained"
+              color="primary"
+              style={{ textDecoration: "none" }}
+              onClick={() => createComment(text)}
+            >
+              Comment
+            </Button>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid item xs={12}>
           <Typography
             color="primary"
             variant="subtitle2"
@@ -268,41 +202,8 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
           >
             You have to be logged in to see comments.
           </Typography>
-        )}
-      </Grid>
-      {comments ? (
-        <CommentGrid
-          loggedUser={loggedUser}
-          comments={comments}
-          getComments={getComments}
-        />
-      ) : null}
-      {loggedUser.token ? (
-        <Grid item xs={12} className={classes.sendCommentGrid}>
-          <Input
-            color="primary"
-            placeholder="Enter your text"
-            fullWidth
-            multiline
-            className={classes.input}
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            key="myButton"
-            InputLabelProps={{
-              style: { color: "#1687a7" },
-            }}
-          />
-          <Button
-            id="comment-button"
-            variant="contained"
-            color="primary"
-            style={{ textDecoration: "none" }}
-            onClick={() => createComment(text)}
-          >
-            Comment
-          </Button>
         </Grid>
-      ) : null}
+      )}
     </Grid>
   );
 };

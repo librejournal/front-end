@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 import {
   Grid,
-  Input,
   Card,
   Button,
   FormControl,
@@ -13,7 +12,6 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
-import SearchIcon from "@material-ui/icons/Search";
 
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -33,35 +31,21 @@ const useStyles = () => ({
   },
 });
 
-const SearchBar = ({
+const CommentSearchBar = ({
   classes,
   orderState,
   setOrderState,
-  getStories,
-  textTag,
-  textLocation,
-  textWord,
-  setTextLocation,
-  setTextTag,
-  setTextWord,
+  getComments,
   mode,
   setMode,
 }) => {
   const changeOrderState = (order) => {
     setOrderState(order);
-    getStories(order, textWord, textTag, textLocation);
   };
 
   const resetState = () => {
     setOrderState(null);
-    setTextWord(null);
-    setTextTag(null);
-    setTextLocation(null);
-    getStories(null, null, null, null, null);
-  };
-
-  const search = () => {
-    getStories(orderState, textWord, textTag, textLocation, mode);
+    setMode(null);
   };
 
   const handleChange = (event) => {
@@ -74,52 +58,9 @@ const SearchBar = ({
 
   useEffect(() => {
     return () => {};
-  }, [getStories]);
+  }, [getComments]);
   return (
     <Grid container>
-      <Grid container justify="space-around">
-        <Card variant="outlined" className={classes.card}>
-          <SearchIcon />
-          <Input
-            color="primary"
-            placeholder="Search for word"
-            fullWidth
-            value={textWord}
-            onChange={(event) => setTextWord(event.target.value)}
-            InputLabelProps={{
-              style: { color: "#1687a7" },
-            }}
-          />
-        </Card>
-        <Card variant="outlined" className={classes.card}>
-          <SearchIcon />
-          <Input
-            color="primary"
-            placeholder="Search for location"
-            fullWidth
-            multiline
-            value={textLocation}
-            onChange={(event) => setTextLocation(event.target.value)}
-            InputLabelProps={{
-              style: { color: "#1687a7" },
-            }}
-          />
-        </Card>
-        <Card variant="outlined" className={classes.card}>
-          <SearchIcon />
-          <Input
-            color="primary"
-            placeholder="Search for tag"
-            fullWidth
-            multiline
-            value={textTag}
-            onChange={(event) => setTextTag(event.target.value)}
-            InputLabelProps={{
-              style: { color: "#1687a7" },
-            }}
-          />
-        </Card>
-      </Grid>
       <Grid container justify="space-around">
         <FormControl style={{ width: "40%", margin: "auto 0" }}>
           <InputLabel id="demo-simple-select-label">
@@ -174,6 +115,7 @@ const SearchBar = ({
         <FormControl
           component="fieldset"
           style={{ width: "20%", margin: "15px 0" }}
+          id="sort"
         >
           <FormLabel>
             <Typography variant="subtitle1" color="primary">
@@ -209,10 +151,10 @@ const SearchBar = ({
             variant="outlined"
             color="primary"
             onClick={() => {
-              search();
+              getComments(orderState, mode);
             }}
           >
-            Search
+            Sort
           </Button>
         </Card>
         <Card variant="text" className={classes.card}>
@@ -229,4 +171,4 @@ const SearchBar = ({
   );
 };
 
-export default compose(withStyles(useStyles))(SearchBar);
+export default compose(withStyles(useStyles))(CommentSearchBar);
