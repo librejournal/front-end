@@ -12,7 +12,7 @@ const useStyles = () => ({
     backgroundColor: "#1687a7",
     padding: "1vh 0",
     borderRadius: "15px",
-    margin: "2vh 0",
+    margin: "2rem auto",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",

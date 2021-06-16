@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/core/styles";
-import { mockupDataStarboard, mockupDataStory } from "../../constants/index";
+import { mockupDataStarboard } from "../../constants/index";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { compose } from "recompose";
@@ -73,6 +73,7 @@ const Homepage = ({ classes, limit, width }) => {
   const [textTag, setTextTag] = useState(null);
   const [mode, setMode] = useState("");
   const [storylength, setStorylength] = useState(0);
+  const [trendingStories, setTrendingStories] = useState(null);
 
   const changeContainer = (value) => setContainer(value);
   const changePage = (val) => {
@@ -117,9 +118,15 @@ const Homepage = ({ classes, limit, width }) => {
       });
   };
 
+  const getTrendingStories = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/?ordering=likes`;
+    await axios.get(url).then((response) => setTrendingStories(response.data));
+  };
+
   useEffect(() => {
     getStories(orderState, textWord, textTag, textLocation, mode);
     getStoryLength();
+    getTrendingStories();
   }, [page]);
 
   return (
@@ -147,8 +154,11 @@ const Homepage = ({ classes, limit, width }) => {
           </div>
         </ParallaxBanner>
       </Grid>
+
       <Grid container justify="center" className={classes.homepageContainer}>
-        <TrendingContainer data={mockupDataStory} />
+        {trendingStories ? (
+          <TrendingContainer data={trendingStories.slice(0, 4)} />
+        ) : null}
 
         {limit < width ? null : (
           <Breadcrumbs separator="|" aria-label="breadcrumb">
@@ -181,56 +191,60 @@ const Homepage = ({ classes, limit, width }) => {
 
         {limit < width ? (
           <Grid container justify="space-around" style={{ maxWidth: "1600px" }}>
-            <Accordion style={{ width: "100%" }}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.titleText}
-              >
-                <Grid item xs={12} id="title">
-                  <Typography color="primary" variant="h5">
-                    Stories
-                  </Typography>
-                </Grid>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    minHeight: "10rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-evenly",
-                    backgroundColor: "white",
-                  }}
+            <Grid item xs={12}>
+              <Accordion style={{ width: "100%" }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  className={classes.titleText}
                 >
-                  <SearchBar
-                    getStories={getStories}
-                    orderState={orderState}
-                    setOrderState={setOrderState}
-                    textTag={textTag}
-                    textLocation={textLocation}
-                    textWord={textWord}
-                    setTextLocation={setTextLocation}
-                    setTextTag={setTextTag}
-                    setTextWord={setTextWord}
-                    mode={mode}
-                    setMode={setMode}
-                  />
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
+                  <Grid item xs={12} id="title">
+                    <Typography color="primary" variant="h5">
+                      Stories
+                    </Typography>
+                  </Grid>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      minHeight: "10rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-evenly",
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <SearchBar
+                      getStories={getStories}
+                      orderState={orderState}
+                      setOrderState={setOrderState}
+                      textTag={textTag}
+                      textLocation={textLocation}
+                      textWord={textWord}
+                      setTextLocation={setTextLocation}
+                      setTextTag={setTextTag}
+                      setTextWord={setTextWord}
+                      mode={mode}
+                      setMode={setMode}
+                    />
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+            </Grid>
 
-            {stories ? <StoryContainer data={stories} /> : null}
+            <Grid container justify="center">
+              {stories ? <StoryContainer data={stories} /> : null}
 
-            <StarboardContainer
-              title1="Top Authors"
-              title2="Top Locations"
-              data1={mockupDataStarboard.author}
-              data2={mockupDataStarboard.location}
-            />
+              <StarboardContainer
+                title1="Top Authors"
+                title2="Top Locations"
+                data1={mockupDataStarboard.author}
+                data2={mockupDataStarboard.location}
+              />
+            </Grid>
           </Grid>
         ) : container === "Stories" && stories ? (
           <StoryContainer data={stories} />
@@ -242,53 +256,54 @@ const Homepage = ({ classes, limit, width }) => {
             data2={mockupDataStarboard.location}
           />
         )}
-        <Grid container justify="center" alignItems="center">
-          {limit < width ? (
-            <Grid
-              item
-              xs={6}
+      </Grid>
+
+      <Grid container justify="center" alignItems="center">
+        {limit < width ? (
+          <Grid
+            item
+            xs={6}
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              margin: "2vh",
+              width: "50%",
+              backgroundColor: "white",
+              border: "2px solid lightgray",
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => changePage(page - 1)}
+              disabled={page === 1}
+            >
+              Previous Page
+            </Button>
+            <Typography
+              color="secondary"
+              variant="h6"
               style={{
-                display: "flex",
-                justifyContent: "space-around",
-                alignItems: "center",
-                margin: "2vh",
-                width: "50%",
-                backgroundColor: "white",
-                border: "2px solid lightgray",
+                backgroundColor: "#1687a7",
+                height: "30px",
+                width: "30px",
+                borderRadius: "5px",
+                textAlign: "center",
               }}
             >
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => changePage(page - 1)}
-                disabled={page === 1}
-              >
-                Previous Page
-              </Button>
-              <Typography
-                color="secondary"
-                variant="h6"
-                style={{
-                  backgroundColor: "#1687a7",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "5px",
-                  textAlign: "center",
-                }}
-              >
-                {page}
-              </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                disabled={page === storylength / 3}
-                onClick={() => changePage(page + 1)}
-              >
-                Next Page
-              </Button>
-            </Grid>
-          ) : null}
-        </Grid>
+              {page}
+            </Typography>
+            <Button
+              variant="outlined"
+              color="primary"
+              disabled={page > storylength / 3}
+              onClick={() => changePage(page + 1)}
+            >
+              Next Page
+            </Button>
+          </Grid>
+        ) : null}
       </Grid>
     </Grid>
   );

@@ -32,7 +32,7 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
     <Grid container className={classes.trendingContainerGrid}>
       <Grid item className={classes.titleText} xs={12}>
         <Typography color="primary" variant="h5">
-          Trending News
+          Trending Stories
         </Typography>
       </Grid>
 
@@ -40,7 +40,7 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
         data.map((el) => (
           <TrendingItem
             title={el.title}
-            imageUrl={el.imageUrl}
+            thumbnail={el.thumbnail}
             key={el.title}
           />
         ))
@@ -66,7 +66,7 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
           {data.map((el) => (
             <TrendingItem
               title={el.title}
-              imageUrl={el.imageUrl}
+              thumbnail={el.thumbnail}
               key={el.title}
             />
           ))}

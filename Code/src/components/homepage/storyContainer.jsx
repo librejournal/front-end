@@ -18,13 +18,12 @@ const useStyles = () => ({
   storyContainerGrid: {
     padding: "3vh 5vw",
     margin: 0,
-    maxWidth: "900px",
   },
 });
 
 const StoryContainer = ({ classes, data, limit, width }) => {
   return (
-    <Grid container className={classes.storyContainerGrid}>
+    <Grid item xs={12} md={8} className={classes.storyContainerGrid}>
       {limit < width ? (
         data.map((el) => (
           <StoryItem

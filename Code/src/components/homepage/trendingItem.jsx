@@ -55,17 +55,19 @@ const useStyles = () => ({
   },
 });
 
-const TrendingItem = ({ title, classes, imageUrl }) => {
+const TrendingItem = ({ classes, title, thumbnail }) => {
   useEffect(() => {
     const loadData = async (url) => {
       const data = await import(`../../assets/images/${url}`);
 
       document.getElementById(
-        `trendingImage-${imageUrl}`
+        `trendingImage-${thumbnail}`
       ).style.backgroundImage = `url("${data.default}")`;
     };
-    loadData(imageUrl);
-  }, [imageUrl]);
+    if (thumbnail) {
+      loadData(thumbnail);
+    }
+  }, [thumbnail]);
 
   return (
     <Grid container className={classes.itemGrid}>
@@ -73,8 +75,8 @@ const TrendingItem = ({ title, classes, imageUrl }) => {
         item
         xs={12}
         className={classes.itemTitleGrid}
-        id={`trendingImage-${imageUrl}`}
-        key={imageUrl}
+        id={`trendingImage-${thumbnail}`}
+        key={thumbnail}
       >
         <Typography color="secondary" className={classes.itemTitleText}>
           {title}

@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 const useStyles = {
   storyItemContainer: {
     maxWidth: "725px",
-    height: (props) => (props.limit > props.width ? "300px" : "600px"),
+    height: (props) => (props.limit > props.width ? "300px" : "500px"),
     border: "black 2px solid",
     padding: "1vh 1vw",
     alignSelf: "center",
@@ -44,7 +44,7 @@ const useStyles = {
   },
   storyItemImage: {
     border: "black 2px solid",
-    height: "60%",
+    height: "75%",
     background: (props) =>
       "url('https://cdn.windowsreport.com/wp-content/uploads/2020/10/IMG-file-886x590.jpg') no-repeat center center",
     backgroundColor: "#1687a7",
@@ -78,9 +78,8 @@ const useStyles = {
     },
   },
   storyItemIcons: {
-    margin: (props) => (props.width < props.limit ? "none" : "1vh 1vw"),
     display: "flex",
-    padding: "10px 0",
+    padding: "10px",
   },
 
   storyItemIcon: {
@@ -184,7 +183,7 @@ const StoryItem = ({
         <Typography variant="h3">{title}</Typography>
       </Grid>
       <Grid container className={classes.storyItemIcons}>
-        <Grid item md={2} xs={4} className={classes.storyItemIcon}>
+        <Grid item md={2} xs={3} className={classes.storyItemIcon}>
           <Typography
             variant={limit > width ? "subtitle2" : "subtitle1"}
             color="primary"
@@ -192,7 +191,7 @@ const StoryItem = ({
             Like: &nbsp;{likeCount}
           </Typography>
         </Grid>
-        <Grid item md={2} xs={4} className={classes.storyItemIcon}>
+        <Grid item md={2} xs={3} className={classes.storyItemIcon}>
           <Typography
             variant={limit > width ? "subtitle2" : "subtitle1"}
             color="primary"
@@ -201,7 +200,7 @@ const StoryItem = ({
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md={7} className={classes.storyItemText}>
+        <Grid item xs={6} md={7} className={classes.storyItemText}>
           <Link
             to={{
               pathname: `stories/${id}`,

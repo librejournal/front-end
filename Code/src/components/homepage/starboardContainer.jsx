@@ -21,22 +21,13 @@ import { Link } from "react-router-dom";
 
 const useStyles = () => ({
   starboardContainer: {
-    width: (props) => (props.width < 1200 ? null : "25%"),
-    maxHeight: "1500px",
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignContent: "space-evenly",
+    maxHeight: "150vh",
+    padding: "3vh 0",
+    position: "sticky",
+    top: "20px",
+    alignItems: "center",
   },
-  storyboardBigadvGrid: {
-    height: "35vh",
-    border: "1px solid black",
-    width: "max(10vw,250px)",
-  },
-  storyboardSmalladvGrid: {
-    height: "15vh",
-    border: "1px solid black",
-    width: "max(10vw,250px)",
-  },
+
   arrowActive: {
     fill: "#1687a7",
   },
@@ -65,9 +56,9 @@ const StarboardContainer = ({
   loggedUser,
 }) => {
   return (
-    <Grid container className={classes.starboardContainer}>
+    <Grid item xs={12} md={3} className={classes.starboardContainer}>
       {limit < width ? (
-        <>
+        <Grid container>
           {loggedUser.token ? null : (
             <Grid item xs={12} className={classes.loginGrid}>
               <Link to="/login" style={{ textDecoration: "none" }}>
@@ -79,7 +70,7 @@ const StarboardContainer = ({
           )}
           <StarboardItem title={title1} data={data1} />
           <StarboardItem title={title2} data={data2} />
-        </>
+        </Grid>
       ) : (
         <Carousel
           plugins={[
