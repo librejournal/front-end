@@ -26,7 +26,6 @@ const useStyles = {
     padding: "0 3vw",
     display: "flex",
     textAlign: "center",
-    height: "80vh",
     overflowY: "auto",
   },
   previewTitle: {
@@ -38,12 +37,11 @@ const useStyles = {
     overflowY: "auto",
   },
   createStoryRightContainer: {
-    height: "65vh",
-    maxHeight: "65vh",
+    height: "60vh",
     overflowY: "auto",
     maxWidth: "600px",
     margin: "2vh auto ",
-    padding: "2vh 0",
+    padding: "2rem 1rem",
     background: "white",
     "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
     "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
@@ -52,6 +50,7 @@ const useStyles = {
   },
   createStoryTitle: {
     borderBottom: "2px solid lightgray",
+    padding: "2rem 1rem",
   },
   createStoryBottomGrid: {
     display: "flex",

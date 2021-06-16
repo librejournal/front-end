@@ -32,7 +32,6 @@ const PasswordReset = ({ classes, detailedInfo }) => {
   const [state, setState] = useState("");
 
   useEffect(() => setState(window.location.search), []);
-  console.log(state);
 
   const sendEmail = async (email) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/auth/password-reset?email=${email}`;
@@ -48,13 +47,13 @@ const PasswordReset = ({ classes, detailedInfo }) => {
       .catch((err) => console.log(err));
   };
 
-  const changePassword = async (pwd) => {
+  const changePassword = async (pwd, token) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/auth/password-reset`;
 
     await axios
       .post(url, {
-        token: "GenericToken",
-        password: `${pwd}`,
+        token: token,
+        password: pwd,
       })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
@@ -62,7 +61,7 @@ const PasswordReset = ({ classes, detailedInfo }) => {
 
   return (
     <Grid item md={6} xs={12} className={classes.accountContainer}>
-      {state.includes("?token===") ? (
+      {!state.includes("?token=") ? (
         <>
           <Grid item xs={12}>
             <Typography variant="h6">
@@ -123,7 +122,9 @@ const PasswordReset = ({ classes, detailedInfo }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => changePassword(text)}
+              onClick={() =>
+                changePassword(text, window.location.href.split("?token=")[1])
+              }
             >
               Reset Password
             </Button>

@@ -122,11 +122,12 @@ const StoryItem = ({
 
   const onFileUpload = (file) => {
     const formData = new FormData();
-    formData.append("myFile", file, file.name);
+    formData.append("file", file);
 
     for (var [key, value] of formData.entries()) {
       console.log(key, value);
     }
+
     uploadImage(formData);
   };
 
@@ -173,7 +174,7 @@ const StoryItem = ({
 
   const updateStoryInfo = async () => {
     await axios
-      .get("http://localhost:9001/api/stories/drafts", {
+      .get("http://localhost:9001/api/stories/drafts/", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
@@ -183,6 +184,7 @@ const StoryItem = ({
         if (response.data.length > 0) {
           const data = response.data[0];
           setStoryInfo(data.components);
+          console.log(response);
         }
       })
       .catch((error) => console.log(error));
@@ -336,11 +338,12 @@ const StoryItem = ({
           Authorization: `Token ${token}`,
         },
       })
-      .then(async () => {
+      .then(async (response) => {
         const componentUrl = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
         const info = {
           type: "IMAGE",
-          text: file.name + file.lastModified,
+          text: response.data.id,
+          picture: response.data.id,
           story: storyId,
           type_setting: imageSize,
         };
@@ -352,6 +355,14 @@ const StoryItem = ({
             },
           })
           .then((response) => {
+            updateStoryInfo();
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Add Success",
+              showConfirmButton: false,
+              timer: 2000,
+            });
             console.log(response);
             setState(51);
           })

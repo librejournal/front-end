@@ -157,15 +157,6 @@ const CommentSearchBar = ({
             Sort
           </Button>
         </Card>
-        <Card variant="text" className={classes.card}>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => resetState()}
-          >
-            Reset
-          </Button>
-        </Card>
       </Grid>
     </Grid>
   );
