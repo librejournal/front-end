@@ -14,7 +14,6 @@ import "@brainhubeu/react-carousel/lib/style.css";
 
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import LoginImage from "../../assets/images/pexels-maria-orlova-4947860.jpg";
 import { connect } from "react-redux";
 import { mapStateToPropsStarboard } from "../../redux/mapFunctions";
 

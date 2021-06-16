@@ -61,8 +61,9 @@ const useStyles = {
   },
   titleText: {
     textAlign: "center",
-    backgroundColor: "#1687a7",
-    borderRadius: "10px",
+    backgroundColor: "#3E3C37",
+    borderBottomLeftRadius: "10px",
+    borderBottomRightRadius: "10px",
     "& h5": { color: "white" },
     "& svg": { color: "white" },
   },
@@ -84,6 +85,11 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
   const [mode, setMode] = useState("");
   const [storylength, setStorylength] = useState(0);
   const [trendingStories, setTrendingStories] = useState(null);
+  const [expanded, setExpanded] = useState("panel1");
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
 
   const changeContainer = (value) => setContainer(value);
   const changePage = (val) => {
@@ -266,7 +272,11 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
             {limit < width ? (
               <Grid container justify="center">
                 <Grid item xs={12}>
-                  <Accordion style={{ width: "100%" }}>
+                  <Accordion
+                    expanded={expanded === "panel1"}
+                    onChange={handleChange("panel1")}
+                    style={{ width: "100%" }}
+                  >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
