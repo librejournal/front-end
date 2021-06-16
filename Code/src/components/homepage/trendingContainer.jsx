@@ -42,6 +42,7 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
             title={el.title}
             thumbnail={el.thumbnail}
             key={el.title}
+            id={el.id}
           />
         ))
       ) : (
@@ -68,6 +69,7 @@ const TrendingContainer = ({ data, classes, limit, width }) => {
               title={el.title}
               thumbnail={el.thumbnail}
               key={el.title}
+              id={el.id}
             />
           ))}
         </Carousel>

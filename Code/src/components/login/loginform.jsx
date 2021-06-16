@@ -101,6 +101,14 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           onChange={addInfo("password")}
         />
       </>
+      <Link
+        to="/password-reset"
+        style={{ textDecoration: "none", margin: "auto" }}
+      >
+        <Typography color="primary" variant="subtitle2">
+          Did you forget your password?
+        </Typography>
+      </Link>
       <Grid container justify="center" alignItems="center">
         <Button
           variant="contained"
@@ -110,11 +118,6 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           LOG IN
         </Button>
       </Grid>
-      <Link to="/password-reset" style={{ textDecoration: "none" }}>
-        <Typography color="primary" variant="subtitle2">
-          Did you forget your password?
-        </Typography>
-      </Link>
 
       {mobileState === "Login" ? (
         <Typography

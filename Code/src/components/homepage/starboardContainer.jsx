@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import StarboardItem from "./starboardItem";
 import { compose } from "recompose";
@@ -14,18 +14,17 @@ import "@brainhubeu/react-carousel/lib/style.css";
 
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import LoginImage from "../../assets/images/pexels-jessica-lewis-606539.jpg";
+import LoginImage from "../../assets/images/pexels-maria-orlova-4947860.jpg";
 import { connect } from "react-redux";
 import { mapStateToPropsStarboard } from "../../redux/mapFunctions";
-import { Link } from "react-router-dom";
 
 const useStyles = () => ({
   starboardContainer: {
     maxHeight: "150vh",
     padding: "3vh 0",
+    alignItems: "center",
     position: "sticky",
     top: "20px",
-    alignItems: "center",
   },
 
   arrowActive: {
@@ -35,9 +34,9 @@ const useStyles = () => ({
     fill: "white",
   },
   loginGrid: {
-    backgroundImage: `url(${LoginImage})`,
-    height: "20vh",
-    backgroundSize: "100% auto",
+    width: "100%",
+    maxHeight: "30vh",
+    backgroundSize: "cover",
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "flex-end",
@@ -58,17 +57,9 @@ const StarboardContainer = ({
   return (
     <Grid item xs={12} md={3} className={classes.starboardContainer}>
       {limit < width ? (
-        <Grid container>
-          {loggedUser.token ? null : (
-            <Grid item xs={12} className={classes.loginGrid}>
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                <Button color="secondary" variant="contained">
-                  Click here to login / register
-                </Button>
-              </Link>
-            </Grid>
-          )}
+        <Grid container style={{ position: "sticky", top: "30px" }}>
           <StarboardItem title={title1} data={data1} />
+
           <StarboardItem title={title2} data={data2} />
         </Grid>
       ) : (

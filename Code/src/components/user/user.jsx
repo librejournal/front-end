@@ -199,16 +199,23 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
               "None"
             )}
           </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => followUser(myData.profile_id)}
+            disabled={followStatus}
+          >
+            {followStatus ? "FOLLOWED" : "FOLLOW USER"}
+          </Button>
         </Grid>
-      ) : null}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => followUser(myData.profile_id)}
-        disabled={followStatus}
-      >
-        {followStatus ? "FOLLOWED" : "FOLLOW USER"}
-      </Button>
+      ) : (
+        <Grid item xs={12}>
+          <Typography color="primary" variant="subtitle1">
+            {" "}
+            You have to login in order to see user informations
+          </Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };

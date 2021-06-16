@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 
 const useStyles = {
   storyItemContainer: {
-    maxWidth: "725px",
     height: (props) => (props.limit > props.width ? "300px" : "500px"),
     border: "black 2px solid",
     padding: "1vh 1vw",
@@ -133,92 +132,83 @@ const StoryItem = ({
   }, [thumbnail]);
 
   return (
-    <Grid container className={classes.storyItemContainer}>
-      <Grid item xs={1} />
-      <Grid item xs={11} className={classes.storyItemHeader}>
-        <Link
-          to={
-            state.user.id !== loggedUser.id
-              ? {
-                  pathname: `/user`,
-                  hash: `#${state.id}`,
-                  state: { user: state },
-                }
-              : {
-                  pathname: `/account`,
-                }
-          }
-          key={id}
-          style={{ textDecoration: "none", display: "flex" }}
-        >
-          <Typography
-            color="primary"
-            variant="subtitle1"
-            style={{ borderBottom: "0.5px solid lightgray" }}
-          >
-            {author}
-          </Typography>
-        </Link>
-        <Typography color="primary" variant="subtitle2">
-          {date.split("T")[0]}&nbsp;&nbsp;-&nbsp;&nbsp;
-          {date.split("T")[1].split(".")[0]}
-        </Typography>
-      </Grid>
-      <Grid item xs={1} className={classes.storyItemVote}>
-        <img src={UpArrow} alt="UpArrow" />
-        <Typography
-          color="primary"
-          variant={limit < width ? "h6" : "subtitle2"}
-        >
-          {likeCount}
-        </Typography>
-        <img src={DownArrow} alt="DownArrow" />
-      </Grid>
-      <Grid
-        item
-        xs={10}
-        className={classes.storyItemImage}
-        id={`storyImage-${thumbnail}`}
-      >
-        <Typography variant="h3">{title}</Typography>
-      </Grid>
-      <Grid container className={classes.storyItemIcons}>
-        <Grid item md={2} xs={3} className={classes.storyItemIcon}>
-          <Typography
-            variant={limit > width ? "subtitle2" : "subtitle1"}
-            color="primary"
-          >
-            Like: &nbsp;{likeCount}
-          </Typography>
-        </Grid>
-        <Grid item md={2} xs={3} className={classes.storyItemIcon}>
-          <Typography
-            variant={limit > width ? "subtitle2" : "subtitle1"}
-            color="primary"
-          >
-            Dislike: &nbsp;{dislikeCount}
-          </Typography>
-        </Grid>
-
-        <Grid item xs={6} md={7} className={classes.storyItemText}>
+    <Link
+      to={{
+        pathname: `stories/${id}`,
+        state: { id: id },
+      }}
+      key={id}
+      style={{ textDecoration: "none" }}
+    >
+      <Grid container className={classes.storyItemContainer}>
+        <Grid item xs={1} />
+        <Grid item xs={11} className={classes.storyItemHeader}>
           <Link
-            to={{
-              pathname: `stories/${id}`,
-              state: { id: id },
-            }}
+            to={
+              state.user.id !== loggedUser.id
+                ? {
+                    pathname: `/user`,
+                    hash: `#${state.id}`,
+                    state: { user: state },
+                  }
+                : {
+                    pathname: `/account`,
+                  }
+            }
             key={id}
-            style={{ textDecoration: "none" }}
+            style={{ textDecoration: "none", display: "flex" }}
           >
+            <Typography
+              color="primary"
+              variant="subtitle1"
+              style={{ borderBottom: "0.5px solid lightgray" }}
+            >
+              {author}
+            </Typography>
+          </Link>
+          <Typography color="primary" variant="subtitle2">
+            {date.split("T")[0]}&nbsp;&nbsp;-&nbsp;&nbsp;
+            {date.split("T")[1].split(".")[0]}
+          </Typography>
+        </Grid>
+        <Grid item xs={1} className={classes.storyItemVote}>
+          <img src={UpArrow} alt="UpArrow" />
+          <Typography
+            color="primary"
+            variant={limit < width ? "h6" : "subtitle2"}
+          >
+            {likeCount}
+          </Typography>
+          <img src={DownArrow} alt="DownArrow" />
+        </Grid>
+        <Grid
+          item
+          xs={10}
+          className={classes.storyItemImage}
+          id={`storyImage-${thumbnail}`}
+        >
+          <Typography variant="h3">{title}</Typography>
+        </Grid>
+        <Grid container className={classes.storyItemIcons}>
+          <Grid item md={2} xs={3} className={classes.storyItemIcon}>
             <Typography
               variant={limit > width ? "subtitle2" : "subtitle1"}
               color="primary"
             >
-              Click to read more...
+              Like: &nbsp;{likeCount}
             </Typography>
-          </Link>
+          </Grid>
+          <Grid item md={2} xs={3} className={classes.storyItemIcon}>
+            <Typography
+              variant={limit > width ? "subtitle2" : "subtitle1"}
+              color="primary"
+            >
+              Dislike: &nbsp;{dislikeCount}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Link>
   );
 };
 

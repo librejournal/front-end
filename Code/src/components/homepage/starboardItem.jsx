@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -7,7 +7,7 @@ import { withWindowConsumer } from "../../contexts/window/consumer";
 
 const useStyles = () => ({
   starboardGrid: {
-    width: "max(10vw,250px)",
+    width: "max(100%,450px)",
     height: "350px",
     backgroundColor: "#1687a7",
     padding: "1vh 0",

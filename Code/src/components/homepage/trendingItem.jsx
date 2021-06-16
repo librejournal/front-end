@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
+import { Link } from "react-router-dom";
 
 const useStyles = () => ({
   itemGrid: {
@@ -55,7 +56,7 @@ const useStyles = () => ({
   },
 });
 
-const TrendingItem = ({ classes, title, thumbnail }) => {
+const TrendingItem = ({ classes, title, thumbnail, id }) => {
   useEffect(() => {
     const loadData = async (url) => {
       const data = await import(`../../assets/images/${url}`);
@@ -70,19 +71,28 @@ const TrendingItem = ({ classes, title, thumbnail }) => {
   }, [thumbnail]);
 
   return (
-    <Grid container className={classes.itemGrid}>
-      <Grid
-        item
-        xs={12}
-        className={classes.itemTitleGrid}
-        id={`trendingImage-${thumbnail}`}
-        key={thumbnail}
-      >
-        <Typography color="secondary" className={classes.itemTitleText}>
-          {title}
-        </Typography>
+    <Link
+      to={{
+        pathname: `stories/${id}`,
+        state: { id: id },
+      }}
+      key={id}
+      style={{ textDecoration: "none" }}
+    >
+      <Grid container className={classes.itemGrid}>
+        <Grid
+          item
+          xs={12}
+          className={classes.itemTitleGrid}
+          id={`trendingImage-${thumbnail}`}
+          key={thumbnail}
+        >
+          <Typography color="secondary" className={classes.itemTitleText}>
+            {title}
+          </Typography>
+        </Grid>
       </Grid>
-    </Grid>
+    </Link>
   );
 };
 

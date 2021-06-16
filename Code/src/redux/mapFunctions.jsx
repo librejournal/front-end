@@ -13,6 +13,12 @@ export const mapStateToCreateStoryPage = (state) => {
   };
 };
 
+export const mapStateToPropsHome = (state) => {
+  return {
+    loggedUser: getUserInfo(state),
+  };
+};
+
 export const mapStateToPropsHeader = (state) => {
   return {
     loggedUser: getUserInfo(state),
