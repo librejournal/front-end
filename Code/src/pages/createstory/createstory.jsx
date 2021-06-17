@@ -11,7 +11,6 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
 
 import {
   PreviewStory,
@@ -82,6 +81,7 @@ const CreateStoryPage = ({
   const [storyTitle, setStoryTitle] = useState("");
   const [open, setOpen] = useState(true);
   const [success, setSuccess] = useState(false);
+  const [storyDetails, setStoryDetails] = useState(null);
 
   const handleClose = (value) => {
     setOpen(false);
@@ -103,6 +103,7 @@ const CreateStoryPage = ({
         setTagInfo(data.tags);
         setLocationInfo(data.locations);
         setStoryTitle(data.title);
+        setStoryDetails(data);
       })
       .catch((error) => console.log(error));
   };
@@ -172,6 +173,7 @@ const CreateStoryPage = ({
         setTagInfo(data.tags);
         setLocationInfo(data.locations);
         setStoryTitle(data.title);
+        setStoryDetails(data);
       })
       .catch((error) => console.log(error));
   };
@@ -197,6 +199,7 @@ const CreateStoryPage = ({
         token={loggedUser.token}
         storyId={storyId}
         title={storyTitle}
+        storyDetails={storyDetails}
       />
       <Grid item xs={12} className={classes.createStoryTitle}>
         <Typography color="primary" variant="h4">

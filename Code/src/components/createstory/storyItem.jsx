@@ -120,6 +120,8 @@ const StoryItem = ({
     }
   }, [imageFile]);
 
+  useEffect(() => {}, []);
+
   const onFileUpload = (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -221,6 +223,11 @@ const StoryItem = ({
         setTextSize(storyInfo.type_setting);
         break;
       case "IMAGE":
+        setState(5111);
+        setText(storyInfo.text);
+        setTextSize(storyInfo.type_setting);
+        break;
+      case "IMAGE_URL":
         setState(511);
         setText(storyInfo.text);
         setTextSize(storyInfo.type_setting);
@@ -311,8 +318,9 @@ const StoryItem = ({
           Authorization: `Token ${token}`,
         },
       })
-      .then((response) => {
+      .then(() => {
         updateStoryInfo(storyId);
+        setState(511);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -324,7 +332,6 @@ const StoryItem = ({
       .catch((error) => {
         console.log(error);
       });
-    setState(511);
   };
 
   const uploadImage = async (file) => {
@@ -361,8 +368,7 @@ const StoryItem = ({
               showConfirmButton: false,
               timer: 2000,
             });
-            console.log(response);
-            setState(51);
+            setState(5111);
           })
           .catch((err) => console.log(err));
       })
@@ -679,6 +685,7 @@ const StoryItem = ({
             </Grid>
           </Grid>
         ) : null}
+
         {state === 5 ? (
           <Grid item xs={12} className={classes.titleAdd}>
             <Grid item xs={12} className={classes.titleAddButtonSection}>
@@ -710,6 +717,7 @@ const StoryItem = ({
             </Grid>
           </Grid>
         ) : null}
+
         {state === 51 ? (
           <Grid item xs={12} className={classes.titleAdd}>
             <Input
@@ -756,16 +764,40 @@ const StoryItem = ({
         ) : null}
         {state === 511 ? (
           <Grid item xs={12} className={classes.titleAdd}>
-            <Input
-              color="primary"
-              placeholder="Enter URL"
-              fullWidth
-              value={text}
-              onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
-                style: { color: "#1687a7" },
-              }}
-            />
+            <Grid item xs={12} className={classes.sliderContainer}>
+              <Typography color="primary" variant="subtitle1">
+                Change size of the image
+              </Typography>
+              <Slider
+                defaultValue={imageSize}
+                getAriaValueText={valuetext}
+                aria-labelledby="discrete-slider"
+                step={5}
+                marks
+                min={5}
+                max={100}
+              />
+            </Grid>
+            <Grid item xs={12} className={classes.titleAddButtonSection}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => editItem(id, "IMAGE_URL", text, imageSize)}
+              >
+                Edit Image
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => deleteItem(id)}
+              >
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
+        ) : null}
+        {state === 5111 ? (
+          <Grid item xs={12} className={classes.titleAdd}>
             <Grid item xs={12} className={classes.sliderContainer}>
               <Typography color="primary" variant="subtitle1">
                 Change size of the image

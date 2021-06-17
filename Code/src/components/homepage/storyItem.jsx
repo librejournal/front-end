@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -106,8 +106,6 @@ const useStyles = {
 const StoryItem = ({
   classes,
   title,
-  thumbnail,
-  like,
   limit,
   width,
   likeCount,
@@ -117,19 +115,9 @@ const StoryItem = ({
   id,
   loggedUser,
   state,
+  thumbnail,
 }) => {
-  useEffect(() => {
-    const loadData = async (url) => {
-      const data = await import(`../../assets/images/${url}`);
-
-      document.getElementById(
-        `storyImage-${thumbnail}`
-      ).style.backgroundImage = `url("${data.default}")`;
-    };
-    if (thumbnail) {
-      loadData(thumbnail);
-    }
-  }, [thumbnail]);
+  console.log(thumbnail);
 
   return (
     <Link
@@ -185,7 +173,14 @@ const StoryItem = ({
           item
           xs={10}
           className={classes.storyItemImage}
-          id={`storyImage-${thumbnail}`}
+          style={
+            thumbnail
+              ? {
+                  backgroundImage: `url(data:image/jpeg;base64,${thumbnail.data})`,
+                }
+              : null
+          }
+          key={thumbnail ? thumbnail.id : id}
         >
           <Typography variant="h3">{title}</Typography>
         </Grid>

@@ -24,11 +24,19 @@ const useStyles = () => ({
   },
 });
 
-const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
+const TitleDialog = ({
+  classes,
+  open,
+  handleClose,
+  storyId,
+  token,
+  title,
+  storyDetails,
+}) => {
   const [text, setText] = useState(title);
   const [activeStep, setActiveStep] = useState(0);
   const [imageFile, setImageFile] = useState(null);
-
+  console.log(storyDetails);
   const onFileChange = (event) => {
     setImageFile(event.target.files[0]);
   };
@@ -114,13 +122,17 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
         console.log(error);
       });
   };
-  console.log(activeStep);
 
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={open}>
       <Stepper variant="progress" activeStep={activeStep}>
         {activeStep === 0 ? (
-          <Grid container>
+          <Grid
+            container
+            alignItems="space-evenly"
+            justify="center"
+            style={{ height: "20vh", width: "20vw", padding: "10%" }}
+          >
             <Typography
               color="primary"
               variant="subtitle1"
@@ -160,39 +172,58 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
             </Grid>
           </Grid>
         ) : (
-          <Grid container>
-            <Typography
-              color="primary"
-              variant="subtitle1"
-              style={{
-                textAlign: "center",
-                borderBottom: "0.2px solid lightgray",
-              }}
-            >
-              Upload your Thumbnail
-            </Typography>
-
-            <Grid item xs={12} className={classes.titleAdd}>
-              <Grid item xs={12} className={classes.titleAddButtonSection}>
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  style={{ display: "none" }}
-                  id="raised-button-file"
-                  type="file"
-                  onChange={onFileChange}
-                />
-                <label htmlFor="raised-button-file">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    component="span"
-                    className={classes.button}
-                  >
-                    Upload Thumbnail
-                  </Button>
-                </label>
+          <Grid
+            container
+            alignItems="space-evenly"
+            justify="center"
+            style={{ height: "20vh", width: "20vw", padding: "10%" }}
+          >
+            {storyDetails.thumbnail ? (
+              <Grid item xs={12}>
+                <Typography
+                  color="primary"
+                  variant="subtitle1"
+                  style={{
+                    textAlign: "center",
+                    borderBottom: "0.2px solid lightgray",
+                  }}
+                >
+                  Upload a Thumbnail for your story
+                </Typography>
               </Grid>
+            ) : null}
+            <Grid item xs={12} className={classes.titleAdd}>
+              <input
+                accept="image/*"
+                className={classes.input}
+                style={{ display: "none" }}
+                id="raised-button-file"
+                type="file"
+                onChange={onFileChange}
+              />
+              <label htmlFor="raised-button-file">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  className={classes.button}
+                >
+                  Upload Thumbnail
+                </Button>
+              </label>
+            </Grid>
+            <Grid item xs={12}>
+              {storyDetails.thumbnail ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  className={classes.button}
+                  onClick={() => handleClose()}
+                >
+                  Use existing thumbnail
+                </Button>
+              ) : null}
             </Grid>
           </Grid>
         )}

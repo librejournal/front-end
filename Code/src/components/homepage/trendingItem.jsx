@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -57,19 +57,6 @@ const useStyles = () => ({
 });
 
 const TrendingItem = ({ classes, title, thumbnail, id }) => {
-  useEffect(() => {
-    const loadData = async (url) => {
-      const data = await import(`../../assets/images/${url}`);
-
-      document.getElementById(
-        `trendingImage-${thumbnail}`
-      ).style.backgroundImage = `url("${data.default}")`;
-    };
-    if (thumbnail) {
-      loadData(thumbnail);
-    }
-  }, [thumbnail]);
-
   return (
     <Link
       to={{
@@ -84,8 +71,14 @@ const TrendingItem = ({ classes, title, thumbnail, id }) => {
           item
           xs={12}
           className={classes.itemTitleGrid}
-          id={`trendingImage-${thumbnail}`}
-          key={thumbnail}
+          style={
+            thumbnail
+              ? {
+                  backgroundImage: `url(data:image/jpeg;base64,${thumbnail.data})`,
+                }
+              : null
+          }
+          key={thumbnail ? thumbnail.id : id}
         >
           <Typography color="secondary" className={classes.itemTitleText}>
             {title}
