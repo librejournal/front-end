@@ -115,7 +115,7 @@ const App = ({ loggedUser, onStateUser, onInfoUser }) => {
                                     <Redirect to="/" />
                                 )
                             }
-                        ></Route>
+                        />
                     ) : null}
 
                     <Route path="/password-reset" exact>

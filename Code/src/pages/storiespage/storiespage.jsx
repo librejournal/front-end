@@ -32,6 +32,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
       .get("http://localhost:9001/api/stories/")
       .then((response) => {
         setStories(response.data);
+        getStoryDrafts();
       })
       .catch((err) => {
         console.log(err);
@@ -162,8 +163,10 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   useEffect(() => {
     getStories();
-    getStoryDrafts();
   }, []);
+
+  console.log(stories.length);
+  console.log(draftStories.length);
 
   return (
     <Grid container className={classes.pageContainer}>
@@ -185,6 +188,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
           mode="draft"
           editDraftStory={editDraftStory}
           publishStory={publishStory}
+          editSuccess={editSuccess}
         />
 
         <StoriesBox
@@ -196,6 +200,8 @@ const StoriesPage = ({ classes, loggedUser }) => {
           deleteStory={deleteStory}
           editDraftStory={editDraftStory}
           mode="story"
+          publishStory={publishStory}
+          editSuccess={editSuccess}
         />
       </Grid>
     </Grid>

@@ -80,9 +80,8 @@ const CreateStoryPage = ({
   const [locationInfo, setLocationInfo] = useState({ locations: [] });
   const [storyId, setStoryId] = useState(null);
   const [storyTitle, setStoryTitle] = useState("");
-
-  const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const handleClose = (value) => {
     setOpen(false);
@@ -152,7 +151,6 @@ const CreateStoryPage = ({
         },
       })
       .then((response) => {
-        console.log(response.data.id);
         getStoryInfo(response.data.id);
       })
       .catch((err) => console.log(err));
@@ -185,20 +183,12 @@ const CreateStoryPage = ({
         getStoryInfo(location.state.storyId);
       }
     } else {
-      console.log("asd");
       createNewStory();
     }
   }, []);
 
   return (
     <Grid container className={classes.createStoryPageContainer}>
-      {success ? (
-        <Redirect
-          to={{
-            pathname: "/dashboard",
-          }}
-        />
-      ) : null}
       <TitleDialog
         open={open}
         handleClose={handleClose}
@@ -254,18 +244,27 @@ const CreateStoryPage = ({
             loggedUser={loggedUser}
           />
         </Grid>
-        <Link to="/dashboard">
-          <Grid
-            item
-            xs={12}
-            md={4}
-            className={limit > width ? classes.bottomButton : null}
+        <Grid
+          item
+          xs={12}
+          md={4}
+          className={limit > width ? classes.bottomButton : null}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              typeof location.state !== "undefined"
+                ? typeof location.state.storyId !== "undefined"
+                  ? publishStory()
+                  : setSuccess(true)
+                : setSuccess(true)
+            }
           >
-            <Button variant="contained" color="primary">
-              {location.state ? "Edit" : "Create"} a story
-            </Button>
-          </Grid>
-        </Link>
+            {location.state ? "Edit" : "Create"} a story
+          </Button>
+          {success ? <Redirect push to="/dashboard" /> : null}
+        </Grid>
       </Grid>
     </Grid>
   );

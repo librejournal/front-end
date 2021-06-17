@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 const useStyles = () => ({
   storyPageContainer: {
@@ -46,111 +46,116 @@ const StoriesBox = ({
   editDraftStory,
   publishStory,
   deleteDraftStory,
-}) => (
-  <Grid container className={classes.storyPageContainer}>
-    <Grid item sm={4} xs={12}>
-      <Typography color="primary" variant="h4">
-        Your {mode === "draft" ? "Drafts" : "Stories"}
-      </Typography>
-    </Grid>
-    <Grid item sm={12} xs={12}>
-      {data.length > 0 ? (
-        data.map((el) => (
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.storyContainer}
-            key={el.uuid}
-          >
-            <Grid item xs={12} sm={3} className={classes.authorGrid}>
-              <Grid container alignItems="center">
-                <Typography
-                  color="primary"
-                  variant="subtitle1"
-                  className={classes.author}
-                >
-                  Author:&nbsp;&nbsp;
-                </Typography>
-                <Typography variant="subtitle2">
-                  {el.author.user.username}
-                </Typography>
-              </Grid>
-              <Grid container alignItems="center">
-                <Typography
-                  color="primary"
-                  variant="subtitle1"
-                  className={classes.author}
-                >
-                  Created At:&nbsp;&nbsp;
-                </Typography>
-                <Typography variant="subtitle2">
-                  {el.created.split("T")[0]} -{" "}
-                  {el.created.split("T")[1].split(".")[0]}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} sm={4} className={classes.authorGrid}>
-              <Grid container alignItems="center" justify="center">
-                <Typography variant="subtitle1" color="primary">
-                  Title:&nbsp;
-                </Typography>
-                <Typography variant="h6">{el.title}</Typography>
-              </Grid>
-              {mode !== "draft" ? (
-                <Grid container alignItems="center" justify="space-around">
-                  <Typography variant="subtitle2" color="primary">
-                    Like:&nbsp;{el.like_count}
+  editSuccess,
+}) => {
+  return (
+    <Grid container className={classes.storyPageContainer}>
+      <Grid item sm={4} xs={12}>
+        <Typography color="primary" variant="h4">
+          Your {mode === "draft" ? "Drafts" : "Stories"}
+        </Typography>
+      </Grid>
+      <Grid item sm={12} xs={12} style={{ overflowY: "auto" }}>
+        {data.length > 0 ? (
+          data.map((el) => (
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.storyContainer}
+              key={el.uuid}
+            >
+              {editSuccess ? (
+                <Redirect
+                  to={
+                    mode === "draft"
+                      ? {
+                          pathname: "/createstory",
+                          hash: `#draft-${el.id}`,
+                          state: { editId: el.id },
+                        }
+                      : {
+                          pathname: "/createstory",
+                          hash: `#story-${el.id}`,
+                          state: { storyId: el.id },
+                        }
+                  }
+                />
+              ) : null}
+              <Grid item xs={12} sm={3} className={classes.authorGrid}>
+                <Grid container alignItems="center">
+                  <Typography
+                    color="primary"
+                    variant="subtitle1"
+                    className={classes.author}
+                  >
+                    Author:&nbsp;&nbsp;
                   </Typography>
-                  <Typography variant="subtitle2" color="primary">
-                    Dislike:&nbsp;{el.dislike_count}
+                  <Typography variant="subtitle2">
+                    {el.author.user.username}
                   </Typography>
                 </Grid>
-              ) : null}
-            </Grid>
-            <Grid item xs={12} sm={4} className={classes.buttonGrid}>
-              {mode !== "draft" ? (
-                <Link
-                  to={{
-                    pathname: `stories/${el.id}`,
-                    state: { id: el.id },
-                  }}
-                  key={el.id}
-                  style={{ textDecoration: "none" }}
-                >
+                <Grid container alignItems="center">
+                  <Typography
+                    color="primary"
+                    variant="subtitle1"
+                    className={classes.author}
+                  >
+                    Created At:&nbsp;&nbsp;
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {el.created.split("T")[0]} -{" "}
+                    {el.created.split("T")[1].split(".")[0]}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={4} className={classes.authorGrid}>
+                <Grid container alignItems="center" justify="center">
+                  <Typography variant="subtitle1" color="primary">
+                    Title:&nbsp;
+                  </Typography>
+                  <Typography variant="h6">{el.title}</Typography>
+                </Grid>
+                {mode !== "draft" ? (
+                  <Grid container alignItems="center" justify="space-around">
+                    <Typography variant="subtitle2" color="primary">
+                      Like:&nbsp;{el.like_count}
+                    </Typography>
+                    <Typography variant="subtitle2" color="primary">
+                      Dislike:&nbsp;{el.dislike_count}
+                    </Typography>
+                  </Grid>
+                ) : null}
+              </Grid>
+              <Grid item xs={12} sm={4} className={classes.buttonGrid}>
+                {mode !== "draft" ? (
+                  <Link
+                    to={{
+                      pathname: `stories/${el.id}`,
+                      state: { id: el.id },
+                    }}
+                    key={el.id}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Show
+                    </Button>
+                  </Link>
+                ) : (
                   <Button
                     variant="contained"
                     color="primary"
                     style={{ textDecoration: "none" }}
+                    onClick={() => publishStory(el.id)}
                   >
-                    Show
+                    Publish
                   </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ textDecoration: "none" }}
-                  onClick={() => publishStory(el.id)}
-                >
-                  Publish
-                </Button>
-              )}
-              <Link
-                to={
-                  mode === "draft"
-                    ? {
-                        pathname: "/createstory",
-                        hash: `#draft-${el.id}`,
-                        state: { editId: el.id },
-                      }
-                    : {
-                        pathname: "/createstory",
-                        hash: `#story-${el.id}`,
-                        state: { storyId: el.id },
-                      }
-                }
-              >
+                )}
+
                 <Button
                   variant="contained"
                   color="primary"
@@ -162,57 +167,58 @@ const StoriesBox = ({
                 >
                   Edit
                 </Button>
-              </Link>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ textDecoration: "none" }}
-                disabled={loggedUser.profile_id !== el.author.user.profile_id}
-                onClick={() =>
-                  mode === "draft"
-                    ? deleteDraftStory(el.id)
-                    : deleteStory(el.id)
-                }
-              >
-                Delete
-              </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ textDecoration: "none" }}
+                  disabled={loggedUser.profile_id !== el.author.user.profile_id}
+                  onClick={() =>
+                    mode === "draft"
+                      ? deleteDraftStory(el.id)
+                      : deleteStory(el.id)
+                  }
+                >
+                  Delete
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        ))
-      ) : mode === "draft" ? (
-        <Typography variant="subtitle1">
-          {" "}
-          You do not have any drafts <br /> Click add button below to create a
-          new draft.
-        </Typography>
+          ))
+        ) : mode === "draft" ? (
+          <Typography variant="subtitle1">
+            {" "}
+            You do not have any drafts <br /> Click add button below to create a
+            new draft.
+          </Typography>
+        ) : null}
+      </Grid>
+      {mode === "draft" ? (
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+          }}
+        >
+          <Link
+            to="/createstory"
+            style={{ textDecoration: "none", display: "flex" }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ textDecoration: "none", maxHeight: "100px" }}
+            >
+              Add a new story
+            </Button>
+          </Link>
+        </Grid>
       ) : null}
     </Grid>
-    {mode === "draft" ? (
-      <Grid
-        item
-        xs={12}
-        sm={12}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-end",
-        }}
-      >
-        <Link
-          to="/createstory"
-          style={{ textDecoration: "none", display: "flex" }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ textDecoration: "none", maxHeight: "100px" }}
-          >
-            Add a new story
-          </Button>
-        </Link>
-      </Grid>
-    ) : null}
-  </Grid>
-);
+  );
+};
 
 export default compose(withStyles(useStyles))(StoriesBox);
