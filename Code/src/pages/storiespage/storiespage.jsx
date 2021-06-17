@@ -165,9 +165,6 @@ const StoriesPage = ({ classes, loggedUser }) => {
     getStories();
   }, []);
 
-  console.log(stories.length);
-  console.log(draftStories.length);
-
   return (
     <Grid container className={classes.pageContainer}>
       <Grid item xs={12}>

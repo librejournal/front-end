@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
-  DialogTitle,
-  List,
+  Typography,
   Grid,
   Input,
-  ListItem,
   Button,
+  Stepper,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import Swal from "sweetalert2";
 
 import axios from "axios";
 
@@ -26,6 +26,70 @@ const useStyles = () => ({
 
 const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
   const [text, setText] = useState(title);
+  const [activeStep, setActiveStep] = useState(0);
+  const [imageFile, setImageFile] = useState(null);
+
+  const onFileChange = (event) => {
+    setImageFile(event.target.files[0]);
+  };
+  useEffect(() => {
+    if (imageFile) {
+      onFileUpload(imageFile);
+    }
+  }, [imageFile]);
+
+  const onFileUpload = (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    for (var [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    uploadThumbnail(formData);
+  };
+
+  const uploadThumbnail = async (file) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/files/upload`;
+    await axios
+      .post(url, file, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then(async (response) => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+        console.log(url);
+        console.log(response);
+        await axios
+          .patch(
+            url,
+            { thumbnail: response.data.id },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Add Success",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+            handleClose();
+            console.log(response);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleNext = () => setActiveStep(activeStep + 1);
 
   useEffect(() => {
     setText(title);
@@ -43,50 +107,96 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
           Authorization: `Token ${token}`,
         },
       })
-      .then(() => {})
+      .then(() => {
+        handleNext();
+      })
       .catch((error) => {
         console.log(error);
       });
   };
+  console.log(activeStep);
+
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle
-        id="simple-dialog-title"
-        style={{ textAlign: "center", borderBottom: "0.2px solid lightgray" }}
-      >
-        Enter title for your story
-      </DialogTitle>
-      <List>
-        <ListItem>
-          <Grid item xs={12} className={classes.titleAdd}>
-            <Input
+      <Stepper variant="progress" activeStep={activeStep}>
+        {activeStep === 0 ? (
+          <Grid container>
+            <Typography
               color="primary"
-              placeholder="Enter your title"
-              fullWidth
-              multiline
-              value={text}
-              defaultValue={text}
-              onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
-                style: { color: "#1687a7" },
+              variant="subtitle1"
+              style={{
+                textAlign: "center",
+                borderBottom: "0.2px solid lightgray",
               }}
-            />
-            <Grid item xs={12} className={classes.titleAddButtonSection}>
-              <Button
-                variant="contained"
+            >
+              Enter title for your story
+            </Typography>
+
+            <Grid item xs={12} className={classes.titleAdd}>
+              <Input
                 color="primary"
-                disabled={text === ""}
-                onClick={() => {
-                  editTitle(text);
-                  handleClose();
+                placeholder="Enter your title"
+                fullWidth
+                multiline
+                value={text}
+                defaultValue={text}
+                onChange={(event) => setText(event.target.value)}
+                InputLabelProps={{
+                  style: { color: "#1687a7" },
                 }}
-              >
-                Save Title
-              </Button>
+              />
+              <Grid item xs={12} className={classes.titleAddButtonSection}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={text === ""}
+                  onClick={() => {
+                    editTitle(text);
+                  }}
+                >
+                  Save Title
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
-        </ListItem>
-      </List>
+        ) : (
+          <Grid container>
+            <Typography
+              color="primary"
+              variant="subtitle1"
+              style={{
+                textAlign: "center",
+                borderBottom: "0.2px solid lightgray",
+              }}
+            >
+              Upload your Thumbnail
+            </Typography>
+
+            <Grid item xs={12} className={classes.titleAdd}>
+              <Grid item xs={12} className={classes.titleAddButtonSection}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  style={{ display: "none" }}
+                  id="raised-button-file"
+                  type="file"
+                  onChange={onFileChange}
+                />
+                <label htmlFor="raised-button-file">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    className={classes.button}
+                  >
+                    Upload Thumbnail
+                  </Button>
+                </label>
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+      </Stepper>
     </Dialog>
   );
 };

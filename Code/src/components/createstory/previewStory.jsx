@@ -32,7 +32,7 @@ const useStyles = {
 
 const PreviewStory = ({ classes, storyInfo, likeCount, dislikeCount }) => {
   const storyInfoArray = _.sortBy(storyInfo, "order_id");
-
+  console.log(storyInfoArray);
   return (
     <Grid container className={classes.previewContainer}>
       {storyInfoArray.map((el) =>
@@ -47,6 +47,16 @@ const PreviewStory = ({ classes, storyInfo, likeCount, dislikeCount }) => {
             <Typography variant={el.type_setting}>{el.text}</Typography>
           </Grid>
         ) : el.type === "IMAGE" ? (
+          <Grid item xs={12} className={classes.imageItem} key={el.id}>
+            <img
+              src={`data:image/jpeg;base64,${el.picture.data}`}
+              alt={`url(${el.text})`}
+              style={{
+                width: `${el.type_setting}%`,
+              }}
+            />
+          </Grid>
+        ) : el.type === "IMAGE_URL" ? (
           <Grid item xs={12} className={classes.imageItem} key={el.id}>
             <img
               src={`${el.text}`}

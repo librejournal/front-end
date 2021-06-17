@@ -86,7 +86,7 @@ const CreateStoryPage = ({
   const handleClose = (value) => {
     setOpen(false);
   };
-
+  console.log(storyInfo);
   const getStoryInfo = async (id) => {
     axios
       .get(`http://localhost:9001/api/stories/drafts/${id}`, {
@@ -97,6 +97,7 @@ const CreateStoryPage = ({
       })
       .then((response) => {
         const data = response.data;
+        console.log(data);
         setStoryInfo(data.components);
         setStoryId(data.id);
         setTagInfo(data.tags);

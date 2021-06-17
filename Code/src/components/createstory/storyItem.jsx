@@ -299,7 +299,7 @@ const StoryItem = ({
 
   const addImageUrl = (url) => {
     const info = {
-      type: "IMAGE",
+      type: "IMAGE_URL",
       text: url,
       story: storyId,
       type_setting: imageSize,
@@ -747,9 +747,9 @@ const StoryItem = ({
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setState(2)}
+                onClick={() => deleteItem(id)}
               >
-                Back
+                Delete
               </Button>
             </Grid>
           </Grid>
@@ -791,9 +791,9 @@ const StoryItem = ({
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setState(2)}
+                onClick={() => deleteItem(id)}
               >
-                Back
+                Delete
               </Button>
             </Grid>
           </Grid>
