@@ -172,20 +172,18 @@ const StoryItem = ({
     }
   };
 
-  const updateStoryInfo = async () => {
+  const updateStoryInfo = async (id) => {
     await axios
-      .get("http://localhost:9001/api/stories/drafts/", {
+      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
         },
       })
       .then((response) => {
-        if (response.data.length > 0) {
-          const data = response.data[0];
-          setStoryInfo(data.components);
-          console.log(response);
-        }
+        const data = response.data;
+        setStoryInfo(data.components);
+        console.log(response);
       })
       .catch((error) => console.log(error));
   };
@@ -205,7 +203,7 @@ const StoryItem = ({
           },
         }
       )
-      .then(() => updateStoryInfo())
+      .then(() => updateStoryInfo(storyId))
       .catch((err) => console.log(err));
   };
 
@@ -254,7 +252,7 @@ const StoryItem = ({
         },
       })
       .then(() => {
-        updateStoryInfo();
+        updateStoryInfo(storyId);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -284,7 +282,7 @@ const StoryItem = ({
         },
       })
       .then(() => {
-        updateStoryInfo();
+        updateStoryInfo(storyId);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -314,7 +312,7 @@ const StoryItem = ({
         },
       })
       .then((response) => {
-        updateStoryInfo();
+        updateStoryInfo(storyId);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -355,7 +353,7 @@ const StoryItem = ({
             },
           })
           .then((response) => {
-            updateStoryInfo();
+            updateStoryInfo(storyId);
             Swal.fire({
               position: "top-end",
               icon: "success",
@@ -385,7 +383,7 @@ const StoryItem = ({
         }
       )
       .then(() => {
-        updateStoryInfo();
+        updateStoryInfo(storyId);
         updateOrderInfo("delete");
         Swal.fire({
           position: "top-end",
@@ -423,7 +421,7 @@ const StoryItem = ({
         }
       )
       .then(() => {
-        updateStoryInfo();
+        updateStoryInfo(storyId);
         updateOrderInfo("edit");
         Swal.fire({
           position: "top-end",

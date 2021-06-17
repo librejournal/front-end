@@ -87,31 +87,37 @@ const App = ({ loggedUser, onStateUser, onInfoUser }) => {
                             <Redirect to="/login" />
                         )}
                     </Route>
-                    <Route
-                        path="/createstory"
-                        exact
-                        render={(props) =>
-                            loggedUser.userInfo.type === "WRITER" ? (
-                                <CreateStoryPage
-                                    token={loggedUser.token}
-                                    {...props}
-                                />
-                            ) : (
-                                <Redirect to="/" />
-                            )
-                        }
-                    />
-                    <Route
-                        path="/dashboard"
-                        exact
-                        render={(props) =>
-                            loggedUser.userInfo.type === "WRITER" ? (
-                                <StoriesPage {...props} />
-                            ) : (
-                                <Redirect to="/" />
-                            )
-                        }
-                    ></Route>
+                    {loggedUser.userInfo ? (
+                        <Route
+                            path="/createstory"
+                            exact
+                            render={(props) =>
+                                loggedUser.userInfo.type === "WRITER" ? (
+                                    <CreateStoryPage
+                                        token={loggedUser.token}
+                                        {...props}
+                                    />
+                                ) : (
+                                    <Redirect to="/" />
+                                )
+                            }
+                        />
+                    ) : null}
+
+                    {loggedUser.userInfo ? (
+                        <Route
+                            path="/dashboard"
+                            exact
+                            render={(props) =>
+                                loggedUser.userInfo.type === "WRITER" ? (
+                                    <StoriesPage {...props} />
+                                ) : (
+                                    <Redirect to="/" />
+                                )
+                            }
+                        ></Route>
+                    ) : null}
+
                     <Route path="/password-reset" exact>
                         <PasswordResetPage />
                     </Route>

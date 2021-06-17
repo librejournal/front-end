@@ -1,48 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import axios from "axios";
-
-import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { mapStateToStoriesPage } from "../../redux/mapFunctions";
 import Swal from "sweetalert2";
 
+import StoriesBox from "./storiesbox";
+
 const useStyles = () => ({
-  storyPageContainer: {
+  pageContainer: {
     minHeight: "80vh",
     display: "flex",
     padding: "5vh 2vw",
     maxWidth: "1600px",
     margin: "auto",
-  },
-  authorGrid: {
-    display: "flex",
-    flexDirection: "column",
-    borderRight: "0.5px solid lightgray",
-  },
-  storyContainer: {
-    border: "1px solid lightgray",
-    cursor: "pointer",
-    margin: "2vh 0",
-    padding: "2vh 0",
-    background: "white",
-    maxHeight: "200px",
-    "-webkit-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-    "-moz-box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-    "box-shadow": "5px 5px 4px #666666, -5px -5px 4px #ffffff",
-  },
-  buttonGrid: {
-    display: "flex",
-    justifyContent: "space-evenly",
+    overflowY: "auto",
   },
 });
 
 const StoriesPage = ({ classes, loggedUser }) => {
   const [stories, setStories] = useState([]);
+  const [draftStories, setDraftStories] = useState([]);
   const [editSuccess, setEditSuccess] = useState(0);
 
   const getStories = async () => {
@@ -50,6 +32,22 @@ const StoriesPage = ({ classes, loggedUser }) => {
       .get("http://localhost:9001/api/stories/")
       .then((response) => {
         setStories(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getStoryDrafts = async () => {
+    await axios
+      .get("http://localhost:9001/api/stories/drafts/", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        setDraftStories(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -73,6 +71,31 @@ const StoriesPage = ({ classes, loggedUser }) => {
           timer: 2000,
         });
         getStories();
+        getStoryDrafts();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteDraftStory = async (id) => {
+    axios
+      .delete(`http://localhost:9001/api/stories/drafts/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Deletion Success",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        getStories();
+        getStoryDrafts();
       })
       .catch((err) => {
         console.log(err);
@@ -100,131 +123,80 @@ const StoriesPage = ({ classes, loggedUser }) => {
       .catch((err) => console.log(err));
   };
 
+  const publishStory = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
+    await axios
+      .patch(
+        url,
+        {
+          is_draft: false,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        getStories();
+        getStoryDrafts();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const editDraftStory = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        setEditSuccess(id);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getStories();
+    getStoryDrafts();
   }, []);
+
   return (
-    <Grid container style={{ overflowY: "auto" }}>
-      <Grid container className={classes.storyPageContainer}>
-        <Grid item xs={12}>
-          {editSuccess ? (
-            <Redirect
-              to={{
-                pathname: "/createstory",
-                state: { editId: editSuccess },
-              }}
-            />
-          ) : null}
-          {stories.map((el) =>
-            loggedUser.profile_id === el.author.user.profile_id ? (
-              <Grid
-                container
-                justify="center"
-                alignItems="center"
-                className={classes.storyContainer}
-                key={el.uuid}
-              >
-                <Grid item xs={12} sm={3} className={classes.authorGrid}>
-                  <Grid container alignItems="center">
-                    <Typography
-                      color="primary"
-                      variant="subtitle1"
-                      className={classes.author}
-                    >
-                      Author:&nbsp;&nbsp;
-                    </Typography>
-                    <Typography variant="subtitle2">
-                      {el.author.user.username}
-                    </Typography>
-                  </Grid>
-                  <Grid container alignItems="center">
-                    <Typography
-                      color="primary"
-                      variant="subtitle1"
-                      className={classes.author}
-                    >
-                      Created At:&nbsp;&nbsp;
-                    </Typography>
-                    <Typography variant="subtitle2">
-                      {el.created.split("T")[0]} -{" "}
-                      {el.created.split("T")[1].split(".")[0]}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sm={4} className={classes.authorGrid}>
-                  <Grid container alignItems="center" justify="center">
-                    <Typography variant="subtitle1" color="primary">
-                      Title:&nbsp;
-                    </Typography>
-                    <Typography variant="h6">{el.title}</Typography>
-                  </Grid>
-                  <Grid container alignItems="center" justify="space-around">
-                    <Typography variant="subtitle2" color="primary">
-                      Like:&nbsp;{el.like_count}
-                    </Typography>
-                    <Typography variant="subtitle2" color="primary">
-                      Dislike:&nbsp;{el.dislike_count}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sm={4} className={classes.buttonGrid}>
-                  <Link
-                    to={{
-                      pathname: `stories/${el.id}`,
-                      state: { id: el.id },
-                    }}
-                    key={el.id}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      style={{ textDecoration: "none" }}
-                    >
-                      Show
-                    </Button>
-                  </Link>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={
-                      loggedUser.profile_id !== el.author.user.profile_id
-                    }
-                    style={{ textDecoration: "none" }}
-                    onClick={() => editStory(el.id)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ textDecoration: "none" }}
-                    disabled={
-                      loggedUser.profile_id !== el.author.user.profile_id
-                    }
-                    onClick={() => deleteStory(el.id)}
-                  >
-                    Delete
-                  </Button>
-                </Grid>
-              </Grid>
-            ) : null
+    <Grid container className={classes.pageContainer}>
+      <Grid item xs={12}>
+        {editSuccess ? (
+          <Redirect
+            to={{
+              pathname: "/createstory",
+              state: { editId: editSuccess },
+            }}
+          />
+        ) : null}
+        <StoriesBox
+          data={draftStories}
+          loggedUser={loggedUser}
+          editStory={editStory}
+          deleteStory={deleteStory}
+          deleteDraftStory={deleteDraftStory}
+          mode="draft"
+          editDraftStory={editDraftStory}
+          publishStory={publishStory}
+        />
+
+        <StoriesBox
+          data={stories.filter(
+            (el) => el.author.user.profile_id === loggedUser.profile_id
           )}
-          <Grid container justify="center">
-            <Link
-              to="/createstory"
-              style={{ textDecoration: "none", display: "flex" }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ textDecoration: "none" }}
-              >
-                Add a new story
-              </Button>
-            </Link>
-          </Grid>
-        </Grid>
+          loggedUser={loggedUser}
+          editStory={editStory}
+          deleteStory={deleteStory}
+          editDraftStory={editDraftStory}
+          mode="story"
+        />
       </Grid>
     </Grid>
   );

@@ -11,6 +11,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 import {
   PreviewStory,
@@ -72,6 +73,7 @@ const CreateStoryPage = ({
   width,
   location,
   onInfoUser,
+  id,
 }) => {
   const [storyInfo, setStoryInfo] = useState([]);
   const [tagInfo, setTagInfo] = useState({ tags: [] });
@@ -86,23 +88,21 @@ const CreateStoryPage = ({
     setOpen(false);
   };
 
-  const getStoryInfo = async () => {
+  const getStoryInfo = async (id) => {
     axios
-      .get("http://localhost:9001/api/stories/drafts", {
+      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
         },
       })
       .then((response) => {
-        if (response.data.length > 0) {
-          const data = response.data[0];
-          setStoryInfo(data.components);
-          setStoryId(data.id);
-          setTagInfo(data.tags);
-          setLocationInfo(data.locations);
-          setStoryTitle(data.title);
-        } else createNewStory();
+        const data = response.data;
+        setStoryInfo(data.components);
+        setStoryId(data.id);
+        setTagInfo(data.tags);
+        setLocationInfo(data.locations);
+        setStoryTitle(data.title);
       })
       .catch((error) => console.log(error));
   };
@@ -151,7 +151,10 @@ const CreateStoryPage = ({
           Authorization: `Token ${loggedUser.token}`,
         },
       })
-      .then(() => getStoryInfo())
+      .then((response) => {
+        console.log(response.data.id);
+        getStoryInfo(response.data.id);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -176,9 +179,14 @@ const CreateStoryPage = ({
 
   useEffect(() => {
     if (typeof location.state !== "undefined") {
-      editStoryInfo(location.state.editId);
+      if (typeof location.state.editId !== "undefined") {
+        editStoryInfo(location.state.editId);
+      } else {
+        getStoryInfo(location.state.storyId);
+      }
     } else {
-      getStoryInfo();
+      console.log("asd");
+      createNewStory();
     }
   }, []);
 
@@ -246,20 +254,18 @@ const CreateStoryPage = ({
             loggedUser={loggedUser}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={4}
-          className={limit > width ? classes.bottomButton : null}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => publishStory()}
+        <Link to="/dashboard">
+          <Grid
+            item
+            xs={12}
+            md={4}
+            className={limit > width ? classes.bottomButton : null}
           >
-            {location.state ? "Edit" : "Create"} a story
-          </Button>
-        </Grid>
+            <Button variant="contained" color="primary">
+              {location.state ? "Edit" : "Create"} a story
+            </Button>
+          </Grid>
+        </Link>
       </Grid>
     </Grid>
   );
