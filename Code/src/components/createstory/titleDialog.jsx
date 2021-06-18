@@ -68,8 +68,6 @@ const TitleDialog = ({
       })
       .then(async (response) => {
         const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
-        console.log(url);
-        console.log(response);
         await axios
           .patch(
             url,
@@ -157,7 +155,7 @@ const TitleDialog = ({
                   style: { color: "#1687a7" },
                 }}
               />
-              <Grid item xs={12} className={classes.titleAddButtonSection}>
+              <Grid item xs={12}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -176,7 +174,12 @@ const TitleDialog = ({
             container
             alignItems="space-evenly"
             justify="center"
-            style={{ height: "20vh", width: "20vw", padding: "10%" }}
+            style={{
+              height: "20vh",
+              width: "20vw",
+              padding: "10%",
+              margin: "auto",
+            }}
           >
             {storyDetails.thumbnail ? (
               <Grid item xs={12}>
@@ -212,7 +215,7 @@ const TitleDialog = ({
                 </Button>
               </label>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.titleAdd}>
               {storyDetails.thumbnail ? (
                 <Button
                   variant="contained"
