@@ -142,6 +142,13 @@ const StoriesPage = ({ classes, loggedUser }) => {
       .then((response) => {
         getStories();
         getStoryDrafts();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Story is published",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       })
       .catch((err) => console.log(err));
   };

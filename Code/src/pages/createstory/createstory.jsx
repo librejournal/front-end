@@ -86,7 +86,18 @@ const CreateStoryPage = ({
   const handleClose = (value) => {
     setOpen(false);
   };
-  console.log(storyInfo);
+
+  const swalWithSuccess = () => {
+    setSuccess(true);
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Draft is saved",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  };
+
   const getStoryInfo = async (id) => {
     axios
       .get(`http://localhost:9001/api/stories/drafts/${id}`, {
@@ -97,7 +108,6 @@ const CreateStoryPage = ({
       })
       .then((response) => {
         const data = response.data;
-        console.log(data);
         setStoryInfo(data.components);
         setStoryId(data.id);
         setTagInfo(data.tags);
@@ -106,6 +116,27 @@ const CreateStoryPage = ({
         setStoryDetails(data);
       })
       .catch((error) => console.log(error));
+  };
+
+  const getStoryInfoNotDraft = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/`;
+    await axios
+      .patch(
+        url,
+        {
+          is_draft: true,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        getStoryInfo(id);
+      })
+      .catch((err) => console.log(err));
   };
 
   const publishStory = async () => {
@@ -158,32 +189,12 @@ const CreateStoryPage = ({
       .catch((err) => console.log(err));
   };
 
-  const editStoryInfo = async (id) => {
-    axios
-      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${loggedUser.token}`,
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-        setStoryInfo(data.components);
-        setStoryId(data.id);
-        setTagInfo(data.tags);
-        setLocationInfo(data.locations);
-        setStoryTitle(data.title);
-        setStoryDetails(data);
-      })
-      .catch((error) => console.log(error));
-  };
-
   useEffect(() => {
     if (typeof location.state !== "undefined") {
       if (typeof location.state.editId !== "undefined") {
-        editStoryInfo(location.state.editId);
+        getStoryInfo(location.state.editId);
       } else {
-        getStoryInfo(location.state.storyId);
+        getStoryInfoNotDraft(location.state.storyId);
       }
     } else {
       createNewStory();
@@ -261,8 +272,8 @@ const CreateStoryPage = ({
               typeof location.state !== "undefined"
                 ? typeof location.state.storyId !== "undefined"
                   ? publishStory()
-                  : setSuccess(true)
-                : setSuccess(true)
+                  : swalWithSuccess()
+                : swalWithSuccess()
             }
           >
             {location.state ? "Edit" : "Create"} a story

@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const useStyles = () => ({
   storyPageContainer: {
@@ -12,7 +12,6 @@ const useStyles = () => ({
     padding: "2vh 2vw",
     maxWidth: "1600px",
     margin: "auto",
-    overflowY: "auto",
   },
   authorGrid: {
     display: "flex",
@@ -48,14 +47,15 @@ const StoriesBox = ({
   deleteDraftStory,
   editSuccess,
 }) => {
+  console.log(data);
   return (
     <Grid container className={classes.storyPageContainer}>
-      <Grid item sm={4} xs={12}>
+      <Grid item sm={4} xs={12} style={{ height: "5vh" }}>
         <Typography color="primary" variant="h4">
           Your {mode === "draft" ? "Drafts" : "Stories"}
         </Typography>
       </Grid>
-      <Grid item sm={12} xs={12} style={{ overflowY: "auto" }}>
+      <Grid item sm={12} xs={12} style={{ height: "25vh", overflowY: "auto" }}>
         {data.length > 0 ? (
           data.map((el) => (
             <Grid
@@ -65,23 +65,6 @@ const StoriesBox = ({
               className={classes.storyContainer}
               key={el.uuid}
             >
-              {editSuccess ? (
-                <Redirect
-                  to={
-                    mode === "draft"
-                      ? {
-                          pathname: "/createstory",
-                          hash: `#draft-${el.id}`,
-                          state: { editId: el.id },
-                        }
-                      : {
-                          pathname: "/createstory",
-                          hash: `#story-${el.id}`,
-                          state: { storyId: el.id },
-                        }
-                  }
-                />
-              ) : null}
               <Grid item xs={12} sm={3} className={classes.authorGrid}>
                 <Grid container alignItems="center">
                   <Typography
@@ -155,18 +138,36 @@ const StoriesBox = ({
                     Publish
                   </Button>
                 )}
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={loggedUser.profile_id !== el.author.user.profile_id}
-                  style={{ textDecoration: "none" }}
-                  onClick={() =>
-                    mode === "draft" ? editDraftStory(el.id) : editStory(el.id)
+                <Link
+                  key={el.id}
+                  to={
+                    mode === "draft"
+                      ? {
+                          pathname: "/createstory",
+                          hash: `#draft-${el.id}`,
+                          state: { editId: el.id },
+                        }
+                      : {
+                          pathname: "/createstory",
+                          hash: `#story-${el.id}`,
+                          state: { storyId: el.id },
+                        }
                   }
                 >
-                  Edit
-                </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                      loggedUser.profile_id !== el.author.user.profile_id
+                    }
+                    style={{ textDecoration: "none" }}
+                    onClick={() =>
+                      mode === "draft" ? editDraftStory(el.id) : null
+                    }
+                  >
+                    Edit
+                  </Button>
+                </Link>
 
                 <Button
                   variant="contained"
@@ -201,6 +202,7 @@ const StoriesBox = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-end",
+            height: "5vh",
           }}
         >
           <Link

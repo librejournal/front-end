@@ -85,7 +85,7 @@ const TitleDialog = ({
             Swal.fire({
               position: "top-end",
               icon: "success",
-              title: "Add Success",
+              title: "Thumbnail Uploaded",
               showConfirmButton: false,
               timer: 2000,
             });
