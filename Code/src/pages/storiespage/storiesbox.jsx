@@ -140,6 +140,7 @@ const StoriesBox = ({
                 )}
                 <Link
                   key={el.id}
+                  style={{ textDecoration: "none" }}
                   to={
                     mode === "draft"
                       ? {

@@ -20,7 +20,7 @@ const useStyles = () => ({
   tagsArea: {},
   dialogContainer: {
     height: "20vh",
-    minWidth: "25vw",
+    width: "100%",
   },
   dialogButtonGrid: {
     display: "flex",
@@ -42,8 +42,6 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   const icon = <AddCircleIcon />;
   const cancelIcon = <CancelIcon />;
 
-  console.log(tagInfo);
-
   const handleClickOpen = () => {
     setOpen(true);
     setTagText("");
@@ -57,6 +55,78 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   const handleSetTag = (data) => {
     setTags(data);
     setDialogStep(3);
+  };
+
+  const updateStoryInfo = async () => {
+    await axios
+      .get(`http://localhost:9001/api/stories/drafts/${storyId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        setTagInfo(data.tags);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const attachTagToStory = (tag) => {
+    let info = tagInfo.map((el) => el.id);
+    info.push(tag);
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    axios
+      .patch(
+        url,
+        { tags: info },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then(() => {
+        updateStoryInfo();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Tag added",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        handleClose();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const unattachTagToStory = (tag) => {
+    let info = tagInfo.map((el) => el.id).filter((el) => el !== tag);
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    axios
+      .patch(
+        url,
+        { tags: info },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Tag deleted",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        updateStoryInfo();
+        handleClose();
+      })
+      .catch((err) => console.log(err));
   };
 
   const searchTag = async (value) => {
@@ -98,45 +168,6 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
         });
         attachTagToStory(response.data.id);
       })
-      .catch((err) => console.log(err));
-  };
-
-  if (tags & tagInfo) console.log([...tagInfo, tags]);
-
-  const attachTagToStory = (tag) => {
-    let info = tagInfo.map((el) => el.id);
-    info.push(tag);
-    console.log(info);
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
-    axios
-      .patch(
-        url,
-        { tags: info },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${loggedUser.token}`,
-          },
-        }
-      )
-      .then((resp) => console.log(resp))
-      .catch((err) => console.log(err));
-  };
-
-  const deleteTag = (tag) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
-    axios
-      .patch(
-        url,
-        { tags: [tag] },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${loggedUser.token}`,
-          },
-        }
-      )
-      .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
   };
 
@@ -240,18 +271,22 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
         ) : null}
         {dialogStep === 3 ? (
           <Grid container className={classes.dialogContainer}>
-            {tags.map((el) => (
-              <Grid item xs={12} className={classes.dialogButtonGrid}>
-                <Typography color="primary" variant="h6">
-                  {el.tag}
-                </Typography>
-              </Grid>
-            ))}
             <Grid item xs={12} className={classes.dialogButtonGrid}>
-              <Typography color="primary" variant="h6">
-                Click the tag you want to add.
+              <Typography variant="h6" color="primary">
+                Tags are listed below, click the tag you want to add
               </Typography>
             </Grid>
+            {tags.map((el) => (
+              <Grid item xs={12} className={classes.dialogButtonGrid}>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => attachTagToStory(el.id)}
+                >
+                  {el.tag}
+                </Button>
+              </Grid>
+            ))}
             <Grid item xs={12} className={classes.dialogButtonGrid}>
               <Button
                 variant="contained"
@@ -334,7 +369,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
           ? tagInfo.map((el) => (
               <Chip
                 label={el.tag}
-                onClick={() => deleteTag(el.id)}
+                onClick={() => unattachTagToStory(el.id)}
                 className={classes.chip}
                 icon={cancelIcon}
                 color="primary"

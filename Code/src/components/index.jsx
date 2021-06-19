@@ -15,6 +15,7 @@ import UserInfo from "./user/user";
 import StoryLikeDislike from "./previewstory/storylikedislike";
 import DialogBox from "./account/dialogBox";
 import TitleDialog from "./createstory/titleDialog";
+import ImageDialog from "./createstory/imageDialog";
 import SearchBar from "./homepage/searchBar";
 import CommentGrid from "./previewstory/commentgrid";
 import PasswordReset from "./passwordreset/passwordReset";
@@ -42,4 +43,5 @@ export {
   CommentGrid,
   PasswordReset,
   CommentSearchBar,
+  ImageDialog,
 };

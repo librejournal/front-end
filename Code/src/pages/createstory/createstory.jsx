@@ -18,6 +18,7 @@ import {
   TagsArea,
   LocationArea,
   TitleDialog,
+  ImageDialog,
 } from "../../components";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 
@@ -50,7 +51,12 @@ const useStyles = {
   },
   createStoryTitle: {
     borderBottom: "2px solid lightgray",
-    padding: "2rem 1rem",
+    padding: "1rem",
+  },
+  createStoryInfoPanel: {
+    padding: "0.5rem 0 0 0",
+    display: "flex",
+    justifyContent: "space-around",
   },
   createStoryBottomGrid: {
     display: "flex",
@@ -65,26 +71,23 @@ const useStyles = {
   },
 };
 
-const CreateStoryPage = ({
-  classes,
-  loggedUser,
-  limit,
-  width,
-  location,
-  onInfoUser,
-  id,
-}) => {
+const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
   const [storyInfo, setStoryInfo] = useState([]);
   const [tagInfo, setTagInfo] = useState({ tags: [] });
   const [locationInfo, setLocationInfo] = useState({ locations: [] });
   const [storyId, setStoryId] = useState(null);
   const [storyTitle, setStoryTitle] = useState("");
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
+
   const [success, setSuccess] = useState(false);
   const [storyDetails, setStoryDetails] = useState(null);
 
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpen(false);
+  };
+  const handleCloseImage = () => {
+    setOpenImage(false);
   };
 
   const swalWithSuccess = () => {
@@ -97,6 +100,7 @@ const CreateStoryPage = ({
       timer: 2000,
     });
   };
+  console.log(storyDetails);
 
   const getStoryInfo = async (id) => {
     axios
@@ -189,6 +193,14 @@ const CreateStoryPage = ({
       .catch((err) => console.log(err));
   };
 
+  const openTitleDialog = () => {
+    setOpen(true);
+  };
+
+  const openImageDialog = () => {
+    setOpenImage(true);
+  };
+
   useEffect(() => {
     if (typeof location.state !== "undefined") {
       if (typeof location.state.editId !== "undefined") {
@@ -203,20 +215,54 @@ const CreateStoryPage = ({
 
   return (
     <Grid container className={classes.createStoryPageContainer}>
-      <TitleDialog
-        open={open}
-        handleClose={handleClose}
-        publishStory={publishStory}
-        token={loggedUser.token}
-        storyId={storyId}
-        title={storyTitle}
-        storyDetails={storyDetails}
-      />
+      {storyDetails ? (
+        <>
+          <TitleDialog
+            open={open}
+            handleClose={handleClose}
+            publishStory={publishStory}
+            token={loggedUser.token}
+            storyId={storyId}
+            title={storyTitle}
+            storyDetails={storyDetails}
+          />
+          <ImageDialog
+            open={openImage}
+            handleClose={handleCloseImage}
+            publishStory={publishStory}
+            token={loggedUser.token}
+            storyId={storyId}
+            title={storyTitle}
+            storyDetails={storyDetails}
+          />
+        </>
+      ) : null}
+
       <Grid item xs={12} className={classes.createStoryTitle}>
         <Typography color="primary" variant="h4">
           {location.state !== undefined ? "Edit" : "Create"} a story
         </Typography>
       </Grid>
+
+      {storyDetails ? (
+        <Grid item xs={12} className={classes.createStoryInfoPanel}>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => openTitleDialog()}
+          >
+            Title Information
+          </Button>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => openImageDialog()}
+          >
+            Thumbnail Information
+          </Button>
+        </Grid>
+      ) : null}
+
       <Grid item xs={12} md={6} className={classes.createStoryLeftContainer}>
         <CreateStory
           storyInfo={storyInfo}
