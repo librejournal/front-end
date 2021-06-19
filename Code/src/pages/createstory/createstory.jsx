@@ -303,6 +303,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
             locationInfo={locationInfo}
             setLocationInfo={setLocationInfo}
             loggedUser={loggedUser}
+            storyId={storyId}
           />
         </Grid>
         <Grid
