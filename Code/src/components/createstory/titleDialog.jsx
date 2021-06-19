@@ -15,6 +15,12 @@ const useStyles = () => ({
       marginTop: "2vh",
     },
   },
+  imageGrid: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {

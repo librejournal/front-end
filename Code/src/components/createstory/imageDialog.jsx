@@ -15,6 +15,12 @@ const useStyles = () => ({
       marginTop: "2vh",
     },
   },
+  imageGrid: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const ImageDialog = ({
@@ -97,11 +103,7 @@ const ImageDialog = ({
         }}
       >
         {storyDetails ? (
-          <Grid item xs={12}>
-            <img
-              src={`data:image/jpeg;base64,${storyDetails.thumbnail.data}`}
-              alt={`thumbnail-${storyDetails.thumbnail.id}`}
-            />
+          <Grid item xs={12} className={classes.imageGrid}>
             <Typography
               color="primary"
               variant="subtitle1"
@@ -112,6 +114,10 @@ const ImageDialog = ({
             >
               Current Thumbnail
             </Typography>
+            <img
+              src={`data:image/jpeg;base64,${storyDetails.thumbnail.data}`}
+              alt={`thumbnail-${storyDetails.thumbnail.id}`}
+            />
           </Grid>
         ) : null}
         <Grid item xs={12} className={classes.titleAdd}>
