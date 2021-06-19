@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography, Button, Chip } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 
@@ -43,11 +43,15 @@ const useStyles = () => ({
     alignContent: "flex-start",
     background: "white",
   },
+  tagsLocationsGrid: {
+    display: "flex",
+    backgroundColor: "white",
+    borderBottom: "2px solid lightgray",
+  },
 });
 
 const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   const [previewStory, setPreviewStory] = useState(null);
-
   const focusStory = async () => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`;
     await axios
@@ -67,7 +71,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
       })
       .catch((err) => console.log(err));
   };
-
+  console.log(previewStory);
   useEffect(() => {
     focusStory();
   }, []);
@@ -76,85 +80,110 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
     <Grid container style={{ overflowY: "auto" }}>
       <Grid container className={classes.storyPreviewContainer}>
         {previewStory ? (
-          <Grid container className={classes.storyPreviewInfoContainer}>
-            <Grid
-              item
-              xs={12}
-              key="user"
-              className={classes.storyPreviewInfoGrid}
-            >
-              <Link
-                to={
-                  previewStory.author.user.id !== loggedUser.id
-                    ? {
-                        pathname: `/user`,
-                        hash: `#${previewStory.author.id}`,
-                        state: { user: previewStory.author },
-                      }
-                    : {
-                        pathname: `/account`,
-                      }
-                }
-                key={previewStory.author.id}
-                style={{ textDecoration: "none", display: "flex" }}
-              >
-                <Typography style={{ color: "black" }} variant="subtitle1">
-                  Author: &nbsp; &nbsp;
-                </Typography>
-                <Typography color="primary" variant="subtitle1">
-                  {previewStory.author.user.username}
-                </Typography>
-              </Link>
-            </Grid>
-
-            <Grid
-              item
-              xs={12}
-              key="createDate"
-              className={classes.storyPreviewInfoGrid}
-              style={{ cursor: "default" }}
-            >
-              <Typography variant="subtitle1">
-                Created At: &nbsp; &nbsp;
-              </Typography>
-              <Typography color="primary" variant="subtitle2">
-                {previewStory.created.split("T")[0]}
-              </Typography>
-            </Grid>
-          </Grid>
-        ) : null}
-
-        {previewStory ? (
-          <Grid container className={classes.storySection}>
-            <PreviewStory storyInfo={previewStory.components} />
-          </Grid>
-        ) : null}
-        {previewStory ? (
           <>
-            <Grid item xs={12}>
-              <Typography
-                color="primary"
-                variant="subtitle2"
-                style={{
-                  borderBottom: "2px solid lightgray",
-                  background: "white",
-                }}
+            <Grid container className={classes.storyPreviewInfoContainer}>
+              <Grid
+                item
+                xs={12}
+                key="user"
+                className={classes.storyPreviewInfoGrid}
               >
-                Like:&nbsp;{previewStory.like_count}&nbsp;|&nbsp;Dislike:&nbsp;
-                {previewStory.dislike_count}
-              </Typography>
+                <Link
+                  to={
+                    previewStory.author.user.id !== loggedUser.id
+                      ? {
+                          pathname: `/user`,
+                          hash: `#${previewStory.author.id}`,
+                          state: { user: previewStory.author },
+                        }
+                      : {
+                          pathname: `/account`,
+                        }
+                  }
+                  key={previewStory.author.id}
+                  style={{ textDecoration: "none", display: "flex" }}
+                >
+                  <Typography style={{ color: "black" }} variant="subtitle1">
+                    Author: &nbsp; &nbsp;
+                  </Typography>
+                  <Typography color="primary" variant="subtitle1">
+                    {previewStory.author.user.username}
+                  </Typography>
+                </Link>
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                key="createDate"
+                className={classes.storyPreviewInfoGrid}
+                style={{ cursor: "default" }}
+              >
+                <Typography variant="subtitle1">
+                  Created At: &nbsp; &nbsp;
+                </Typography>
+                <Typography color="primary" variant="subtitle2">
+                  {previewStory.created.split("T")[0]}
+                </Typography>
+              </Grid>
+            </Grid>
+
+            <Grid container className={classes.storySection}>
+              <PreviewStory storyInfo={previewStory.components} />
+            </Grid>
+            <Grid container className={classes.tagsLocationsGrid}>
+              {previewStory.tags.length ? (
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2"> Tags</Typography>
+                  {previewStory.tags.map((el) => (
+                    <Chip
+                      label={`${el.tag}`}
+                      className={classes.chip}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  ))}
+                </Grid>
+              ) : null}
+
+              {previewStory.locations.length ? (
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2"> Locations</Typography>
+                  {previewStory.locations.map((el) => (
+                    <Chip
+                      label={`${el.country} - ${el.city} - ${el.province_1}`}
+                      className={classes.chip}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  ))}
+                </Grid>
+              ) : null}
+
+              <Grid item xs={12} style={{ textAlign: "center" }}>
+                <Typography
+                  color="primary"
+                  variant="subtitle2"
+                  style={{
+                    borderBottom: "2px solid lightgray",
+                    background: "white",
+                  }}
+                >
+                  Like:&nbsp;{previewStory.like_count}
+                  &nbsp;|&nbsp;Dislike:&nbsp;
+                  {previewStory.dislike_count}
+                </Typography>
+              </Grid>
             </Grid>
             <StoryLikeDislike
               storyInfo={previewStory}
               focusStory={focusStory}
             />
-          </>
-        ) : null}
 
-        {previewStory ? (
-          <Grid container className={classes.commentSection}>
-            <StoryCommments loggedUser={loggedUser} id={previewStory.id} />
-          </Grid>
+            <Grid container className={classes.commentSection}>
+              <StoryCommments loggedUser={loggedUser} id={previewStory.id} />
+            </Grid>
+          </>
         ) : null}
         <Grid item xs={12} className={classes.linkGrid}>
           <Link to="/" style={{ textDecoration: "none" }}>

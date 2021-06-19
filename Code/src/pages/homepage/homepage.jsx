@@ -111,7 +111,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
       `${process.env.REACT_APP_DB_HOST}/api/stories/?` +
       (component !== null ? `components=${component}&` : "") +
       (tag !== null ? `tags=${tag}&` : "") +
-      (tag !== location ? `locations=${location}&` : "") +
+      (location !== null ? `locations=${location}&` : "") +
       (type !== null ? `ordering=${order}${type}&` : "");
 
     await axios
