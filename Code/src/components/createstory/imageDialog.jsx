@@ -112,14 +112,16 @@ const ImageDialog = ({
                 borderBottom: "0.2px solid lightgray",
               }}
             >
-              Current Thumbnail
+              {storyDetails.thumbnail ? "Current Thumbnail" : "No Thumbnail"}
             </Typography>
             {storyDetails.thumbnail ? (
               <img
                 src={`data:image/jpeg;base64,${storyDetails.thumbnail.data}`}
                 alt={`thumbnail-${storyDetails.thumbnail.id}`}
               />
-            ) : null}
+            ) : (
+              <Typography></Typography>
+            )}
           </Grid>
         ) : null}
         <Grid item xs={12} className={classes.titleAdd}>
