@@ -337,7 +337,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
                 color="primary"
                 onClick={() => setDialogStep(1)}
               >
-                Search a new
+                Search a new tag
               </Button>
               <Button
                 variant="contained"

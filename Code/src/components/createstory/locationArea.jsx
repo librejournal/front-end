@@ -20,10 +20,6 @@ const useStyles = () => ({
   dialogContainer: {
     height: "20vh",
     width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
   },
   dialogButtonGrid: {
     display: "flex",
@@ -34,6 +30,7 @@ const useStyles = () => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
   },
 });
 
