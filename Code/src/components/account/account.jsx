@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
 
@@ -16,6 +16,7 @@ import {
 
 import AccountInfo from "./accountInfo";
 import AccountDetails from "./accountDetails";
+import ReferralDialogBox from "./referralDialogBox";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 
 import Carousel, {
@@ -39,12 +40,23 @@ const useStyles = () => ({
   },
   bottomButton: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
 });
 
 const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
+  const [open, setOpen] = useState(false);
+  const [users, setUsers] = useState(null);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+  };
+
   const logoutRequest = async () => {
     await axios
       .post(
@@ -71,6 +83,58 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
         console.log(error);
       });
   };
+
+  const acceptReferral = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/accept`;
+    await axios
+      .post(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "You have become a writer now",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        Swal.fire(err.response.data.detail);
+        handleClose();
+      });
+  };
+
+  const searchUsers = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/search`;
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    searchUsers();
+  }, []);
 
   return (
     <Grid
@@ -122,15 +186,46 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
           ) : null}
         </Carousel>
       )}
-      <Grid item xs={12} className={classes.bottomButton}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => logoutRequest()}
-        >
-          LOGOUT
-        </Button>
-      </Grid>
+      {loggedUser ? (
+        <Grid item xs={8} className={classes.bottomButton}>
+          {loggedUser.has_pending_referral ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => acceptReferral()}
+            >
+              Accept Referral
+            </Button>
+          ) : null}
+          {loggedUser.userInfo && loggedUser.userInfo.type === "WRITER" ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleClickOpen()}
+            >
+              Send Referral to a User
+            </Button>
+          ) : null}
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => logoutRequest()}
+          >
+            LOGOUT
+          </Button>
+        </Grid>
+      ) : null}
+
+      {users ? (
+        <ReferralDialogBox
+          open={open}
+          onClose={handleClose}
+          handleClose={handleClose}
+          data={users}
+          token={loggedUser.token}
+        />
+      ) : null}
     </Grid>
   );
 };
