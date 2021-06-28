@@ -169,7 +169,7 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
           </Grid>
           <Grid item xs={12}>
             {stories ? (
-              <TrendingContainer title="Similar Stories" data={stories} />
+              <TrendingContainer title="Related Stories" data={stories} />
             ) : null}
           </Grid>
           <Grid item xs={12}>
