@@ -11,6 +11,7 @@ import {
     PreviewStoryPage,
     UserPage,
     PasswordResetPage,
+    TagPage,
 } from "./pages";
 import { compose } from "recompose";
 import { useEffect } from "react";
@@ -125,7 +126,10 @@ const App = ({ loggedUser, onStateUser, onInfoUser }) => {
                         path="/user"
                         render={(props) => <UserPage {...props} />}
                     />
-
+                    <Route
+                        path="/tag"
+                        render={(props) => <TagPage {...props} />}
+                    />
                     <Route
                         path="/stories/:id"
                         render={(props) => <PreviewStoryPage {...props} />}

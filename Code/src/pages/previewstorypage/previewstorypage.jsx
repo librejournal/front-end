@@ -48,6 +48,14 @@ const useStyles = () => ({
     backgroundColor: "white",
     borderBottom: "2px solid lightgray",
   },
+  chip: {
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+    },
+    transition: "all ease 0.5s",
+    cursor: "pointer",
+  },
 });
 
 const PreviewStoryPage = ({ classes, loggedUser, location }) => {
@@ -136,12 +144,20 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
                 <Grid item xs={6}>
                   <Typography variant="subtitle2"> Tags</Typography>
                   {previewStory.tags.map((el) => (
-                    <Chip
-                      label={`${el.tag}`}
-                      className={classes.chip}
-                      color="primary"
-                      variant="outlined"
-                    />
+                    <Link
+                      to={{
+                        pathname: "/tag",
+                        hash: `#${el.tag}`,
+                      }}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Chip
+                        label={`${el.tag}`}
+                        className={classes.chip}
+                        color="primary"
+                        variant="outlined"
+                      />
+                    </Link>
                   ))}
                 </Grid>
               ) : null}

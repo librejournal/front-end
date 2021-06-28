@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Typography, Breadcrumbs } from "@material-ui/core";
+import { Typography, Breadcrumbs, Badge } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
@@ -51,7 +51,14 @@ const MyBreadcrumbs = ({ classes, loggedUser }) => (
         </Typography>
       </Link>
     ) : null}
-    <LoginButton />
+
+    {loggedUser.token && loggedUser.has_pending_referral ? (
+      <Badge badgeContent={"!"} color="error">
+        <LoginButton />
+      </Badge>
+    ) : (
+      <LoginButton />
+    )}
   </Breadcrumbs>
 );
 

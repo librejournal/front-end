@@ -183,7 +183,10 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
             className={classes.homepageContainer}
           >
             {trendingStories ? (
-              <TrendingContainer data={trendingStories.slice(0, 4)} />
+              <TrendingContainer
+                data={trendingStories.slice(0, 4)}
+                title="Trending Stories"
+              />
             ) : null}
 
             {loggedUser.token ? null : (

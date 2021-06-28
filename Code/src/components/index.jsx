@@ -20,6 +20,7 @@ import SearchBar from "./homepage/searchBar";
 import CommentGrid from "./previewstory/commentgrid";
 import PasswordReset from "./passwordreset/passwordReset";
 import CommentSearchBar from "./previewstory/commentsearchbar";
+import TagInfo from "./tag/tag";
 
 export {
   Header,
@@ -44,4 +45,5 @@ export {
   PasswordReset,
   CommentSearchBar,
   ImageDialog,
+  TagInfo,
 };

@@ -7,6 +7,7 @@ import StoriesPage from "./storiespage/storiespage";
 import PreviewStoryPage from "./previewstorypage/previewstorypage";
 import UserPage from "./userpage/userpage";
 import PasswordResetPage from "./passwordresetpage/passwordresetpage";
+import TagPage from "./tagpage/tagpage";
 
 export {
   Homepage,
@@ -18,4 +19,5 @@ export {
   PreviewStoryPage,
   UserPage,
   PasswordResetPage,
+  TagPage,
 };

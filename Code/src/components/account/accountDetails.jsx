@@ -28,6 +28,7 @@ const useStyles = () => ({
 const AccountDetails = ({ classes, detailedInfo }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
+  const [type, setType] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,21 +38,25 @@ const AccountDetails = ({ classes, detailedInfo }) => {
     setOpen(false);
   };
 
-  const handleData = (data) => {
+  console.log(data);
+
+  const handleData = (data, myType) => {
     setData(data);
+    setType(myType);
     setTimeout(() => {
       handleClickOpen();
-    }, 250);
+    }, 500);
   };
 
   return (
     <Grid item md={6} xs={12} className={classes.accountContainer}>
       {data ? (
         <DialogBox
-          title={"Authors"}
+          title={type}
           data={data}
           open={open}
           handleClose={handleClose}
+          type={type}
         />
       ) : null}
 
@@ -77,7 +82,7 @@ const AccountDetails = ({ classes, detailedInfo }) => {
               variant="subtitle1"
               color="primary"
               onClick={() => {
-                handleData(detailedInfo.followed_authors);
+                handleData(detailedInfo.followed_authors, "Authors");
               }}
               style={{ cursor: "pointer" }}
             >
@@ -102,7 +107,7 @@ const AccountDetails = ({ classes, detailedInfo }) => {
               variant="subtitle1"
               color="primary"
               onClick={() => {
-                handleData(detailedInfo.followed_tags);
+                handleData(detailedInfo.followed_tags, "Tags");
               }}
               style={{ cursor: "pointer" }}
             >

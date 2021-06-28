@@ -25,55 +25,61 @@ const useStyles = {
       color: "#1687a7",
     },
   },
+  storyItemContainer: {
+    justifyContent: "space-around",
+    width: "100%",
+    overflowX: "auto",
+  },
 };
 
-const TrendingContainer = ({ data, classes, limit, width }) => {
+const TrendingContainer = ({ title, data, classes, limit, width }) => {
   return (
     <Grid container className={classes.trendingContainerGrid}>
       <Grid item className={classes.titleText} xs={12}>
         <Typography color="primary" variant="h5">
-          Trending Stories
+          {title}
         </Typography>
       </Grid>
-
-      {limit < width ? (
-        data.map((el) => (
-          <TrendingItem
-            title={el.title}
-            thumbnail={el.thumbnail}
-            key={el.title}
-            id={el.id}
-          />
-        ))
-      ) : (
-        <Carousel
-          plugins={[
-            "fastSwipe",
-            "centered",
-            {
-              resolve: slidesToShowPlugin,
-              options: {
-                numberOfSlides: 2.05,
-              },
-            },
-            {
-              resolve: slidesToScrollPlugin,
-              options: {
-                numberOfSlides: 2.05,
-              },
-            },
-          ]}
-        >
-          {data.map((el) => (
+      <Grid container className={classes.storyItemContainer}>
+        {limit < width ? (
+          data.map((el) => (
             <TrendingItem
               title={el.title}
               thumbnail={el.thumbnail}
               key={el.title}
               id={el.id}
             />
-          ))}
-        </Carousel>
-      )}
+          ))
+        ) : (
+          <Carousel
+            plugins={[
+              "fastSwipe",
+              "centered",
+              {
+                resolve: slidesToShowPlugin,
+                options: {
+                  numberOfSlides: 2.05,
+                },
+              },
+              {
+                resolve: slidesToScrollPlugin,
+                options: {
+                  numberOfSlides: 2.05,
+                },
+              },
+            ]}
+          >
+            {data.map((el) => (
+              <TrendingItem
+                title={el.title}
+                thumbnail={el.thumbnail}
+                key={el.title}
+                id={el.id}
+              />
+            ))}
+          </Carousel>
+        )}
+      </Grid>
     </Grid>
   );
 };

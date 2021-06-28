@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Typography, Menu, MenuItem } from "@material-ui/core";
+import { Typography, Menu, MenuItem, Badge } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
@@ -41,9 +41,17 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
         to={loggedUser.token === "" ? "/login" : "/account"}
         style={{ textDecoration: "none", width: "100%" }}
       >
-        <Typography color="primary">
-          {loggedUser.token === "" ? "Login" : "Account"}
-        </Typography>
+        {loggedUser.token && loggedUser.has_pending_referral ? (
+          <Badge badgeContent={"!"} color="error">
+            <Typography color="primary">
+              {loggedUser.token === "" ? "Login" : "Account"}
+            </Typography>
+          </Badge>
+        ) : (
+          <Typography color="primary">
+            {loggedUser.token === "" ? "Login" : "Account"}
+          </Typography>
+        )}
       </Link>
     </MenuItem>
   </Menu>
