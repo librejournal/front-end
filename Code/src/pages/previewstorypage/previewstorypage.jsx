@@ -166,12 +166,20 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
                 <Grid item xs={6}>
                   <Typography variant="subtitle2"> Locations</Typography>
                   {previewStory.locations.map((el) => (
-                    <Chip
-                      label={`${el.country} - ${el.city} - ${el.province_1}`}
-                      className={classes.chip}
-                      color="primary"
-                      variant="outlined"
-                    />
+                    <Link
+                      to={{
+                        pathname: "/location",
+                        hash: `#${el.province_1}`,
+                      }}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Chip
+                        label={`${el.country} - ${el.city} - ${el.province_1}`}
+                        className={classes.chip}
+                        color="primary"
+                        variant="outlined"
+                      />
+                    </Link>
                   ))}
                 </Grid>
               ) : null}

@@ -15,7 +15,7 @@ import {
 import { withWindowConsumer } from "../../contexts/window/consumer";
 import Swal from "sweetalert2";
 
-import { TrendingContainer } from "../";
+import { TrendingContainer } from "..";
 
 const useStyles = () => ({
   userPageContainer: {
@@ -53,13 +53,13 @@ const useStyles = () => ({
   },
 });
 
-const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
-  const [tag, setTag] = useState(null);
+const LocationInfo = ({ classes, loggedUser, locationText, onInfoUser }) => {
+  const [location, setLocation] = useState(null);
   const [followStatus, setFollowStatus] = useState(false);
   const [stories, setStories] = useState(null);
 
-  const getTagInfo = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/tags?search=${tagText}`;
+  const getLocationInfo = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/locations?search=${locationText}`;
     await axios
       .get(url, {
         headers: {
@@ -68,17 +68,17 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
         },
       })
       .then((response) => {
-        setTag(response.data[0]);
+        setLocation(response.data[0]);
         checkFollowStatus(response.data);
-        getSimilarStories(tagText);
+        getSimilarStories(locationText);
       })
       .catch((err) => console.log(err));
   };
 
   const checkFollowStatus = (user) => {
     if ((user !== undefined) & (loggedUser.userInfo !== undefined)) {
-      loggedUser.userInfo.followed_tags.map((el) =>
-        el.tag === tagText ? setFollowStatus(true) : null
+      loggedUser.userInfo.followed_locations.map((el) =>
+        el.province_1 === locationText ? setFollowStatus(true) : null
       );
     }
   };
@@ -99,12 +99,12 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
       .catch((err) => console.log(err));
   };
 
-  const followTag = async (id) => {
+  const followLocation = async (id) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/follow`;
     await axios
       .patch(
         url,
-        { story_tag_id_list: [id] },
+        { story_location_id_list: [id] },
         {
           headers: {
             "Content-Type": "application/json",
@@ -121,7 +121,7 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
           timer: 2000,
         });
 
-        getTagInfo(tagText);
+        getLocationInfo(locationText);
         myUserInfo();
         setTimeout(() => {
           window.location.reload();
@@ -130,12 +130,12 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
       .catch((err) => console.log(err));
   };
 
-  const UnfollowTag = async (id) => {
+  const unFollowLocation = async (id) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/unfollow`;
     await axios
       .patch(
         url,
-        { story_tag_id_list: [id] },
+        { story_location_id_list: [id] },
         {
           headers: {
             "Content-Type": "application/json",
@@ -152,7 +152,7 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
           timer: 2000,
         });
 
-        getTagInfo(tagText);
+        getLocationInfo(locationText);
         myUserInfo();
         setTimeout(() => {
           window.location.reload();
@@ -161,10 +161,10 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
       .catch((err) => console.log(err));
   };
 
-  const getSimilarStories = async (tag) => {
+  const getSimilarStories = async (location) => {
     const url =
       `${process.env.REACT_APP_DB_HOST}/api/stories/?` +
-      (tag !== null ? `tags=${tag}&` : "");
+      (location !== null ? `locations=${location}&` : "");
     await axios
       .get(url)
       .then((response) => {
@@ -176,11 +176,9 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
   };
 
   useEffect(() => {
-    getTagInfo(tagText);
+    getLocationInfo(locationText);
     checkFollowStatus();
   }, []);
-
-  console.log(followStatus);
 
   return (
     <Grid
@@ -189,16 +187,28 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
       alignItems="center"
       className={classes.userPageContainer}
     >
-      {tag ? (
+      {location ? (
         <Grid item md={6} xs={12} className={classes.userContainer}>
           <Typography color="primary" variant="h4">
-            Tag Info
+            Location Info
           </Typography>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ display: "flex" }}>
             <Typography color="primary" variant="h6">
-              Name:
+              Country:
             </Typography>
-            <Typography variant="h6">{tag.tag}</Typography>
+            <Typography variant="h6">{location.country}</Typography>
+          </Grid>
+          <Grid item xs={12} style={{ display: "flex" }}>
+            <Typography color="primary" variant="h6">
+              City:
+            </Typography>
+            <Typography variant="h6">{location.city}</Typography>
+          </Grid>
+          <Grid item xs={12} style={{ display: "flex" }}>
+            <Typography color="primary" variant="h6">
+              Province:
+            </Typography>
+            <Typography variant="h6">{location.province_1}</Typography>
           </Grid>
           <Grid item xs={12}>
             {stories ? (
@@ -210,29 +220,29 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
               variant="contained"
               color="primary"
               onClick={() => {
-                followTag(tag.id);
+                followLocation(location.id);
               }}
               disabled={followStatus}
             >
-              {followStatus ? "FOLLOWED" : "FOLLOW TAG"}
+              {followStatus ? "FOLLOWED" : "FOLLOW LOCATION"}
             </Button>
 
             <Button
               variant="contained"
               color="primary"
               onClick={() => {
-                UnfollowTag(tag.id);
+                unFollowLocation(location.id);
               }}
               disabled={!followStatus}
             >
-              UNFOLLOW TAG
+              {"UNFOLLOW LOCATION"}
             </Button>
           </Grid>
         </Grid>
       ) : (
         <Grid item xs={12}>
           <Typography color="primary" variant="subtitle1">
-            You have to login in order to see tag information
+            You have to login in order to see location information
           </Typography>
         </Grid>
       )}
@@ -244,4 +254,4 @@ export default compose(
   withWindowConsumer,
   connect(mapStateToAccount, mapDispatchToAccount),
   withStyles(useStyles)
-)(TagInfo);
+)(LocationInfo);

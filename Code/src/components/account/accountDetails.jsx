@@ -131,7 +131,7 @@ const AccountDetails = ({ classes, detailedInfo }) => {
               variant="subtitle1"
               color="primary"
               onClick={() => {
-                handleData(detailedInfo.followed_locations);
+                handleData(detailedInfo.followed_locations, "Locations");
               }}
               style={{ cursor: "pointer" }}
             >

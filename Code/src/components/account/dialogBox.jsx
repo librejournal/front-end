@@ -63,7 +63,26 @@ const DialogBox = ({ classes, data, open, handleClose, title, type }) => (
           </ListItem>
         ))}
       </List>
-    ) : null}
+    ) : (
+      <List>
+        {data.map((el) => (
+          <ListItem button key={el.id}>
+            <Link
+              to={{
+                pathname: `/location`,
+                hash: `#${el.province_1}`,
+              }}
+              key={el.id}
+              style={{ textDecoration: "none", display: "flex" }}
+            >
+              <Typography color="primary" variant="subtitle1">
+                {el.country} - {el.city} - {el.province_1}
+              </Typography>
+            </Link>
+          </ListItem>
+        ))}
+      </List>
+    )}
   </Dialog>
 );
 

@@ -21,6 +21,7 @@ import CommentGrid from "./previewstory/commentgrid";
 import PasswordReset from "./passwordreset/passwordReset";
 import CommentSearchBar from "./previewstory/commentsearchbar";
 import TagInfo from "./tag/tag";
+import LocationInfo from "./location/location";
 
 export {
   Header,
@@ -46,4 +47,5 @@ export {
   CommentSearchBar,
   ImageDialog,
   TagInfo,
+  LocationInfo,
 };

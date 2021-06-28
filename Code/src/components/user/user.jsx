@@ -112,7 +112,7 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Follow successfull",
+          title: "Follow successful",
           showConfirmButton: false,
           timer: 2000,
         });
@@ -123,6 +123,44 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
           getUserInfo(userInfo.profile_id);
           myUserInfo();
         }
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const unFollowUser = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/unfollow`;
+    await axios
+      .patch(
+        url,
+        { profile_id_list: [id] },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Unfollow successful",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        if (userInfo.user !== undefined) {
+          getUserInfo(userInfo.user.profile_id);
+          myUserInfo();
+        } else {
+          getUserInfo(userInfo.profile_id);
+          myUserInfo();
+        }
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       })
       .catch((err) => console.log(err));
   };
@@ -206,6 +244,14 @@ const UserInfo = ({ classes, loggedUser, userInfo, onInfoUser }) => {
             disabled={followStatus}
           >
             {followStatus ? "FOLLOWED" : "FOLLOW USER"}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => unFollowUser(myData.profile_id)}
+            disabled={!followStatus}
+          >
+            UNFOLLOW USER
           </Button>
         </Grid>
       ) : (
