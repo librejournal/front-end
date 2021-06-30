@@ -48,8 +48,6 @@ const StoriesBox = ({
   deleteDraftStory,
   editSuccess,
 }) => {
-  const env = runtimeEnv();
-
   return (
     <Grid container className={classes.storyPageContainer}>
       <Grid item sm={4} xs={12} style={{ height: "5vh" }}>
