@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { mapStateToStoriesPage } from "../../redux/mapFunctions";
 import Swal from "sweetalert2";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import StoriesBox from "./storiesbox";
 
@@ -26,10 +27,10 @@ const StoriesPage = ({ classes, loggedUser }) => {
   const [stories, setStories] = useState([]);
   const [draftStories, setDraftStories] = useState([]);
   const [editSuccess, setEditSuccess] = useState(0);
-
+  const env = runtimeEnv();
   const getStories = async () => {
     await axios
-      .get("http://localhost:9001/api/stories/")
+      .get(`${env.REACT_APP_DB_HOST}/api/stories/`)
       .then((response) => {
         setStories(response.data);
         getStoryDrafts();
@@ -41,7 +42,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const getStoryDrafts = async () => {
     await axios
-      .get("http://localhost:9001/api/stories/drafts/", {
+      .get(`${env.REACT_APP_DB_HOST}/api/stories/drafts/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -57,7 +58,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const deleteStory = async (id) => {
     axios
-      .delete(`http://localhost:9001/api/stories/${id}`, {
+      .delete(`${env.REACT_APP_DB_HOST}/api/stories/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -81,7 +82,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const deleteDraftStory = async (id) => {
     axios
-      .delete(`http://localhost:9001/api/stories/drafts/${id}`, {
+      .delete(`${env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -104,7 +105,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
   };
 
   const editStory = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/${id}/`;
     await axios
       .patch(
         url,
@@ -125,7 +126,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
   };
 
   const publishStory = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
     await axios
       .patch(
         url,
@@ -154,7 +155,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
   };
 
   const editDraftStory = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
     await axios
       .get(url, {
         headers: {

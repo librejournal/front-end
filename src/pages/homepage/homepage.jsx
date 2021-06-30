@@ -31,6 +31,7 @@ import Typed from "react-typed";
 import axios from "axios";
 import { connect } from "react-redux";
 import { mapStateToPropsHome } from "../../redux/mapFunctions";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = {
   firstAdv: {
@@ -86,6 +87,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
   const [storylength, setStorylength] = useState(0);
   const [trendingStories, setTrendingStories] = useState(null);
   const [expanded, setExpanded] = useState("panel1");
+  const env = runtimeEnv();
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -100,7 +102,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
   };
 
   const getStoryLength = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/?`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/?`;
     await axios
       .get(url)
       .then((response) => setStorylength(response.data.length));
@@ -108,7 +110,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
 
   const getStories = async (type, component, tag, location, order) => {
     const url =
-      `${process.env.REACT_APP_DB_HOST}/api/stories/?` +
+      `${env.REACT_APP_DB_HOST}/api/stories/?` +
       (component !== null ? `components=${component}&` : "") +
       (tag !== null ? `tags=${tag}&` : "") +
       (location !== null ? `locations=${location}&` : "") +
@@ -135,7 +137,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
   };
 
   const getTrendingStories = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/?ordering=likes`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/?ordering=likes`;
     await axios.get(url).then((response) => setTrendingStories(response.data));
   };
 

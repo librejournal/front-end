@@ -14,6 +14,7 @@ import {
   mapStateToPropsLogin,
   mapDispatchToPropsLogin,
 } from "../../redux/mapFunctions";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   loginContainer: {
@@ -46,12 +47,13 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
     email: "",
     password: "",
   });
+  const env = runtimeEnv();
 
   const addInfo = (infoType) => (event) =>
     setUser({ ...user, [infoType]: event.target.value });
 
   const loginRequest = async (info) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/auth/login`;
+    const url = `${env.REACT_APP_DB_HOST}/api/auth/login`;
     await axios
       .post(url, info, {
         headers: {

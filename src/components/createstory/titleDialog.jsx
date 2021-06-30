@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
 
 import axios from "axios";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   titleAdd: {
@@ -25,6 +26,7 @@ const useStyles = () => ({
 
 const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
   const [text, setText] = useState(title);
+  const env = runtimeEnv();
 
   const editTitle = async (title) => {
     const info = {
@@ -32,7 +34,7 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
     };
 
     await axios
-      .patch(`http://localhost:9001/api/stories/drafts/${storyId}`, info, {
+      .patch(`${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`, info, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,

@@ -5,6 +5,7 @@ import { Grid, Typography, Input, Button, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import axios from "axios";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import Swal from "sweetalert2";
 
@@ -30,11 +31,12 @@ const useStyles = () => ({
 const PasswordReset = ({ classes, detailedInfo }) => {
   const [text, setText] = useState("");
   const [state, setState] = useState("");
+  const env = runtimeEnv();
 
   useEffect(() => setState(window.location.search), []);
 
   const sendEmail = async (email) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/auth/password-reset?email=${email}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/auth/password-reset?email=${email}`;
     await axios
       .get(url)
       .then((response) => {
@@ -48,7 +50,7 @@ const PasswordReset = ({ classes, detailedInfo }) => {
   };
 
   const changePassword = async (pwd, token) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/auth/password-reset`;
+    const url = `${env.REACT_APP_DB_HOST}/api/auth/password-reset`;
 
     await axios
       .post(url, {

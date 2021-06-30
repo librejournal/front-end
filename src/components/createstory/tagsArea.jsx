@@ -11,6 +11,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
 import Swal from "sweetalert2";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -46,6 +47,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
     setOpen(true);
     setTagText("");
   };
+  const env = runtimeEnv();
 
   const handleClose = () => {
     setOpen(false);
@@ -59,7 +61,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
 
   const updateStoryInfo = async () => {
     await axios
-      .get(`http://localhost:9001/api/stories/drafts/${storyId}`, {
+      .get(`${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -75,7 +77,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   const attachTagToStory = (tag) => {
     let info = tagInfo.map((el) => el.id);
     info.push(tag);
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
     axios
       .patch(
         url,
@@ -103,7 +105,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
 
   const unattachTagToStory = (tag) => {
     let info = tagInfo.map((el) => el.id).filter((el) => el !== tag);
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
     axios
       .patch(
         url,
@@ -130,7 +132,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   };
 
   const searchTag = async (value) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/tags?search=${value}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/tags?search=${value}`;
     await axios
       .get(url, {
         headers: {
@@ -145,7 +147,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   };
 
   const createTag = async (value) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/tags`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/tags`;
     await axios
       .post(
         url,

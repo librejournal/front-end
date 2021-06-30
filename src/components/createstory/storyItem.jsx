@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import PlusLogo from "../../assets/logo/plusLogo.svg";
 import axios from "axios";
@@ -109,6 +110,7 @@ const StoryItem = ({
   const [textSize, setTextSize] = useState("h6");
   const [imageSize, setImageSize] = useState("10");
   const [imageFile, setImageFile] = useState(null);
+  const env = runtimeEnv();
 
   const onFileChange = (event) => {
     setImageFile(event.target.files[0]);
@@ -176,7 +178,7 @@ const StoryItem = ({
 
   const updateStoryInfo = async (id) => {
     await axios
-      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
+      .get(`${env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
@@ -196,7 +198,7 @@ const StoryItem = ({
     await setOrderArray(newOrder);
     await axios
       .post(
-        `http://localhost:9001/api/stories/${storyId}/components/order`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/order`,
         newOrder,
         {
           headers: {
@@ -252,12 +254,16 @@ const StoryItem = ({
     };
     setState(31);
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      })
+      .post(
+        `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`,
+        info,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then(() => {
         updateStoryInfo(storyId);
         Swal.fire({
@@ -282,12 +288,16 @@ const StoryItem = ({
     };
 
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      })
+      .post(
+        `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`,
+        info,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then(() => {
         updateStoryInfo(storyId);
         Swal.fire({
@@ -312,12 +322,16 @@ const StoryItem = ({
       type_setting: imageSize,
     };
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      })
+      .post(
+        `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`,
+        info,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then(() => {
         updateStoryInfo(storyId);
         setState(511);
@@ -335,7 +349,7 @@ const StoryItem = ({
   };
 
   const uploadImage = async (file) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/files/upload`;
+    const url = `${env.REACT_APP_DB_HOST}/api/files/upload`;
     await axios
       .post(url, file, {
         headers: {
@@ -344,7 +358,7 @@ const StoryItem = ({
         },
       })
       .then(async (response) => {
-        const componentUrl = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
+        const componentUrl = `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
         const info = {
           type: "IMAGE",
           text: response.data.id,
@@ -380,7 +394,7 @@ const StoryItem = ({
 
     await axios
       .delete(
-        `http://localhost:9001/api/stories/${storyId}/components/${deletedItemId}`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/${deletedItemId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -417,7 +431,7 @@ const StoryItem = ({
 
     await axios
       .patch(
-        `http://localhost:9001/api/stories/${storyId}/components/${editItemId}`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/${editItemId}`,
         info,
         {
           headers: {

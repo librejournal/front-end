@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, Typography, Grid, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import axios from "axios";
 
@@ -32,6 +33,7 @@ const ImageDialog = ({
   storyDetails,
 }) => {
   const [imageFile, setImageFile] = useState(null);
+  const env = runtimeEnv();
 
   const onFileChange = (event) => {
     setImageFile(event.target.files[0]);
@@ -54,7 +56,7 @@ const ImageDialog = ({
   };
 
   const uploadThumbnail = async (file) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/files/upload`;
+    const url = `${env.REACT_APP_DB_HOST}/api/files/upload`;
     await axios
       .post(url, file, {
         headers: {
@@ -63,7 +65,7 @@ const ImageDialog = ({
         },
       })
       .then(async (response) => {
-        const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+        const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
         await axios
           .patch(
             url,

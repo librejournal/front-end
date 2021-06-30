@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
@@ -66,9 +67,11 @@ const LocationInfo = ({
     setDialogStep(3);
   };
 
+  const env = runtimeEnv();
+
   const updateStoryInfo = async () => {
     await axios
-      .get(`http://localhost:9001/api/stories/drafts/${storyId}`, {
+      .get(`${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -84,7 +87,7 @@ const LocationInfo = ({
   const attachLocationToStory = (tag) => {
     let info = locationInfo.map((el) => el.id);
     info.push(tag);
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
     axios
       .patch(
         url,
@@ -112,7 +115,7 @@ const LocationInfo = ({
 
   const unattachLocationToStory = (tag) => {
     let info = locationInfo.map((el) => el.id).filter((el) => el !== tag);
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
     axios
       .patch(
         url,
@@ -139,7 +142,7 @@ const LocationInfo = ({
   };
 
   const searchLocation = async (value) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/locations?search=${value}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/locations?search=${value}`;
     await axios
       .get(url, {
         headers: {
@@ -157,7 +160,7 @@ const LocationInfo = ({
   };
 
   const createLocation = async (country, city, province) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/locations`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/locations`;
     const location = {
       country: country,
       city: city,

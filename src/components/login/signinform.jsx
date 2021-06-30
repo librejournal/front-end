@@ -5,6 +5,7 @@ import axios from "axios";
 
 import { Grid, TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   signinContainer: {
@@ -40,6 +41,8 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
     first_name: "",
     last_name: "",
   };
+  const env = runtimeEnv();
+
   const [user, setUser] = useState(initialState);
 
   const addInfo = (infoType) => (event) =>
@@ -47,7 +50,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
 
   const registerRequest = async (info) => {
     await axios
-      .post("http://localhost:9001/api/auth/register", info, {
+      .post(`${env.REACT_APP_DB_HOST}/api/auth/register`, info, {
         headers: {
           "Content-Type": "application/json",
           //"Access-Control-Allow-Origin": "*",

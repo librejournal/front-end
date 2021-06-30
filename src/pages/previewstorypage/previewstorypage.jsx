@@ -10,6 +10,7 @@ import {
   StoryLikeDislike,
 } from "../../components";
 import { Link } from "react-router-dom";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import { connect } from "react-redux";
 import { mapStateToStoriesPage } from "../../redux/mapFunctions";
@@ -60,8 +61,10 @@ const useStyles = () => ({
 
 const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   const [previewStory, setPreviewStory] = useState(null);
+  const env = runtimeEnv();
+
   const focusStory = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`;
     await axios
       .get(
         url,

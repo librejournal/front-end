@@ -24,6 +24,7 @@ import Carousel, {
   arrowsPlugin,
 } from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
@@ -48,6 +49,7 @@ const useStyles = () => ({
 const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState(null);
+  const env = runtimeEnv();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,7 +62,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   const logoutRequest = async () => {
     await axios
       .post(
-        "http://localhost:9001/api/auth/logout",
+        `${env.REACT_APP_DB_HOST}/api/auth/logout`,
         {},
         {
           headers: {
@@ -85,7 +87,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   };
 
   const acceptReferral = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/accept`;
+    const url = `${env.REACT_APP_DB_HOST}/api/profiles/referrals/accept`;
     await axios
       .post(
         url,
@@ -116,7 +118,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   };
 
   const searchUsers = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/search`;
+    const url = `${env.REACT_APP_DB_HOST}/api/profiles/search`;
     await axios
       .get(url, {
         headers: {

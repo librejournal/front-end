@@ -9,6 +9,7 @@ import UpArrow from "../../assets/logo/UpArrow.svg";
 import DownArrow from "../../assets/logo/DownArrow.svg";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 import CommentButton from "../../assets/logo/CommentButton.svg";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import Swal from "sweetalert2";
 
@@ -37,8 +38,10 @@ const StoryLikeDislike = ({
   width,
   focusStory,
 }) => {
+  const env = runtimeEnv();
+
   const likeStory = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyInfo.id}/like`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/${storyInfo.id}/like`;
     await axios
       .post(
         url,
@@ -64,7 +67,7 @@ const StoryLikeDislike = ({
   };
 
   const dislikeStory = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyInfo.id}/dislike`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/${storyInfo.id}/dislike`;
     await axios
       .post(
         url,

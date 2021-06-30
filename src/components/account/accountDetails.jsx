@@ -38,8 +38,6 @@ const AccountDetails = ({ classes, detailedInfo }) => {
     setOpen(false);
   };
 
-  console.log(data);
-
   const handleData = (data, myType) => {
     setData(data);
     setType(myType);

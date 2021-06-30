@@ -7,6 +7,7 @@ import UpArrow from "../../assets/logo/UpArrow.svg";
 import DownArrow from "../../assets/logo/DownArrow.svg";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 import Swal from "sweetalert2";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   storyItemIcon: {
@@ -52,10 +53,12 @@ const StoryCommments = ({
   orderState,
   mode,
 }) => {
+  const env = runtimeEnv();
+
   const likeComment = async (id) => {
     axios
       .post(
-        `http://localhost:9001/api/stories/${id}/comments/${id}/like`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${id}/comments/${id}/like`,
         {},
         {
           headers: {
@@ -80,7 +83,7 @@ const StoryCommments = ({
   const dislikeComment = async (id) => {
     axios
       .post(
-        `http://localhost:9001/api/stories/${id}/comments/${id}/dislike`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${id}/comments/${id}/dislike`,
         {},
         {
           headers: {

@@ -7,9 +7,9 @@ import {
   Button,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import { compose } from "recompose";
 
@@ -19,8 +19,10 @@ import { mapStateToPropsHome } from "../../redux/mapFunctions";
 const useStyles = () => ({});
 
 const DialogBox = ({ open, handleClose, data, loggedUser }) => {
+  const env = runtimeEnv();
+
   const sendReferral = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/`;
+    const url = `${env.REACT_APP_DB_HOST}/api/profiles/referrals/`;
     await axios
       .post(
         url,

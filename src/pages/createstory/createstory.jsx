@@ -11,6 +11,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 import {
   PreviewStory,
@@ -79,6 +80,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
   const [storyTitle, setStoryTitle] = useState("");
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
+  const env = runtimeEnv();
 
   const [success, setSuccess] = useState(false);
   const [storyDetails, setStoryDetails] = useState(null);
@@ -104,7 +106,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
 
   const getStoryInfo = async (id) => {
     axios
-      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
+      .get(`${env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -123,7 +125,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
   };
 
   const getStoryInfoNotDraft = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/${id}/`;
     await axios
       .patch(
         url,
@@ -145,7 +147,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
 
   const publishStory = async () => {
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/publish`, null, {
+      .post(`${env.REACT_APP_DB_HOST}/api/stories/${storyId}/publish`, null, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -181,7 +183,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
     };
 
     await axios
-      .post("http://localhost:9001/api/stories/", info, {
+      .post(`${env.REACT_APP_DB_HOST}/api/stories/`, info, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,

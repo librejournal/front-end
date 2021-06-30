@@ -4,6 +4,7 @@ import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import { Link } from "react-router-dom";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   storyPageContainer: {
@@ -47,7 +48,8 @@ const StoriesBox = ({
   deleteDraftStory,
   editSuccess,
 }) => {
-  console.log(data);
+  const env = runtimeEnv();
+
   return (
     <Grid container className={classes.storyPageContainer}>
       <Grid item sm={4} xs={12} style={{ height: "5vh" }}>

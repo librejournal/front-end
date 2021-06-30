@@ -16,6 +16,7 @@ import { withWindowConsumer } from "../../contexts/window/consumer";
 import Swal from "sweetalert2";
 
 import { TrendingContainer } from "..";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   userPageContainer: {
@@ -57,9 +58,10 @@ const LocationInfo = ({ classes, loggedUser, locationText, onInfoUser }) => {
   const [location, setLocation] = useState(null);
   const [followStatus, setFollowStatus] = useState(false);
   const [stories, setStories] = useState(null);
+  const env = runtimeEnv();
 
   const getLocationInfo = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/locations?search=${locationText}`;
+    const url = `${env.REACT_APP_DB_HOST}/api/stories/locations?search=${locationText}`;
     await axios
       .get(url, {
         headers: {
@@ -84,7 +86,7 @@ const LocationInfo = ({ classes, loggedUser, locationText, onInfoUser }) => {
   };
 
   const myUserInfo = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/self-detail`;
+    const url = `${env.REACT_APP_DB_HOST}/api/profiles/self-detail`;
     await axios
       .get(url, {
         headers: {
@@ -100,7 +102,7 @@ const LocationInfo = ({ classes, loggedUser, locationText, onInfoUser }) => {
   };
 
   const followLocation = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/follow`;
+    const url = `${env.REACT_APP_DB_HOST}/api/profiles/follow`;
     await axios
       .patch(
         url,
@@ -131,7 +133,7 @@ const LocationInfo = ({ classes, loggedUser, locationText, onInfoUser }) => {
   };
 
   const unFollowLocation = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/unfollow`;
+    const url = `${env.REACT_APP_DB_HOST}/api/profiles/unfollow`;
     await axios
       .patch(
         url,
@@ -163,7 +165,7 @@ const LocationInfo = ({ classes, loggedUser, locationText, onInfoUser }) => {
 
   const getSimilarStories = async (location) => {
     const url =
-      `${process.env.REACT_APP_DB_HOST}/api/stories/?` +
+      `${env.REACT_APP_DB_HOST}/api/stories/?` +
       (location !== null ? `locations=${location}&` : "");
     await axios
       .get(url)

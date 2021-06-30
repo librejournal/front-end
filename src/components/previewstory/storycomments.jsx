@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import { CommentGrid } from "../";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CommentSearchBar } from "../";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
 const useStyles = () => ({
   input: {
@@ -76,6 +77,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const [type, setType] = useState(false);
   const [orderState, setOrderState] = useState("likes");
   const [mode, setMode] = useState("");
+  const env = runtimeEnv();
 
   useEffect(() => {
     getComments(orderState, mode);
@@ -84,7 +86,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const getComments = async (order, mode) => {
     await axios
       .get(
-        `http://localhost:9001/api/stories/${id}/comments/?ordering=${mode}${order}`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${id}/comments/?ordering=${mode}${order}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -99,7 +101,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const createComment = async (comment) => {
     axios
       .post(
-        `http://localhost:9001/api/stories/${id}/comments/`,
+        `${env.REACT_APP_DB_HOST}/api/stories/${id}/comments/`,
         { text: comment },
         {
           headers: {
