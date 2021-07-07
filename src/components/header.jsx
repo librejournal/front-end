@@ -46,16 +46,17 @@ const useStyles = () => ({
 
 const Header = ({ notifications, classes, loggedUser, width, limit }) => {
   const [notificationState, setNotificationState] = useState(
-    notifications.story && notifications.comments
-      ? _.zip(notifications.story, notifications.comments)
+    notifications.story && notifications.comment
+      ? [...notifications.story, ...notifications.comment]
       : notifications.story
       ? notifications.story
-      : notifications.comments
+      : notifications.comment
       ? notifications.length
       : null
   );
   const [anchorEl, setAnchorEl] = useState(null);
 
+  console.log(notificationState);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

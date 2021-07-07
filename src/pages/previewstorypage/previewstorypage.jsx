@@ -60,13 +60,15 @@ const useStyles = () => ({
 
 const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   const [previewStory, setPreviewStory] = useState(null);
+  const [hrefLocation, setHrefLocation] = useState(
+    window.location.href.split("stories/")[1]
+  );
+
   const focusStory = async () => {
     let url;
     location && location.state && location.state.id
       ? (url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`)
-      : (url = `${process.env.REACT_APP_DB_HOST}/api/stories/${
-          window.location.href.split("stories/")[1]
-        }`);
+      : (url = `${process.env.REACT_APP_DB_HOST}/api/stories/${hrefLocation}`);
     await axios
       .get(
         url,
@@ -89,6 +91,12 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
     focusStory();
   }, []);
 
+  useEffect(() => {
+    setHrefLocation(window.location.href.split("stories/")[1]);
+    focusStory();
+  }, [window.location.href]);
+
+  console.log(hrefLocation);
   return (
     <Grid container style={{ overflowY: "auto" }}>
       <Grid container className={classes.storyPreviewContainer}>

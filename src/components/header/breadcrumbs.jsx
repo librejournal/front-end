@@ -37,7 +37,7 @@ const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
           : null
         : null
     );
-  }, [notifNumber]);
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

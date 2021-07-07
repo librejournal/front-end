@@ -47,7 +47,6 @@ const DesktopNotificationMenu = ({
     handleClose();
   };
 
-  console.log(notificationState);
   return (
     <Menu
       id="simple-menu"
@@ -71,7 +70,7 @@ const DesktopNotificationMenu = ({
           typeof el !== "undefined" ? (
             <MenuItem>
               <Link
-                to={`/stories/${el.message.related_obj_pk}`}
+                to={`/stories/${el.message.story_pk}`}
                 style={{ textDecoration: "none" }}
                 onClick={() => changeNotifItemStatus(el.notification.id)}
               >
