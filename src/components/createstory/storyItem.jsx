@@ -125,11 +125,6 @@ const StoryItem = ({
   const onFileUpload = (file) => {
     const formData = new FormData();
     formData.append("file", file);
-
-    for (var [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     uploadImage(formData);
   };
 
@@ -185,7 +180,6 @@ const StoryItem = ({
       .then((response) => {
         const data = response.data;
         setStoryInfo(data.components);
-        console.log(response);
       })
       .catch((error) => console.log(error));
   };

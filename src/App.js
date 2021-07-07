@@ -18,6 +18,7 @@ import { compose } from "recompose";
 import { useEffect } from "react";
 import { withWindowProvider } from "./contexts/window/provider";
 import axios from "axios";
+import _ from "underscore";
 
 import {
     BrowserRouter as Router,
@@ -29,7 +30,14 @@ import {
 import { mapStateToApp, mapDispatchToApp } from "./redux/mapFunctions";
 import { connect } from "react-redux";
 
-const App = ({ loggedUser, onStateUser, onInfoUser }) => {
+const App = ({
+    loggedUser,
+    notifications,
+    onStateUser,
+    onInfoUser,
+    onStoryNotifications,
+    onCommentNotifications,
+}) => {
     const checkLogin = async () => {
         await axios
             .get("http://localhost:9001/api/auth/user", {
@@ -63,9 +71,64 @@ const App = ({ loggedUser, onStateUser, onInfoUser }) => {
             })
             .catch((err) => console.log(err));
     };
+
+    const getStoryNotifications = async () => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/notifications/stories/`;
+        await axios
+            .get(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Token ${loggedUser.token}`,
+                },
+            })
+            .then((resp) => {
+                if (!_.isEqual(notifications.story, resp.data)) {
+                    resp.data.length
+                        ? onStoryNotifications([...resp.data])
+                        : onStoryNotifications([]);
+                } else {
+                }
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const getCommentNotifications = async () => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/notifications/comments/`;
+        await axios
+            .get(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Token ${loggedUser.token}`,
+                },
+            })
+            .then((resp) => {
+                if (!_.isEqual(notifications.story, resp.data)) {
+                    resp.data.length
+                        ? onCommentNotifications([...resp.data])
+                        : onCommentNotifications([]);
+                } else {
+                }
+            })
+            .catch((err) => console.log(err));
+    };
+
     useEffect(() => {
         checkLogin();
+        if (loggedUser.token) {
+            getCommentNotifications();
+            getStoryNotifications();
+        }
     }, [loggedUser.token]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (loggedUser.token) {
+                getCommentNotifications();
+                getStoryNotifications();
+            }
+        }, 10000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <Router>

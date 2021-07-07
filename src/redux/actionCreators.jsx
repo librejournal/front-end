@@ -27,4 +27,26 @@ const doLogoutUser = () => {
   };
 };
 
-export { doLoginUser, doCheckUserState, doLogoutUser, doGetUserInfo };
+const doGetStoryNotifications = (info) => {
+  console.log(info);
+  return {
+    type: actionTypes.STORY_NOTIFICATION,
+    payload: info,
+  };
+};
+
+const doGetCommentNotifications = (info) => {
+  return {
+    type: actionTypes.COMMENT_NOTIFICATION,
+    payload: info,
+  };
+};
+
+export {
+  doLoginUser,
+  doCheckUserState,
+  doLogoutUser,
+  doGetUserInfo,
+  doGetStoryNotifications,
+  doGetCommentNotifications,
+};

@@ -79,7 +79,7 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
       })
       .catch((err) => console.log(err));
   };
-  console.log(previewStory);
+
   useEffect(() => {
     focusStory();
   }, []);

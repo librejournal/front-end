@@ -3,9 +3,12 @@ import {
   doLoginUser,
   doLogoutUser,
   doGetUserInfo,
+  doGetCommentNotifications,
+  doGetStoryNotifications,
 } from "./actionCreators";
 
 const getUserInfo = (state) => state.userState;
+const getNotificationInfo = (state) => state.notificationState;
 
 export const mapStateToCreateStoryPage = (state) => {
   return {
@@ -22,6 +25,7 @@ export const mapStateToPropsHome = (state) => {
 export const mapStateToPropsHeader = (state) => {
   return {
     loggedUser: getUserInfo(state),
+    notifications: getNotificationInfo(state),
   };
 };
 
@@ -65,6 +69,7 @@ export const mapStateToAccount = (state) => {
 export const mapStateToApp = (state) => {
   return {
     loggedUser: getUserInfo(state),
+    notifications: getNotificationInfo(state),
   };
 };
 
@@ -78,6 +83,8 @@ export const mapDispatchToApp = (dispatch) => {
   return {
     onStateUser: (info) => dispatch(doCheckUserState(info)),
     onInfoUser: (info) => dispatch(doGetUserInfo(info)),
+    onStoryNotifications: (info) => dispatch(doGetStoryNotifications(info)),
+    onCommentNotifications: (info) => dispatch(doGetCommentNotifications(info)),
   };
 };
 

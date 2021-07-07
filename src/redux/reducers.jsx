@@ -4,6 +4,8 @@ import {
   applyUserState,
   applyLogoutUser,
   applyUserInfo,
+  applyStoryNotification,
+  applyCommentNotification,
 } from "./actions";
 
 export const initialState = {
@@ -17,7 +19,12 @@ export const initialState = {
   uuid: "",
 };
 
-const userReducer = (state = initialState, action) => {
+const notificationState = {
+  story: [],
+  comments: [],
+};
+
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_USER: {
       return applyLoginUser(state, action);
@@ -36,4 +43,15 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export default userReducer;
+export const notificationReducer = (state = notificationState, action) => {
+  switch (action.type) {
+    case actionTypes.STORY_NOTIFICATION: {
+      return applyStoryNotification(state, action);
+    }
+    case actionTypes.COMMENT_NOTIFICATION: {
+      return applyCommentNotification(state, action);
+    }
+    default:
+      return state;
+  }
+};

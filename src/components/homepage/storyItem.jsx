@@ -117,8 +117,6 @@ const StoryItem = ({
   state,
   thumbnail,
 }) => {
-  console.log(thumbnail);
-
   return (
     <Link
       to={{

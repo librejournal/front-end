@@ -12,6 +12,7 @@ import { mapStateToPropsHeader } from "../redux/mapFunctions";
 import MenuIcon from "@material-ui/icons/Menu";
 import MyBreadcrumbs from "./header/breadcrumbs";
 import MobileMenu from "./header/mobileMenu";
+import _ from "underscore";
 
 const useStyles = () => ({
   headerGrid: {
@@ -43,8 +44,21 @@ const useStyles = () => ({
   },
 });
 
-const Header = ({ classes, loggedUser, width, limit }) => {
+const Header = ({ notifications, classes, loggedUser, width, limit }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [notificationState, setNotificationState] = useState(
+    notifications.story && notifications.comments
+      ? _.zip(notifications.story, notifications.comments)
+      : notifications.story
+      ? notifications.story
+      : notifications.comments
+      ? notifications.length
+      : null
+  );
+
+  console.log("notificationstate");
+  console.log(notificationState);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,7 +77,10 @@ const Header = ({ classes, loggedUser, width, limit }) => {
       </Grid>
       <Grid item md={7} lg={4} className={classes.headerMenuTexts}>
         {width > limit ? (
-          <MyBreadcrumbs loggedUser={loggedUser} />
+          <MyBreadcrumbs
+            loggedUser={loggedUser}
+            notificationState={notificationState}
+          />
         ) : (
           <>
             <MenuIcon onClick={handleClick} aria-controls="simple-menu" />
@@ -71,6 +88,7 @@ const Header = ({ classes, loggedUser, width, limit }) => {
               loggedUser={loggedUser}
               anchorEl={anchorEl}
               handleClose={handleClose}
+              notificationState={notificationState}
             />
           </>
         )}

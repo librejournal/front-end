@@ -36,6 +36,7 @@ const MobileMenu = ({ classes, loggedUser, anchorEl, handleClose }) => (
         </Link>
       </MenuItem>
     ) : null}
+
     <MenuItem onClick={handleClose}>
       <Link
         to={loggedUser.token === "" ? "/login" : "/account"}

@@ -29,4 +29,19 @@ const applyLogoutUser = () => {
   return newState;
 };
 
-export { applyLoginUser, applyUserState, applyLogoutUser, applyUserInfo };
+const applyStoryNotification = (state, action) => {
+  return { comments: state.comments, story: action.payload };
+};
+
+const applyCommentNotification = (state, action) => {
+  return { story: state.story, comment: action.payload };
+};
+
+export {
+  applyLoginUser,
+  applyUserState,
+  applyLogoutUser,
+  applyUserInfo,
+  applyCommentNotification,
+  applyStoryNotification,
+};

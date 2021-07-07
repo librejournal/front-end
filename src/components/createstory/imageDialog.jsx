@@ -46,10 +46,6 @@ const ImageDialog = ({
     const formData = new FormData();
     formData.append("file", file);
 
-    for (var [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     uploadThumbnail(formData);
   };
 
@@ -84,7 +80,6 @@ const ImageDialog = ({
               timer: 2000,
             });
             handleClose();
-            console.log(response);
           })
           .catch((err) => console.log(err));
       })

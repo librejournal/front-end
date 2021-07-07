@@ -39,6 +39,7 @@ const MyBreadcrumbs = ({ classes, loggedUser }) => (
         About
       </Typography>
     </Link>
+
     {loggedUser.token &&
     loggedUser.userInfo &&
     loggedUser.userInfo.type === "WRITER" ? (
@@ -52,6 +53,16 @@ const MyBreadcrumbs = ({ classes, loggedUser }) => (
       </Link>
     ) : null}
 
+    {loggedUser.token ? (
+      <Link style={{ textDecoration: "none" }}>
+        <Typography
+          color="secondary"
+          className={classes.headerMenuTextElements}
+        >
+          Notifications
+        </Typography>
+      </Link>
+    ) : null}
     {loggedUser.token && loggedUser.has_pending_referral ? (
       <Badge badgeContent={"!"} color="error">
         <LoginButton />
