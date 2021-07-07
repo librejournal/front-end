@@ -34,7 +34,7 @@ const DesktopNotificationMenu = ({
     await axios
       .post(
         url,
-        { id_list: [id], action: "Read" },
+        { id_list: [id], action: "read" },
         {
           headers: {
             Authorization: `Token ${loggedUser.token}`,
@@ -47,6 +47,7 @@ const DesktopNotificationMenu = ({
     handleClose();
   };
 
+  console.log(notificationState);
   return (
     <Menu
       id="simple-menu"
@@ -65,35 +66,49 @@ const DesktopNotificationMenu = ({
       }}
       style={{ minWidth: "40%" }}
     >
-      {notificationState.map((el) => (
+      {notificationState ? (
+        notificationState.map((el) =>
+          typeof el !== "undefined" ? (
+            <MenuItem>
+              <Link
+                to={`/stories/${el.message.related_obj_pk}`}
+                style={{ textDecoration: "none" }}
+                onClick={() => changeNotifItemStatus(el.notification.id)}
+              >
+                <Grid
+                  container
+                  className={
+                    el.notification.is_read
+                      ? classes.notificationItem
+                      : classes.notificationUnreadItem
+                  }
+                >
+                  <Grid item xs={12}>
+                    <Typography color="primary" variant="subtitle1">
+                      {el.message.title}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography color="error" variant="subtitle2">
+                      {el.message.text}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Link>
+            </MenuItem>
+          ) : null
+        )
+      ) : (
         <MenuItem>
-          <Link
-            to={`/stories/${el.message.related_obj_pk}`}
-            style={{ textDecoration: "none" }}
-            onClick={() => changeNotifItemStatus(el.notification.id)}
-          >
-            <Grid
-              container
-              className={
-                el.notification.is_read
-                  ? classes.notificationItem
-                  : classes.notificationUnreadItem
-              }
-            >
-              <Grid item xs={12}>
-                <Typography color="primary" variant="subtitle1">
-                  {el.message.title}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography color="error" variant="subtitle2">
-                  {el.message.text}
-                </Typography>
-              </Grid>
+          <Grid container className={classes.notificationItem}>
+            <Grid item xs={12}>
+              <Typography color="primary" variant="subtitle1">
+                There is no notification present
+              </Typography>
             </Grid>
-          </Link>
+          </Grid>
         </MenuItem>
-      ))}
+      )}
     </Menu>
   );
 };

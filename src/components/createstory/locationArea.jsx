@@ -148,7 +148,6 @@ const LocationInfo = ({
         },
       })
       .then((response) => {
-        console.log(response);
         response.data.length
           ? handleSetLocation(response.data)
           : setDialogStep(2);

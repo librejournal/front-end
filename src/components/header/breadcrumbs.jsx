@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { compose } from "recompose";
 import LoginButton from "./loginbutton";
 import DesktopNotifMenu from "./desktopNotifMenu";
+import { useEffect } from "react";
 
 const useStyles = () => ({
   headerMenuTextElements: {
@@ -26,11 +27,18 @@ const useStyles = () => ({
 
 const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  let notifNumber = 0;
+  const [notifNumber, setNotifNumber] = useState(0);
 
-  notificationState.map((el) =>
-    !el.notification.is_read ? notifNumber++ : null
-  );
+  useEffect(() => {
+    notificationState.map((el) =>
+      el.notification
+        ? !el.notification.is_read
+          ? setNotifNumber(notifNumber + 1)
+          : null
+        : null
+    );
+  }, [notifNumber]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -52,14 +60,6 @@ const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
           Home
         </Typography>
       </Link>
-      <Link to="about" style={{ textDecoration: "none" }}>
-        <Typography
-          color="secondary"
-          className={classes.headerMenuTextElements}
-        >
-          About
-        </Typography>
-      </Link>
 
       {loggedUser.token &&
       loggedUser.userInfo &&
@@ -77,7 +77,7 @@ const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
       {loggedUser.token ? (
         <Link style={{ textDecoration: "none" }} onClick={handleClick}>
           {notificationState.length ? (
-            <Badge badgeContent={notificationState.length} color="error">
+            <Badge badgeContent={notifNumber} color="error">
               <Typography
                 color="secondary"
                 className={classes.headerMenuTextElements}
