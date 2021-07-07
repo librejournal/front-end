@@ -180,8 +180,6 @@ const TagInfo = ({ classes, loggedUser, tagText, onInfoUser }) => {
     checkFollowStatus();
   }, []);
 
-  console.log(followStatus);
-
   return (
     <Grid
       container

@@ -46,7 +46,6 @@ const useStyles = () => ({
 const StarboardItem = ({ classes, title, data, limit, width }) => {
   const titleSize = limit > width ? "h5" : "h4";
   const textSize = limit > width ? "subtitle2" : "subtitle1";
-
   return (
     <Grid contaniner className={classes.starboardGrid}>
       <Grid item xs={12} className={classes.starboardTitle}>
@@ -54,22 +53,19 @@ const StarboardItem = ({ classes, title, data, limit, width }) => {
       </Grid>
       {data.map((el) => (
         <Grid item xs={12} className={classes.starboardItemEntry} key={el.name}>
-          <Typography color="primary" variant={textSize}>
-            Logo
-          </Typography>
           <Typography
             color="primary"
             variant={textSize}
             className={classes.starboardName}
           >
-            {el.name}
+            {el.user.username}
           </Typography>
           <Typography
             color="primary"
             variant={textSize}
             className={classes.starboardPoint}
           >
-            {el.point}
+            {el.score.toPrecision(4)}
           </Typography>
         </Grid>
       ))}

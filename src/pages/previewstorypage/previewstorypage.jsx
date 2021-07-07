@@ -61,7 +61,12 @@ const useStyles = () => ({
 const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   const [previewStory, setPreviewStory] = useState(null);
   const focusStory = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`;
+    let url;
+    location && location.state && location.state.id
+      ? (url = `${process.env.REACT_APP_DB_HOST}/api/stories/${location.state.id}`)
+      : (url = `${process.env.REACT_APP_DB_HOST}/api/stories/${
+          window.location.href.split("stories/")[1]
+        }`);
     await axios
       .get(
         url,

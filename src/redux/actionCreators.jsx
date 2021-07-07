@@ -28,7 +28,6 @@ const doLogoutUser = () => {
 };
 
 const doGetStoryNotifications = (info) => {
-  console.log(info);
   return {
     type: actionTypes.STORY_NOTIFICATION,
     payload: info,

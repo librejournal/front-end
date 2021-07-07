@@ -31,6 +31,7 @@ import Typed from "react-typed";
 import axios from "axios";
 import { connect } from "react-redux";
 import { mapStateToPropsHome } from "../../redux/mapFunctions";
+import _ from "underscore";
 
 const useStyles = {
   firstAdv: {
@@ -86,12 +87,15 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
   const [storylength, setStorylength] = useState(0);
   const [trendingStories, setTrendingStories] = useState(null);
   const [expanded, setExpanded] = useState("panel1");
+  const [newestAuthors, setNewestAuthors] = useState(null);
+  const [bestAuthors, setBestAuthors] = useState(null);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   const changeContainer = (value) => setContainer(value);
+
   const changePage = (val) => {
     setPage(val);
     setTimeout(() => {
@@ -139,7 +143,24 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
     await axios.get(url).then((response) => setTrendingStories(response.data));
   };
 
+  const getAllAuthors = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/search`;
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((resp) => {
+        setNewestAuthors(_.sortBy(resp.data, "id").reverse().slice(0, 5));
+        setBestAuthors(_.sortBy(resp.data, "score").reverse().slice(0, 5));
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
+    getAllAuthors();
     getTrendingStories();
     getStoryLength();
     getStories(orderState, textWord, textTag, textLocation, mode);
@@ -147,7 +168,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
 
   return (
     <Grid container>
-      {trendingStories && stories ? (
+      {trendingStories && stories && newestAuthors && bestAuthors ? (
         <>
           <Grid item xs={12}>
             <ParallaxBanner
@@ -337,8 +358,8 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
                   <StarboardContainer
                     title1="Top Authors"
                     title2="New Authors"
-                    data1={mockupDataStarboard.author}
-                    data2={mockupDataStarboard.author}
+                    data1={bestAuthors}
+                    data2={newestAuthors}
                   />
                 </Grid>
               </Grid>
@@ -348,8 +369,8 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
               <StarboardContainer
                 title1="Top Authors"
                 title2="New Authors"
-                data1={mockupDataStarboard.author}
-                data2={mockupDataStarboard.author}
+                data1={bestAuthors}
+                data2={newestAuthors}
               />
             )}
           </Grid>
