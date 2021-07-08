@@ -47,12 +47,12 @@ const StarboardItem = ({ classes, title, data, limit, width }) => {
   const titleSize = limit > width ? "h5" : "h4";
   const textSize = limit > width ? "subtitle2" : "subtitle1";
   return (
-    <Grid contaniner className={classes.starboardGrid}>
+    <Grid className={classes.starboardGrid}>
       <Grid item xs={12} className={classes.starboardTitle}>
         <Typography variant={titleSize}>{title}</Typography>
       </Grid>
       {data.map((el) => (
-        <Grid item xs={12} className={classes.starboardItemEntry} key={el.name}>
+        <Grid item xs={12} className={classes.starboardItemEntry} key={el.id}>
           <Typography
             color="primary"
             variant={textSize}

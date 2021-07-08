@@ -30,14 +30,14 @@ const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
   const [notifNumber, setNotifNumber] = useState(0);
 
   useEffect(() => {
-    notificationState.map((el) =>
-      el.notification
-        ? !el.notification.is_read
-          ? setNotifNumber(notifNumber + 1)
-          : null
-        : null
-    );
-  }, []);
+    let newState = 0;
+
+    if (notificationState)
+      notificationState.map((el) =>
+        !el.notification.is_read ? newState++ : null
+      );
+    setNotifNumber(newState);
+  }, [notificationState]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,8 +75,8 @@ const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
       ) : null}
 
       {loggedUser.token ? (
-        <Link style={{ textDecoration: "none" }} onClick={handleClick}>
-          {notificationState.length ? (
+        <Link to="#" style={{ textDecoration: "none" }} onClick={handleClick}>
+          {notificationState && notificationState.length ? (
             <Badge badgeContent={notifNumber} color="error">
               <Typography
                 color="secondary"

@@ -42,7 +42,7 @@ const PreviewStory = ({ classes, storyInfo, likeCount, dislikeCount }) => {
             </Typography>
           </Grid>
         ) : el.type === "TEXT" ? (
-          <Grid item xs={12} className={classes.textItem} key={el.text}>
+          <Grid item xs={12} className={classes.textItem} key={el.id}>
             <Typography variant={el.type_setting}>{el.text}</Typography>
           </Grid>
         ) : el.type === "IMAGE" ? (

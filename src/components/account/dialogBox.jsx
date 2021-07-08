@@ -66,13 +66,12 @@ const DialogBox = ({ classes, data, open, handleClose, title, type }) => (
     ) : (
       <List>
         {data.map((el) => (
-          <ListItem button key={el.id}>
+          <ListItem button key={el.province_1}>
             <Link
               to={{
                 pathname: `/location`,
                 hash: `#${el.province_1}`,
               }}
-              key={el.id}
               style={{ textDecoration: "none", display: "flex" }}
             >
               <Typography color="primary" variant="subtitle1">

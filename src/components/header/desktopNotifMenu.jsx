@@ -68,7 +68,7 @@ const DesktopNotificationMenu = ({
       {notificationState ? (
         notificationState.map((el) =>
           typeof el !== "undefined" ? (
-            <MenuItem>
+            <MenuItem key={el.notification.id}>
               <Link
                 to={`/stories/${el.message.story_pk}`}
                 style={{ textDecoration: "none" }}

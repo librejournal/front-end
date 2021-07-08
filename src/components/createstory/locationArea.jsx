@@ -203,7 +203,7 @@ const LocationInfo = ({
                 color="primary"
                 label="Enter location"
                 value={locationText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setLocationText(event.target.value)}
@@ -249,7 +249,7 @@ const LocationInfo = ({
                 color="primary"
                 placeholder="Enter tag"
                 value={locationText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setLocationText(event.target.value)}
@@ -339,7 +339,7 @@ const LocationInfo = ({
                 color="primary"
                 placeholder="Enter country"
                 value={locationText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setLocationText(event.target.value)}
@@ -349,7 +349,7 @@ const LocationInfo = ({
                 color="primary"
                 placeholder="Enter city"
                 value={locationCityText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setLocationCityText(event.target.value)}
@@ -359,7 +359,7 @@ const LocationInfo = ({
                 color="primary"
                 placeholder="Enter province"
                 value={locationProvinceText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) =>

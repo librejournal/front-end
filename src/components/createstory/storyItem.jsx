@@ -486,9 +486,9 @@ const StoryItem = ({
               placeholder="Enter your title"
               fullWidth
               multiline
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />
@@ -517,9 +517,9 @@ const StoryItem = ({
               placeholder="Enter your title"
               fullWidth
               multiline
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />
@@ -548,9 +548,9 @@ const StoryItem = ({
               placeholder="Enter your text"
               fullWidth
               multiline
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />
@@ -617,9 +617,9 @@ const StoryItem = ({
               placeholder="Enter your text"
               fullWidth
               multiline
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />
@@ -718,9 +718,9 @@ const StoryItem = ({
               color="primary"
               placeholder="Enter URL"
               fullWidth
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />

@@ -30,7 +30,7 @@ const applyLogoutUser = () => {
 };
 
 const applyStoryNotification = (state, action) => {
-  return { comments: state.comments, story: action.payload };
+  return { comment: state.comment, story: action.payload };
 };
 
 const applyCommentNotification = (state, action) => {

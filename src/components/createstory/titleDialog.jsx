@@ -78,10 +78,10 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
             placeholder="Enter your title"
             fullWidth
             multiline
-            value={text}
+            value={text || ""}
             defaultValue={text}
             onChange={(event) => setText(event.target.value)}
-            InputLabelProps={{
+            inputlabelprops={{
               style: { color: "#1687a7" },
             }}
           />

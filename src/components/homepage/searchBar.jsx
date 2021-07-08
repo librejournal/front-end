@@ -84,9 +84,9 @@ const SearchBar = ({
             color="primary"
             placeholder="Search for word"
             fullWidth
-            value={textWord}
+            value={textWord || ""}
             onChange={(event) => setTextWord(event.target.value)}
-            InputLabelProps={{
+            inputlabelprops={{
               style: { color: "#1687a7" },
             }}
           />
@@ -98,9 +98,9 @@ const SearchBar = ({
             placeholder="Search for location"
             fullWidth
             multiline
-            value={textLocation}
+            value={textLocation || ""}
             onChange={(event) => setTextLocation(event.target.value)}
-            InputLabelProps={{
+            inputlabelprops={{
               style: { color: "#1687a7" },
             }}
           />
@@ -112,9 +112,9 @@ const SearchBar = ({
             placeholder="Search for tag"
             fullWidth
             multiline
-            value={textTag}
+            value={textTag || ""}
             onChange={(event) => setTextTag(event.target.value)}
-            InputLabelProps={{
+            inputlabelprops={{
               style: { color: "#1687a7" },
             }}
           />
@@ -204,7 +204,7 @@ const SearchBar = ({
         </FormControl>
       </Grid>
       <Grid container justify="space-around" alignItems="center">
-        <Card variant="text" className={classes.card}>
+        <Card variant="elevation" className={classes.card}>
           <Button
             variant="outlined"
             color="primary"
@@ -215,7 +215,7 @@ const SearchBar = ({
             Search
           </Button>
         </Card>
-        <Card variant="text" className={classes.card}>
+        <Card variant="elevation" className={classes.card}>
           <Button
             variant="outlined"
             color="primary"

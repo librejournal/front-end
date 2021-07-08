@@ -85,7 +85,7 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           id="standard-basic"
           color="primary"
           label="Email"
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("email")}
@@ -95,7 +95,7 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           color="primary"
           type="password"
           label="Password"
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("password")}

@@ -146,7 +146,7 @@ const CommentSearchBar = ({
         </FormControl>
       </Grid>
       <Grid container justify="space-around" alignItems="center">
-        <Card variant="text" className={classes.card}>
+        <Card variant="elevation" className={classes.card}>
           <Button
             variant="outlined"
             color="primary"

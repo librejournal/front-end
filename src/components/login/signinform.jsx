@@ -87,7 +87,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
           color="primary"
           label="Username"
           value={user.username}
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("username")}
@@ -98,7 +98,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
           color="primary"
           label="Email"
           value={user.email}
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("email")}
@@ -109,7 +109,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
           label="Password"
           type="password"
           value={user.password}
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("password")}
@@ -119,7 +119,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
           color="primary"
           label="First Name"
           value={user.first_name}
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("first_name")}
@@ -129,7 +129,7 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
           color="primary"
           label="Last Name"
           value={user.last_name}
-          InputLabelProps={{
+          inputlabelprops={{
             style: { color: "#1687a7" },
           }}
           onChange={addInfo("last_name")}

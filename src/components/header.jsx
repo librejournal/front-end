@@ -12,7 +12,6 @@ import { mapStateToPropsHeader } from "../redux/mapFunctions";
 import MenuIcon from "@material-ui/icons/Menu";
 import MyBreadcrumbs from "./header/breadcrumbs";
 import MobileMenu from "./header/mobileMenu";
-import _ from "underscore";
 
 const useStyles = () => ({
   headerGrid: {
@@ -45,18 +44,19 @@ const useStyles = () => ({
 });
 
 const Header = ({ notifications, classes, loggedUser, width, limit }) => {
-  const [notificationState, setNotificationState] = useState(
-    notifications.story && notifications.comment
+  const notificationState = notifications
+    ? notifications.story && notifications.comment
       ? [...notifications.story, ...notifications.comment]
       : notifications.story
       ? notifications.story
       : notifications.comment
       ? notifications.length
       : null
-  );
+    : null;
   const [anchorEl, setAnchorEl] = useState(null);
 
-  console.log(notificationState);
+  console.log(notifications);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -66,7 +66,7 @@ const Header = ({ notifications, classes, loggedUser, width, limit }) => {
   };
 
   return (
-    <Grid containter className={classes.headerGrid} id="header">
+    <Grid className={classes.headerGrid} id="header">
       <Grid item xs={3} md={2} className={classes.headerLogo}>
         <Link to="/" style={{ textDecoration: "none" }}>
           <Logo />

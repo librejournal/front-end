@@ -191,7 +191,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
                 color="primary"
                 placeholder="Enter tag"
                 value={tagText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setTagText(event.target.value)}
@@ -236,7 +236,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
                 color="primary"
                 placeholder="Enter tag"
                 value={tagText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setTagText(event.target.value)}
@@ -325,7 +325,7 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
                 color="primary"
                 placeholder="Enter tag"
                 value={tagText}
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#1687a7" },
                 }}
                 onChange={(event) => setTagText(event.target.value)}

@@ -77,9 +77,9 @@ const PasswordReset = ({ classes, detailedInfo }) => {
               placeholder="Enter your email"
               fullWidth
               multiline
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />
@@ -113,7 +113,7 @@ const PasswordReset = ({ classes, detailedInfo }) => {
               label="Password"
               value={text}
               onChange={(event) => setText(event.target.value)}
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />

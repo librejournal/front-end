@@ -175,10 +175,10 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
               fullWidth
               multiline
               className={classes.input}
-              value={text}
+              value={text || ""}
               onChange={(event) => setText(event.target.value)}
               key="myButton"
-              InputLabelProps={{
+              inputlabelprops={{
                 style: { color: "#1687a7" },
               }}
             />
