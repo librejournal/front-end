@@ -122,7 +122,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   };
 
   return (
-    <Grid container xs={12}>
+    <Grid container>
       {comments ? (
         <Grid container className={classes.commentsFirstContainer}>
           <Grid item xs={12}>

@@ -43,7 +43,15 @@ const useStyles = () => ({
   },
 });
 
-const Header = ({ notifications, classes, loggedUser, width, limit }) => {
+const Header = ({
+  getStoryNotifications,
+  getCommentNotifications,
+  notifications,
+  classes,
+  loggedUser,
+  width,
+  limit,
+}) => {
   const notificationState = notifications
     ? notifications.story && notifications.comment
       ? [...notifications.story, ...notifications.comment]
@@ -77,6 +85,8 @@ const Header = ({ notifications, classes, loggedUser, width, limit }) => {
           <MyBreadcrumbs
             loggedUser={loggedUser}
             notificationState={notificationState}
+            getStoryNotifications={getStoryNotifications}
+            getCommentNotifications={getCommentNotifications}
           />
         ) : (
           <>

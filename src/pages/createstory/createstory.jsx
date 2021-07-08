@@ -288,7 +288,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
           <PreviewStory storyInfo={storyInfo} />
         )}
       </Grid>
-      <Grid container xs={12} className={classes.createStoryBottomGrid}>
+      <Grid container className={classes.createStoryBottomGrid}>
         <Grid item xs={6} md={4}>
           <TagsArea
             tagInfo={tagInfo}

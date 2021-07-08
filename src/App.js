@@ -127,7 +127,10 @@ const App = ({
     return (
         <Router>
             <ThemeProvider theme={Theme}>
-                <Header />
+                <Header
+                    getStoryNotifications={getStoryNotifications}
+                    getCommentNotifications={getStoryNotifications}
+                />
                 <Switch>
                     <Route path="/" exact>
                         <Homepage />

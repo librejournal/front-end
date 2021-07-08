@@ -25,7 +25,13 @@ const useStyles = () => ({
   },
 });
 
-const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
+const MyBreadcrumbs = ({
+  classes,
+  loggedUser,
+  notificationState,
+  getStoryNotifications,
+  getCommentNotifications,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [notifNumber, setNotifNumber] = useState(0);
 
@@ -107,6 +113,8 @@ const MyBreadcrumbs = ({ classes, loggedUser, notificationState }) => {
         anchorEl={anchorEl}
         handleClose={handleClose}
         notificationState={notificationState}
+        getStoryNotifications={getStoryNotifications}
+        getCommentNotifications={getCommentNotifications}
       />
     </Breadcrumbs>
   );
