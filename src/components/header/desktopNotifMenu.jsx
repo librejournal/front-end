@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { compose } from "recompose";
 import axios from "axios";
+import _ from "underscore";
 
 const useStyles = () => ({
   notificationItem: {
@@ -53,7 +54,7 @@ const DesktopNotificationMenu = ({
 
     handleClose();
   };
-
+  console.log(notificationState);
   return (
     <Menu
       id="simple-menu"
@@ -73,47 +74,52 @@ const DesktopNotificationMenu = ({
       style={{ minWidth: "40%", maxHeight: "400px" }}
     >
       {notificationState ? (
-        notificationState.map((el) =>
-          typeof el !== "undefined" ? (
-            <MenuItem key={el.notification.id} style={{ maxWidth: "450px" }}>
-              <Link
-                to={`/stories/${el.message.story_pk}`}
-                style={{ textDecoration: "none", width: "100%" }}
-                onClick={() => changeNotifItemStatus(el.notification.id)}
-              >
-                <Grid
-                  container
-                  className={
-                    el.notification.is_read
-                      ? classes.notificationItem
-                      : classes.notificationUnreadItem
-                  }
+        _.sortBy(notificationState, (obj) => {
+          return obj.notification.created;
+        })
+          .reverse()
+          .map((el) =>
+            typeof el !== "undefined" ? (
+              <MenuItem key={el.notification.id} style={{ maxWidth: "450px" }}>
+                <Link
+                  to={`/stories/${el.message.story_pk}`}
+                  style={{ textDecoration: "none", width: "100%" }}
+                  onClick={() => changeNotifItemStatus(el.notification.id)}
                 >
-                  <Grid item xs={12}>
-                    <Typography color="primary" variant="subtitle1">
-                      {el.message.title}
-                    </Typography>
+                  <Grid
+                    container
+                    className={
+                      el.notification.is_read
+                        ? classes.notificationItem
+                        : classes.notificationUnreadItem
+                    }
+                  >
+                    <Grid item xs={12}>
+                      <Typography color="primary" variant="subtitle1">
+                        {el.message.title}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography color="error" variant="subtitle2">
+                        {el.message.text}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        color="error"
+                        variant="subtitle2"
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        {el.notification.created.split("T")[0]}
+                        &nbsp;&nbsp;&nbsp;
+                        {el.notification.created.split("T")[1].split(".")[0]}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Typography color="error" variant="subtitle2">
-                      {el.message.text}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      color="error"
-                      variant="subtitle2"
-                      style={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                      {el.notification.created.split("T")[0]}&nbsp;&nbsp;&nbsp;
-                      {el.notification.created.split("T")[1].split(".")[0]}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Link>
-            </MenuItem>
-          ) : null
-        )
+                </Link>
+              </MenuItem>
+            ) : null
+          )
       ) : (
         <MenuItem>
           <Grid container className={classes.notificationItem}>
