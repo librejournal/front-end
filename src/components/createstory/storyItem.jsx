@@ -11,6 +11,7 @@ import {
   MenuItem,
   Select,
   Slider,
+  CircularProgress,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
@@ -109,9 +110,11 @@ const StoryItem = ({
   const [textSize, setTextSize] = useState("h6");
   const [imageSize, setImageSize] = useState("10");
   const [imageFile, setImageFile] = useState(null);
+  const [imageState, setImageState] = useState(false);
 
   const onFileChange = (event) => {
     setImageFile(event.target.files[0]);
+    setState(51110);
   };
 
   useEffect(() => {
@@ -119,8 +122,6 @@ const StoryItem = ({
       onFileUpload(imageFile);
     }
   }, [imageFile]);
-
-  useEffect(() => {}, []);
 
   const onFileUpload = (file) => {
     const formData = new FormData();
@@ -364,6 +365,7 @@ const StoryItem = ({
               showConfirmButton: false,
               timer: 2000,
             });
+
             setState(5111);
           })
           .catch((err) => console.log(err));
@@ -817,6 +819,20 @@ const StoryItem = ({
                 Delete
               </Button>
             </Grid>
+          </Grid>
+        ) : null}
+        {state === 51110 ? (
+          <Grid
+            item
+            xs={12}
+            style={{
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
           </Grid>
         ) : null}
       </Grid>
