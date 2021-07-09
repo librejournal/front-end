@@ -5,6 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 
+import { Link } from "react-router-dom";
+
 const useStyles = () => ({
   starboardGrid: {
     width: "max(100%,450px)",
@@ -43,31 +45,47 @@ const useStyles = () => ({
   },
 });
 
-const StarboardItem = ({ classes, title, data, limit, width }) => {
+const StarboardItem = ({ classes, title, data, limit, width, loggedUser }) => {
   const titleSize = limit > width ? "h5" : "h4";
   const textSize = limit > width ? "subtitle2" : "subtitle1";
+  console.log(data);
   return (
     <Grid className={classes.starboardGrid}>
       <Grid item xs={12} className={classes.starboardTitle}>
         <Typography variant={titleSize}>{title}</Typography>
       </Grid>
       {data.map((el) => (
-        <Grid item xs={12} className={classes.starboardItemEntry} key={el.id}>
-          <Typography
-            color="primary"
-            variant={textSize}
-            className={classes.starboardName}
-          >
-            {el.user.username}
-          </Typography>
-          <Typography
-            color="primary"
-            variant={textSize}
-            className={classes.starboardPoint}
-          >
-            {el.score.toPrecision(4)}
-          </Typography>
-        </Grid>
+        <Link
+          to={
+            el.user.id !== loggedUser.id
+              ? {
+                  pathname: `/user`,
+                  hash: `#${el.id}`,
+                  state: { user: el },
+                }
+              : {
+                  pathname: `/account`,
+                }
+          }
+          style={{ textDecoration: "none" }}
+        >
+          <Grid item xs={12} className={classes.starboardItemEntry} key={el.id}>
+            <Typography
+              color="primary"
+              variant={textSize}
+              className={classes.starboardName}
+            >
+              {el.user.username}
+            </Typography>
+            <Typography
+              color="primary"
+              variant={textSize}
+              className={classes.starboardPoint}
+            >
+              {el.score.toPrecision(4)}
+            </Typography>
+          </Grid>
+        </Link>
       ))}
     </Grid>
   );

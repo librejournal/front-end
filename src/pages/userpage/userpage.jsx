@@ -7,7 +7,7 @@ const useStyles = () => ({
   userPageContainer: {
     height: "80vh",
     display: "flex",
-    flexDirection:'column',
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },

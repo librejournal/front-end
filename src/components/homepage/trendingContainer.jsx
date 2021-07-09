@@ -27,8 +27,8 @@ const useStyles = {
   },
   storyItemContainer: {
     justifyContent: "space-around",
-    width: "100%",
     overflowX: "auto",
+    height: "22vh",
   },
 };
 

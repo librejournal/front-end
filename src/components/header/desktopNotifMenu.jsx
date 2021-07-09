@@ -70,7 +70,7 @@ const DesktopNotificationMenu = ({
         vertical: "top",
         horizontal: "center",
       }}
-      style={{ minWidth: "40%" }}
+      style={{ minWidth: "40%", maxHeight: "400px" }}
     >
       {notificationState ? (
         notificationState.map((el) =>

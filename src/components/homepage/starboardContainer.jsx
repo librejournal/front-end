@@ -57,9 +57,9 @@ const StarboardContainer = ({
     <Grid item xs={12} md={3} className={classes.starboardContainer}>
       {limit < width ? (
         <Grid container style={{ position: "sticky", top: "30px" }}>
-          <StarboardItem title={title1} data={data1} />
+          <StarboardItem title={title1} data={data1} loggedUser={loggedUser} />
 
-          <StarboardItem title={title2} data={data2} />
+          <StarboardItem title={title2} data={data2} loggedUser={loggedUser} />
         </Grid>
       ) : (
         <Carousel

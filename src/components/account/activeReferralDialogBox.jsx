@@ -6,6 +6,7 @@ import {
   DialogActions,
   Button,
   Grid,
+  Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -28,33 +29,10 @@ const useStyles = () => ({
 });
 
 const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
-  const sendReferral = async (id) => {
-    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/`;
-    await axios
-      .post(
-        url,
-        { to_profile: id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${loggedUser.token}`,
-          },
-        }
-      )
-      .then(() => {
-        Swal.fire("You have sent referral to user.");
-        handleClose();
-      })
-      .catch((err) => {
-        Swal.fire("User already have a pending referral request.");
-        handleClose();
-      });
-  };
-
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">
-        Choose a user below to send referral
+        Active referrals that you have sent listed below
       </DialogTitle>
       <DialogContent>
         <Grid
@@ -63,26 +41,21 @@ const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
           justify="space-around"
         >
           {data.map((el) =>
-            el.type === "READER" ? (
-              <Button
-                variant="outlined"
-                color="primary"
-                className={classes.button}
-                onClick={() => sendReferral(el.id)}
-              >
-                {el.user.username}
-              </Button>
+            !el.accepted ? (
+              <Typography color="primary" variant="h6">
+                {el.to_profile.user.username}
+              </Typography>
             ) : null
           )}
+          {!data.length ? (
+            <Typography color="primary" variant="h6">
+              there is no referral request pending.
+            </Typography>
+          ) : null}
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button
-          autoFocus
-          variant="contained"
-          onClick={handleClose}
-          color="primary"
-        >
+        <Button variant="contained" onClick={handleClose} color="primary">
           Close
         </Button>
       </DialogActions>

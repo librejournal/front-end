@@ -111,10 +111,10 @@ const StoryLikeDislike = ({
         >
           <Grid
             item
-            md={1}
+            md={2}
             xs={4}
             className={classes.storyItemIcon}
-            onClick={() => {}}
+            onClick={() => likeStory()}
           >
             <img
               src={UpArrow}
@@ -130,7 +130,6 @@ const StoryLikeDislike = ({
             <Typography
               variant={limit > width ? "subtitle2" : "subtitle1"}
               color="primary"
-              onClick={() => likeStory()}
             >
               Like
               {!storyInfo.can_user_like ? "d" : null}
@@ -144,10 +143,10 @@ const StoryLikeDislike = ({
           </Grid>
           <Grid
             item
-            md={1}
+            md={2}
             xs={4}
             className={classes.storyItemIcon}
-            onClick={() => {}}
+            onClick={() => dislikeStory()}
           >
             <img
               src={DownArrow}
@@ -163,7 +162,6 @@ const StoryLikeDislike = ({
             <Typography
               variant={limit > width ? "subtitle2" : "subtitle1"}
               color="primary"
-              onClick={() => dislikeStory()}
             >
               Dislike
               {!storyInfo.can_user_dislike ? "d" : null}
@@ -177,7 +175,7 @@ const StoryLikeDislike = ({
           </Grid>
           <Grid
             item
-            md={1}
+            md={2}
             xs={4}
             className={classes.storyItemIcon}
             onClick={scrollTo}

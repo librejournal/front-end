@@ -88,13 +88,12 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
   };
 
   useEffect(() => {
-    focusStory();
-  }, []);
+    setHrefLocation(window.location.href.split("stories/")[1]);
+  }, [window.location.href]);
 
   useEffect(() => {
-    setHrefLocation(window.location.href.split("stories/")[1]);
     focusStory();
-  }, [window.location.href]);
+  }, [hrefLocation]);
 
   console.log(hrefLocation);
   return (

@@ -168,7 +168,7 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
 
   return (
     <Grid container>
-      {trendingStories && stories && newestAuthors && bestAuthors ? (
+      {trendingStories && stories ? (
         <>
           <Grid item xs={12}>
             <ParallaxBanner
@@ -354,24 +354,29 @@ const Homepage = ({ classes, limit, width, loggedUser }) => {
                   style={{ maxWidth: "1600px" }}
                 >
                   {stories ? <StoryContainer data={stories} /> : null}
-
+                  {newestAuthors && bestAuthors ? (
+                    <StarboardContainer
+                      title1="Top Authors"
+                      title2="New Authors"
+                      data1={bestAuthors}
+                      data2={newestAuthors}
+                    />
+                  ) : null}
+                </Grid>
+              </Grid>
+            ) : container === "Stories" && stories ? (
+              <StoryContainer data={stories} />
+            ) : (
+              <>
+                {newestAuthors && bestAuthors ? (
                   <StarboardContainer
                     title1="Top Authors"
                     title2="New Authors"
                     data1={bestAuthors}
                     data2={newestAuthors}
                   />
-                </Grid>
-              </Grid>
-            ) : container === "Stories" && stories ? (
-              <StoryContainer data={stories} />
-            ) : (
-              <StarboardContainer
-                title1="Top Authors"
-                title2="New Authors"
-                data1={bestAuthors}
-                data2={newestAuthors}
-              />
+                ) : null}
+              </>
             )}
           </Grid>
 

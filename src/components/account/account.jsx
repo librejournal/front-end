@@ -17,6 +17,7 @@ import {
 import AccountInfo from "./accountInfo";
 import AccountDetails from "./accountDetails";
 import ReferralDialogBox from "./referralDialogBox";
+import ActiveReferralDialogBox from "./activeReferralDialogBox";
 import { withWindowConsumer } from "../../contexts/window/consumer";
 
 import Carousel, {
@@ -47,7 +48,9 @@ const useStyles = () => ({
 
 const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   const [open, setOpen] = useState(false);
+  const [openReferrals, setOpenReferrals] = useState(false);
   const [users, setUsers] = useState(null);
+  const [referrals, setReferrals] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,6 +58,14 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
 
   const handleClose = (value) => {
     setOpen(false);
+  };
+
+  const handleClickOpenReferrals = () => {
+    setOpenReferrals(true);
+  };
+
+  const handleCloseReferrals = (value) => {
+    setOpenReferrals(false);
   };
 
   const logoutRequest = async () => {
@@ -78,6 +89,23 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
           showConfirmButton: false,
           timer: 2000,
         });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getReferrals = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/`;
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((response) => {
+        setReferrals(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -134,6 +162,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
 
   useEffect(() => {
     searchUsers();
+    getReferrals();
   }, []);
 
   return (
@@ -207,6 +236,16 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
             </Button>
           ) : null}
 
+          {loggedUser.userInfo && loggedUser.userInfo.type === "WRITER" ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleClickOpenReferrals()}
+            >
+              Check Active Referrals
+            </Button>
+          ) : null}
+
           <Button
             variant="contained"
             color="primary"
@@ -223,6 +262,16 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
           onClose={handleClose}
           handleClose={handleClose}
           data={users}
+          token={loggedUser.token}
+        />
+      ) : null}
+
+      {referrals ? (
+        <ActiveReferralDialogBox
+          open={openReferrals}
+          onClose={handleCloseReferrals}
+          handleClose={handleCloseReferrals}
+          data={referrals}
           token={loggedUser.token}
         />
       ) : null}
