@@ -244,7 +244,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
               color="primary"
               onClick={() => handleClickOpenReferrals()}
             >
-              Check Active Referrals
+              Check Referrals
             </Button>
           ) : null}
 

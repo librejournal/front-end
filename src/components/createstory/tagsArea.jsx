@@ -50,6 +50,9 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   const handleClose = () => {
     setOpen(false);
     setTagText("");
+    setTimeout(() => {
+      setDialogStep(1);
+    }, 500);
   };
 
   const handleSetTag = (data) => {

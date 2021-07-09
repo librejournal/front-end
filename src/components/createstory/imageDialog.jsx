@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, Typography, Grid, Button } from "@material-ui/core";
+import {
+  Dialog,
+  Typography,
+  Grid,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
 
@@ -32,8 +38,10 @@ const ImageDialog = ({
   storyDetails,
 }) => {
   const [imageFile, setImageFile] = useState(null);
+  const [imageState, setImageState] = useState(false);
 
   const onFileChange = (event) => {
+    setImageState(true);
     setImageFile(event.target.files[0]);
   };
   useEffect(() => {
@@ -79,6 +87,7 @@ const ImageDialog = ({
               showConfirmButton: false,
               timer: 2000,
             });
+            setImageState(false);
             handleClose();
           })
           .catch((err) => console.log(err));
@@ -97,7 +106,8 @@ const ImageDialog = ({
           margin: "auto",
         }}
       >
-        {storyDetails ? (
+        {imageState ? <CircularProgress /> : null}
+        {storyDetails && !imageState ? (
           <Grid item xs={12} className={classes.imageGrid}>
             <Typography
               color="primary"

@@ -59,6 +59,9 @@ const LocationInfo = ({
   const handleClose = () => {
     setOpen(false);
     setLocationText("");
+    setTimeout(() => {
+      setDialogStep(1);
+    }, 500);
   };
 
   const handleSetLocation = (data) => {

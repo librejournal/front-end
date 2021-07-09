@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, CircularProgress } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import axios from "axios";

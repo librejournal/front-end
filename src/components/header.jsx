@@ -63,8 +63,6 @@ const Header = ({
     : null;
   const [anchorEl, setAnchorEl] = useState(null);
 
-  console.log(notifications);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
