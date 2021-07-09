@@ -79,7 +79,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
 
   useEffect(() => {
     getComments(orderState, mode);
-  }, [comments]);
+  }, []);
 
   const getComments = async (order, mode) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/comments/?ordering=${mode}${order}`;
