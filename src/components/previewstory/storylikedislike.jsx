@@ -189,20 +189,7 @@ const StoryLikeDislike = ({
             </Typography>
           </Grid>
         </Grid>
-      ) : (
-        <Grid
-          item
-          xs={12}
-          style={{
-            height: "80vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress />
-        </Grid>
-      )}
+      ) : null}
     </Grid>
   );
 };

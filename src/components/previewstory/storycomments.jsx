@@ -82,16 +82,14 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   }, [comments]);
 
   const getComments = async (order, mode) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/comments/?ordering=${mode}${order}`;
     await axios
-      .get(
-        `http://localhost:9001/api/stories/${id}/comments/?ordering=${mode}${order}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${loggedUser.token}`,
-          },
-        }
-      )
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
       .then((response) => setComments(response.data), setType(!type))
       .catch((err) => console.log(err));
   };
@@ -99,7 +97,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
   const createComment = async (comment) => {
     axios
       .post(
-        `http://localhost:9001/api/stories/${id}/comments/`,
+        `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/comments/`,
         { text: comment },
         {
           headers: {

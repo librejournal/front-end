@@ -55,7 +55,7 @@ const StoryCommments = ({
   const likeComment = async (id) => {
     axios
       .post(
-        `http://localhost:9001/api/stories/${id}/comments/${id}/like`,
+        `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/comments/${id}/like`,
         {},
         {
           headers: {
@@ -80,7 +80,7 @@ const StoryCommments = ({
   const dislikeComment = async (id) => {
     axios
       .post(
-        `http://localhost:9001/api/stories/${id}/comments/${id}/dislike`,
+        `${process.env.REACT_APP_DB_HOST}/api/stories/${id}/comments/${id}/dislike`,
         {},
         {
           headers: {

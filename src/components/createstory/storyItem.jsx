@@ -170,8 +170,10 @@ const StoryItem = ({
   };
 
   const updateStoryInfo = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`;
+
     await axios
-      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
+      .get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
@@ -186,19 +188,17 @@ const StoryItem = ({
 
   const updateOrderInfo = async (type) => {
     const newOrder = orderArrayFunction(type);
-
     await setOrderArray(newOrder);
+
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/order`;
+
     await axios
-      .post(
-        `http://localhost:9001/api/stories/${storyId}/components/order`,
-        newOrder,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
-        }
-      )
+      .post(url, newOrder, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      })
       .then(() => updateStoryInfo(storyId))
       .catch((err) => console.log(err));
   };
@@ -245,8 +245,9 @@ const StoryItem = ({
       story: storyId,
     };
     setState(31);
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
+      .post(url, info, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
@@ -274,9 +275,9 @@ const StoryItem = ({
       text: text,
       story: storyId,
     };
-
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
+      .post(url, info, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
@@ -305,8 +306,9 @@ const StoryItem = ({
       story: storyId,
       type_setting: imageSize,
     };
+    const mrUrl = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/`;
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/components/`, info, {
+      .post(mrUrl, info, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
@@ -371,17 +373,14 @@ const StoryItem = ({
 
   const deleteItem = async (id) => {
     const deletedItemId = storyInfo.id;
-
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/${deletedItemId}`;
     await axios
-      .delete(
-        `http://localhost:9001/api/stories/${storyId}/components/${deletedItemId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
-        }
-      )
+      .delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      })
       .then(() => {
         updateStoryInfo(storyId);
         updateOrderInfo("delete");
@@ -408,18 +407,14 @@ const StoryItem = ({
       text: value,
       story: storyId,
     };
-
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/components/${editItemId}`;
     await axios
-      .patch(
-        `http://localhost:9001/api/stories/${storyId}/components/${editItemId}`,
-        info,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
-        }
-      )
+      .patch(url, info, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      })
       .then(() => {
         updateStoryInfo(storyId);
         updateOrderInfo("edit");

@@ -58,8 +58,9 @@ const TagsArea = ({ classes, tagInfo, setTagInfo, storyId, loggedUser }) => {
   };
 
   const updateStoryInfo = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`;
     await axios
-      .get(`http://localhost:9001/api/stories/drafts/${storyId}`, {
+      .get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,

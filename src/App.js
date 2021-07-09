@@ -38,8 +38,9 @@ const App = ({
     onCommentNotifications,
 }) => {
     const checkLogin = async () => {
+        const url = `${process.env.REACT_APP_DB_HOST}/api/auth/user`;
         await axios
-            .get("http://localhost:9001/api/auth/user", {
+            .get(url, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Token ${loggedUser.token}`,

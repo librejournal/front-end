@@ -69,9 +69,10 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   };
 
   const logoutRequest = async () => {
+    const url = `${process.env.REACT_APP_DB_HOST}//api/auth/logout`;
     await axios
       .post(
-        "http://localhost:9001/api/auth/logout",
+        url,
         {},
         {
           headers: {

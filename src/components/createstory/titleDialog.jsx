@@ -32,12 +32,16 @@ const TitleDialog = ({ classes, open, handleClose, storyId, token, title }) => {
     };
 
     await axios
-      .patch(`http://localhost:9001/api/stories/drafts/${storyId}`, info, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      })
+      .patch(
+        `${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${storyId}`,
+        info,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then(() => {
         Swal.fire({
           position: "top-end",

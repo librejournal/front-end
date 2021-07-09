@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Button, Chip } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Button,
+  Chip,
+  CircularProgress,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 
@@ -219,7 +225,20 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
               <StoryCommments loggedUser={loggedUser} id={previewStory.id} />
             </Grid>
           </>
-        ) : null}
+        ) : (
+          <Grid
+            item
+            xs={12}
+            style={{
+              height: "80vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Grid>
+        )}
         <Grid item xs={12} className={classes.linkGrid}>
           <Link to="/" style={{ textDecoration: "none" }}>
             <Button color="primary" variant="outlined">

@@ -104,7 +104,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
 
   const getStoryInfo = async (id) => {
     axios
-      .get(`http://localhost:9001/api/stories/drafts/${id}`, {
+      .get(`${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -145,12 +145,16 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
 
   const publishStory = async () => {
     axios
-      .post(`http://localhost:9001/api/stories/${storyId}/publish`, null, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${loggedUser.token}`,
-        },
-      })
+      .post(
+        `${process.env.REACT_APP_DB_HOST}/api/stories/${storyId}/publish`,
+        null,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${loggedUser.token}`,
+          },
+        }
+      )
       .then(() => {
         Swal.fire({
           position: "top-end",
@@ -181,7 +185,7 @@ const CreateStoryPage = ({ classes, loggedUser, limit, width, location }) => {
     };
 
     await axios
-      .post("http://localhost:9001/api/stories/", info, {
+      .post(`${process.env.REACT_APP_DB_HOST}/api/stories/`, info, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,

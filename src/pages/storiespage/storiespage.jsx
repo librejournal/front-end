@@ -29,7 +29,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const getStories = async () => {
     await axios
-      .get("http://localhost:9001/api/stories/")
+      .get(`${process.env.REACT_APP_DB_HOST}/api/stories/`)
       .then((response) => {
         setStories(response.data);
         getStoryDrafts();
@@ -41,7 +41,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const getStoryDrafts = async () => {
     await axios
-      .get("http://localhost:9001/api/stories/drafts/", {
+      .get(`${process.env.REACT_APP_DB_HOST}/api/stories/drafts/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -57,7 +57,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const deleteStory = async (id) => {
     axios
-      .delete(`http://localhost:9001/api/stories/${id}`, {
+      .delete(`${process.env.REACT_APP_DB_HOST}/api/stories/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,
@@ -81,7 +81,7 @@ const StoriesPage = ({ classes, loggedUser }) => {
 
   const deleteDraftStory = async (id) => {
     axios
-      .delete(`http://localhost:9001/api/stories/drafts/${id}`, {
+      .delete(`${process.env.REACT_APP_DB_HOST}/api/stories/drafts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${loggedUser.token}`,

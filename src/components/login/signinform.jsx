@@ -46,8 +46,9 @@ const SigninForm = ({ classes, mobileState, setMobileState }) => {
     setUser({ ...user, [infoType]: event.target.value });
 
   const registerRequest = async (info) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/auth/register`;
     await axios
-      .post("http://localhost:9001/api/auth/register", info, {
+      .post(url, info, {
         headers: {
           "Content-Type": "application/json",
           //"Access-Control-Allow-Origin": "*",
