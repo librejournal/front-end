@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Dialog,
   DialogTitle,
@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import Swal from "sweetalert2";
 
 import { compose } from "recompose";
 
@@ -35,7 +36,18 @@ const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
           Authorization: `Token ${loggedUser.token}`,
         },
       })
-      .then((resp) => handleClose(), window.location.reload())
+      .then(
+        (resp) =>
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Deletion Success",
+            showConfirmButton: false,
+            timer: 2000,
+          }),
+        handleClose(),
+        setTimeout(() => window.location.reload(), 2000)
+      )
       .catch((err) => console.log(err));
   };
 

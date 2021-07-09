@@ -125,6 +125,10 @@ const App = ({
         return () => clearInterval(interval);
     }, [loggedUser.token]);
 
+    useEffect(() => {
+        checkLogin();
+    }, [window.location.pathname.length]);
+
     return (
         <Router>
             <ThemeProvider theme={Theme}>
