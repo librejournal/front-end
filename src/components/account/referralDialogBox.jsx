@@ -27,7 +27,14 @@ const useStyles = () => ({
   },
 });
 
-const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
+const DialogBox = ({
+  open,
+  handleClose,
+  data,
+  loggedUser,
+  classes,
+  getReferrals,
+}) => {
   const sendReferral = async (id) => {
     const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/`;
     await axios
@@ -43,6 +50,7 @@ const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
       )
       .then(() => {
         Swal.fire("You have sent referral to user.");
+        getReferrals();
         handleClose();
       })
       .catch((err) => {

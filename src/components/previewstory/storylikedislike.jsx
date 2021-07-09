@@ -58,7 +58,9 @@ const StoryLikeDislike = ({
             showConfirmButton: false,
             timer: 2000,
           }),
-        focusStory()
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000)
       )
       .catch((err) => console.log(err));
   };
@@ -75,16 +77,18 @@ const StoryLikeDislike = ({
           },
         }
       )
-      .then(
+      .then((resp) => {
         Swal.fire({
           position: "top-end",
           icon: "success",
           title: "You have disliked a story",
           showConfirmButton: false,
           timer: 2000,
-        }),
-        focusStory()
-      )
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
       .catch((err) => console.log(err));
   };
 

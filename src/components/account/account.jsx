@@ -265,6 +265,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
           handleClose={handleClose}
           data={users}
           token={loggedUser.token}
+          getReferrals={getReferrals}
         />
       ) : null}
 

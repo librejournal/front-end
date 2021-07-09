@@ -73,9 +73,6 @@ const StoryCommments = ({
           showConfirmButton: false,
           timer: 2000,
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       })
       .catch((err) => console.log(err));
   };
@@ -101,9 +98,6 @@ const StoryCommments = ({
           showConfirmButton: false,
           timer: 2000,
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       })
       .catch((err) => console.log(err));
   };
