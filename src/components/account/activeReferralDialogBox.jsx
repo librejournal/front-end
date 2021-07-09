@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -14,6 +14,7 @@ import { compose } from "recompose";
 
 import { connect } from "react-redux";
 import { mapStateToPropsHome } from "../../redux/mapFunctions";
+import axios from "axios";
 
 const useStyles = () => ({
   buttonContainer: {
@@ -26,6 +27,18 @@ const useStyles = () => ({
 });
 
 const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
+  const deleteReferral = async (id) => {
+    const url = `${process.env.REACT_APP_DB_HOST}/api/profiles/referrals/${id}/`;
+    await axios
+      .delete(url, {
+        headers: {
+          Authorization: `Token ${loggedUser.token}`,
+        },
+      })
+      .then((resp) => handleClose(), window.location.reload())
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">
@@ -39,9 +52,23 @@ const DialogBox = ({ open, handleClose, data, loggedUser, classes }) => {
         >
           {data.map((el) =>
             !el.accepted ? (
-              <Typography color="primary" variant="h6">
-                {el.to_profile.user.username}
-              </Typography>
+              <Grid
+                item
+                xs={12}
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
+                <Typography color="primary" variant="h6">
+                  {el.to_profile.user.username}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => deleteReferral(el.id)}
+                  color="primary"
+                >
+                  {" "}
+                  Delete{" "}
+                </Button>
+              </Grid>
             ) : null
           )}
           {!data.length ? (
