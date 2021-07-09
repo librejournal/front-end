@@ -110,7 +110,6 @@ const StoryItem = ({
   const [textSize, setTextSize] = useState("h6");
   const [imageSize, setImageSize] = useState("10");
   const [imageFile, setImageFile] = useState(null);
-  const [imageState, setImageState] = useState(false);
 
   const onFileChange = (event) => {
     setImageFile(event.target.files[0]);
@@ -739,6 +738,7 @@ const StoryItem = ({
               <Button
                 variant="contained"
                 color="primary"
+                disabled={!text}
                 onClick={() => addImageUrl(text)}
               >
                 Add Image
@@ -746,7 +746,7 @@ const StoryItem = ({
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => deleteItem(id)}
+                onClick={() => (text ? deleteItem(id) : setState(1))}
               >
                 Delete
               </Button>
