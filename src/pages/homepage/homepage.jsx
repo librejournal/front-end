@@ -18,7 +18,6 @@ import {
 } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/core/styles";
-import { mockupDataStarboard } from "../../constants/index";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { compose } from "recompose";

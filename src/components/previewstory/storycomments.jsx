@@ -79,7 +79,7 @@ const StoryCommments = ({ classes, id, loggedUser, limit, width }) => {
 
   useEffect(() => {
     getComments(orderState, mode);
-  }, []);
+  }, [comments]);
 
   const getComments = async (order, mode) => {
     await axios

@@ -10,9 +10,6 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import axios from "axios";
-import Swal from "sweetalert2";
-
 import { compose } from "recompose";
 
 import { connect } from "react-redux";

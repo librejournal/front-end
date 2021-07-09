@@ -95,7 +95,6 @@ const PreviewStoryPage = ({ classes, loggedUser, location }) => {
     focusStory();
   }, [hrefLocation]);
 
-  console.log(hrefLocation);
   return (
     <Grid container style={{ overflowY: "auto" }}>
       <Grid container className={classes.storyPreviewContainer}>

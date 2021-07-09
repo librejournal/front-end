@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "recompose";
 import axios from "axios";
@@ -189,7 +189,20 @@ const StoryLikeDislike = ({
             </Typography>
           </Grid>
         </Grid>
-      ) : null}
+      ) : (
+        <Grid
+          item
+          xs={12}
+          style={{
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Grid>
+      )}
     </Grid>
   );
 };
