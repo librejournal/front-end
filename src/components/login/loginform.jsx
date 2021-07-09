@@ -71,6 +71,7 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
         <Redirect to="/account" />;
       })
       .catch((error) => {
+        Swal.fire("Error", "An error occurred during login", "error");
         console.log(error);
       });
   };

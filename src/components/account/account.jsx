@@ -69,7 +69,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
   };
 
   const logoutRequest = async () => {
-    const url = `${process.env.REACT_APP_DB_HOST}//api/auth/logout`;
+    const url = `${process.env.REACT_APP_DB_HOST}/api/auth/logout`;
     await axios
       .post(
         url,
@@ -92,6 +92,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
         });
       })
       .catch((error) => {
+        Swal.fire("Error", "An error occurred during logout", "error");
         console.log(error);
       });
   };
