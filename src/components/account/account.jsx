@@ -41,6 +41,7 @@ const useStyles = () => ({
   },
   bottomButton: {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
   },
@@ -195,6 +196,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
               variant="contained"
               color="primary"
               onClick={() => acceptReferral()}
+              style={{ marginBottom: "10px" }}
             >
               Accept Referral
             </Button>
@@ -204,6 +206,7 @@ const Account = ({ classes, loggedUser, onLogoutUser, limit, width }) => {
               variant="contained"
               color="primary"
               onClick={() => handleClickOpen()}
+              style={{ marginBottom: "10px" }}
             >
               Send Referral to a User
             </Button>
