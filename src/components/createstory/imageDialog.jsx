@@ -86,7 +86,6 @@ const ImageDialog = ({
               timer: 2000,
             });
             handleClose();
-            console.log(response);
           })
           .catch((err) => console.log(err));
       })
