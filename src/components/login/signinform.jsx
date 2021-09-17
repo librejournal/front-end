@@ -11,8 +11,8 @@ const useStyles = () => ({
   signinContainer: {
     width: "max(20vw,250px)",
     padding: "2vh 2vw",
-    height: "500px",
-    maxHeight: "50vh",
+    height: ({ mobileState }) => (mobileState ? "550px" : null),
+    maxHeight: ({ mobileState }) => (mobileState ? null : "50vh"),
     overflowY: "auto",
     display: "flex",
     justifyContent: "space-between",

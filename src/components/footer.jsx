@@ -13,12 +13,12 @@ const useStyles = () => ({
     width: "100%",
     "-webkit-box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
     "-moz-box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
-    "box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)"
+    "box-shadow": "inset 0px 0.1vh 2px 0px rgba(0,0,0,0.8)",
   },
 });
 
 const Footer = ({ classes }) => {
-  return <Grid containter className={classes.footerGrid} />;
+  return <Grid container className={classes.footerGrid} />;
 };
 
 export default withStyles(useStyles)(Footer);

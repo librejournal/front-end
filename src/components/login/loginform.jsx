@@ -111,13 +111,22 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           Did you forget your password?
         </Typography>
       </Link>
-      <Grid container justify="center" alignItems="center">
+      <Grid container justify="space-around" alignItems="center">
         <Button
           variant="contained"
           color="primary"
           onClick={() => loginRequest(user)}
         >
           LOG IN
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            loginRequest({ email: "deneme3@gmail.com", password: "deneme33" })
+          }
+        >
+          DEMO LOG IN
         </Button>
       </Grid>
 

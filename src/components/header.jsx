@@ -15,7 +15,7 @@ import MobileMenu from "./header/mobileMenu";
 
 const useStyles = () => ({
   headerGrid: {
-    height: "8vh",
+    height: "12vh",
     backgroundColor: "#1687a7",
     display: "flex",
     justifyContent: "space-around",
@@ -55,7 +55,7 @@ const Header = ({ classes, loggedUser, width, limit }) => {
   };
 
   return (
-    <Grid containter className={classes.headerGrid} id="header">
+    <Grid container className={classes.headerGrid} id="header">
       <Grid item xs={3} md={2} className={classes.headerLogo}>
         <Link to="/" style={{ textDecoration: "none" }}>
           <Logo />
