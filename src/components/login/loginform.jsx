@@ -123,7 +123,7 @@ const LoginForm = ({ classes, onLoginUser, mobileState, setMobileState }) => {
           variant="contained"
           color="primary"
           onClick={() =>
-            loginRequest({ email: "deneme3@gmail.com", password: "deneme33" })
+            loginRequest({ email: "deneme1@gmail.com", password: "deneme11" })
           }
         >
           DEMO LOG IN
